@@ -41,15 +41,19 @@ header a {
 
 .col {
   overflow: auto;
-  width: 300px;
+  width: 200px;
   height: 100%;
+  background-color: #605ca7;
   border-right: 1px solid var(--border-color);
 }
 
 .drag-drawflow {
   line-height: 50px;
-  border-bottom: 1px solid var(--border-color);
+  border: 10px solid var(--border-color);
   padding-left: 20px;
+  background-color: #222d32;
+  border-color: #605ca7;
+  color: white;
   cursor: move;
   user-select: none;
 }
@@ -154,7 +158,7 @@ cursor: pointer;
 
 #drawflow {
   position: relative;
-  width: calc(100vw - 301px);
+  width: calc(100vw - 201px);
   height: calc(100% - 50px);
   top: 40px;
   background: var(--background-color);
