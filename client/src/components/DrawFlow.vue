@@ -6,35 +6,65 @@
         <a href="https://github.com/jerosoler/Drawflow" target="_blank">
           <i class="fab fa-github fa-3x"></i>
         </a>
-      </div> -->
+      </div>-->
     </header>
     <div class="wrapper">
       <div class="col">
-        <div
-          class="drag-drawflow"
-          draggable="true"
-          v-on:dragstart="drag($event)"
-          data-node="facebook"
-        >
-          <!-- <i class="fab fa-facebook"></i> -->
-          <span> Facebook</span>
+        <div class="drag-drawflow" draggable="true" v-on:dragstart="drag($event)" data-node="menu">
+          <!-- <i class="fab fa-menu"></i> -->
+          <span>Menu</span>
         </div>
         <div
           class="drag-drawflow"
           draggable="true"
           v-on:dragstart="drag($event)"
-          data-node="slack"
+          data-node="message"
         >
           <!-- <i class="fab fa-slack"></i> -->
-          <span> Slack recive message</span>
+          <span>Message</span>
         </div>
         <div
+          class="drag-drawflow"
+          draggable="true"
+          v-on:dragstart="drag($event)"
+          data-node="sharefile"
+        >
+          <span>Share File</span>
+        </div>
+        <div
+          class="drag-drawflow"
+          draggable="true"
+          v-on:dragstart="drag($event)"
+          data-node="location"
+        >
+          <span>Location</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" v-on:dragstart="drag($event)" data-node="agent">
+          <span>Agent</span>
+        </div>
+        <div
+          class="drag-drawflow"
+          draggable="true"
+          v-on:dragstart="drag($event)"
+          data-node="clientstore"
+        >
+          <span>Client Store</span>
+        </div>
+        <div
+          class="drag-drawflow"
+          draggable="true"
+          v-on:dragstart="drag($event)"
+          data-node="clientbranch"
+        >
+          <span>Client Branch</span>
+        </div>
+        <!-- <div
           class="drag-drawflow"
           draggable="true"
           v-on:dragstart="drag($event)"
           data-node="github"
         >
-          <!-- <i class="fab fa-github"></i> -->
+          <i class="fab fa-github"></i>
           <span> Github Star</span>
         </div>
         <div
@@ -43,7 +73,7 @@
           v-on:dragstart="drag($event)"
           data-node="telegram"
         >
-          <!-- <i class="fab fa-telegram"></i> -->
+          <i class="fab fa-telegram"></i>
           <span> Telegram send message</span>
         </div>
         <div
@@ -52,7 +82,7 @@
           v-on:dragstart="drag($event)"
           data-node="aws"
         >
-          <!-- <i class="fab fa-aws"></i> -->
+          <i class="fab fa-aws"></i>
           <span> AWS</span>
         </div>
         <div
@@ -61,7 +91,7 @@
           v-on:dragstart="drag($event)"
           data-node="log"
         >
-          <!-- <i class="fas fa-file-signature"></i> -->
+          <i class="fas fa-file-signature"></i>
           <span> File Log</span>
         </div>
         <div
@@ -70,7 +100,7 @@
           v-on:dragstart="drag($event)"
           data-node="google"
         >
-          <!-- <i class="fab fa-google-drive"></i> -->
+          <i class="fab fa-google-drive"></i>
           <span> Google Drive save</span>
         </div>
         <div
@@ -79,7 +109,7 @@
           v-on:dragstart="drag($event)"
           data-node="email"
         >
-          <!-- <i class="fas fa-at"></i> -->
+          <i class="fas fa-at"></i>
           <span> Email send</span>
         </div>
         <div
@@ -88,7 +118,7 @@
           v-on:dragstart="drag($event)"
           data-node="template"
         >
-          <!-- <i class="fas fa-code"></i> -->
+          <i class="fas fa-code"></i>
           <span> Template</span>
         </div>
         <div
@@ -97,7 +127,7 @@
           v-on:dragstart="drag($event)"
           data-node="multiple"
         >
-          <!-- <i class="fas fa-code-branch"></i> -->
+          <i class="fas fa-code-branch"></i>
           <span> Multiple inputs/outputs</span>
         </div>
         <div
@@ -106,7 +136,7 @@
           v-on:dragstart="drag($event)"
           data-node="personalized"
         >
-          <!-- <i class="fas fa-fill"></i> -->
+          <i class="fas fa-fill"></i>
           <span> Personalized</span>
         </div>
         <div
@@ -115,36 +145,24 @@
           v-on:dragstart="drag($event)"
           data-node="dbclick"
         >
-          <!-- <i class="fas fa-mouse"></i> -->
+          <i class="fas fa-mouse"></i>
           <span> DBClick!</span>
-        </div>
+        </div>-->
       </div>
       <div class="col-right">
         <div class="menu">
           <ul>
-            <li
-              onclick="editor.changeModule('Home'); changeModule(event);"
-              class="selected"
-            >
-              Home
-            </li>
+            <li onclick="editor.changeModule('Home'); changeModule(event);" class="selected">Home</li>
             <!-- <li onclick="editor.changeModule('Other'); changeModule(event);">
               Other Module
-            </li> -->
+            </li>-->
           </ul>
         </div>
-        <div
-          id="drawflow"
-          ref="myId"
-          v-on:drop="drop($event)"
-          v-on:dragover="allowDrop($event)"
-        >
+        <div id="drawflow" ref="myId" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)">
           <!-- <div class="btn-export" v-onclick="Swal.fire({ title: 'Export',
         html: '<pre><code>'+JSON.stringify(editor.export(), null,4)+'</code></pre>'
-        })">Export</div> -->
-          <div class="btn-clear" onclick="editor.clearModuleSelected()">
-            Clear
-          </div>
+          })">Export</div>-->
+          <div class="btn-clear" onclick="editor.clearModuleSelected()">Clear</div>
           <!-- <div class="btn-lock">
             <i
               id="lock"
@@ -157,7 +175,7 @@
               onclick="editor.editor_mode='edit'; changeMode('unlock');"
               style="display:none;"
             ></i>
-          </div> -->
+          </div>-->
           <div class="bar-zoom">
             <i class="fas fa-search-minus" v-on:click="zoom_out"></i>
             <i class="fas fa-search" v-on:click="zoom_reset"></i>
@@ -213,218 +231,220 @@ export default {
     // })
   },
   methods: {
-    getData(){
+    getData() {
       return {
         drawflow: {
-        Home: {
-          data: {
-            "1": {
-              id: 1,
-              name: "welcome",
-              data: {},
-              class: "welcome",
-              html:
-                '\n    <div>\n      <div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n        <p>Simple flow library <b>demo</b>\n        <a href="https://github.com/jerosoler/Drawflow" target="_blank">Drawflow</a> by <b>Jero Soler</b></p><br>\n\n        <p>Multiple input / outputs<br>\n           Data sync nodes<br>\n           Import / export<br>\n           Modules support<br>\n           Simple use<br>\n           Type: Fixed or Edit<br>\n           Events: view console<br>\n           Pure Javascript<br>\n        </p>\n        <br>\n        <p><b><u>Shortkeys:</u></b></p>\n        <p>🎹 <b>Delete</b> for remove selected<br>\n        💠 Mouse Left Click == Move<br>\n        ❌ Mouse Right == Delete Option<br>\n        🔍 Ctrl + Wheel == Zoom<br>\n        📱 Mobile support<br>\n        ...</p>\n      </div>\n    </div>\n    ',
-              typenode: false,
-              inputs: {},
-              outputs: {},
-              pos_x: 50,
-              pos_y: 50,
-            },
-            "2": {
-              id: 2,
-              name: "slack",
-              data: {},
-              class: "slack",
-              html:
-                '\n          <div>\n            <div class="title-box">Slack chat message</div>\n          </div>\n          ',
-              typenode: false,
-              inputs: {
-                input_1: { connections: [{ node: "7", input: "output_1" }] },
+          Home: {
+            data: {
+              "1": {
+                id: 1,
+                name: "welcome",
+                data: {},
+                class: "welcome",
+                html:
+                  '\n    <div>\n      <div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n        <p>Simple flow library <b>demo</b>\n        <a href="https://github.com/jerosoler/Drawflow" target="_blank">Drawflow</a> by <b>Jero Soler</b></p><br>\n\n        <p>Multiple input / outputs<br>\n           Data sync nodes<br>\n           Import / export<br>\n           Modules support<br>\n           Simple use<br>\n           Type: Fixed or Edit<br>\n           Events: view console<br>\n           Pure Javascript<br>\n        </p>\n        <br>\n        <p><b><u>Shortkeys:</u></b></p>\n        <p>🎹 <b>Delete</b> for remove selected<br>\n        💠 Mouse Left Click == Move<br>\n        ❌ Mouse Right == Delete Option<br>\n        🔍 Ctrl + Wheel == Zoom<br>\n        📱 Mobile support<br>\n        ...</p>\n      </div>\n    </div>\n    ',
+                typenode: false,
+                inputs: {},
+                outputs: {},
+                pos_x: 50,
+                pos_y: 50,
               },
-              outputs: {},
-              pos_x: 1028,
-              pos_y: 87,
-            },
-            "3": {
-              id: 3,
-              name: "telegram",
-              data: { channel: "channel_2" },
-              class: "telegram",
-              html:
-                '\n          <div>\n            <div class="title-box">Telegram bot</div>\n            <div class="box">\n              <p>Send to telegram</p>\n              <p>select channel</p>\n              <select df-channel>\n                <option value="channel_1">Channel 1</option>\n                <option value="channel_2">Channel 2</option>\n                <option value="channel_3">Channel 3</option>\n                <option value="channel_4">Channel 4</option>\n              </select>\n            </div>\n          </div>\n          ',
-              typenode: false,
-              inputs: {
-                input_1: { connections: [{ node: "7", input: "output_1" }] },
-              },
-              outputs: {},
-              pos_x: 1032,
-              pos_y: 184,
-            },
-            "4": {
-              id: 4,
-              name: "email",
-              data: {},
-              class: "email",
-              html:
-                '\n            <div>\n              <div class="title-box">Send Email </div>\n            </div>\n            ',
-              typenode: false,
-              inputs: {
-                input_1: { connections: [{ node: "5", input: "output_1" }] },
-              },
-              outputs: {},
-              pos_x: 1033,
-              pos_y: 439,
-            },
-            "5": {
-              id: 5,
-              name: "template",
-              data: { template: "Write your template" },
-              class: "template",
-              html:
-                '\n            <div>\n              <div class="title-box">Template</div>\n              <div class="box">\n                Ger Vars\n                <textarea df-template></textarea>\n                Output template with vars\n              </div>\n            </div>\n            ',
-              typenode: false,
-              inputs: {
-                input_1: { connections: [{ node: "6", input: "output_1" }] },
-              },
-              outputs: {
-                output_1: {
-                  connections: [
-                    { node: "4", output: "input_1" },
-                    { node: "11", output: "input_1" },
-                  ],
+              "2": {
+                id: 2,
+                name: "message",
+                data: {},
+                class: "message",
+                html:
+                  '\n          <div>\n            <div class="title-box">Message</div>\n          </div>\n          ',
+                typenode: false,
+                inputs: {
+                  input_1: { connections: [{ node: "7", input: "output_1" }] },
                 },
+                outputs: {},
+                pos_x: 1028,
+                pos_y: 87,
               },
-              pos_x: 607,
-              pos_y: 304,
-            },
-            "6": {
-              id: 6,
-              name: "github",
-              data: { name: "https://github.com/jerosoler/Drawflow" },
-              class: "github",
-              html:
-                '\n          <div>\n            <div class="title-box">Github Stars</div>\n            <div class="box">\n              <p>Enter repository url</p>\n            <input type="text" df-name>\n            </div>\n          </div>\n          ',
-              typenode: false,
-              inputs: {},
-              outputs: {
-                output_1: { connections: [{ node: "5", output: "input_1" }] },
-              },
-              pos_x: 341,
-              pos_y: 191,
-            },
-            "7": {
-              id: 7,
-              name: "facebook",
-              data: {},
-              class: "facebook",
-              html:
-                '\n        <div>\n          <div class="title-box">Facebook Message</div>\n        </div>\n        ',
-              typenode: false,
-              inputs: {},
-              outputs: {
-                output_1: {
-                  connections: [
-                    { node: "2", output: "input_1" },
-                    { node: "3", output: "input_1" },
-                    { node: "11", output: "input_1" },
-                  ],
+              "3": {
+                id: 3,
+                name: "telegram",
+                data: { channel: "channel_2" },
+                class: "telegram",
+                html:
+                  '\n          <div>\n            <div class="title-box">Telegram bot</div>\n            <div class="box">\n              <p>Send to telegram</p>\n              <p>select channel</p>\n              <select df-channel>\n                <option value="channel_1">Channel 1</option>\n                <option value="channel_2">Channel 2</option>\n                <option value="channel_3">Channel 3</option>\n                <option value="channel_4">Channel 4</option>\n              </select>\n            </div>\n          </div>\n          ',
+                typenode: false,
+                inputs: {
+                  input_1: { connections: [{ node: "7", input: "output_1" }] },
                 },
+                outputs: {},
+                pos_x: 1032,
+                pos_y: 184,
               },
-              pos_x: 347,
-              pos_y: 87,
-            },
-            "11": {
-              id: 11,
-              name: "log",
-              data: {},
-              class: "log",
-              html:
-                '\n            <div>\n              <div class="title-box">Save log file </div>\n            </div>\n            ',
-              typenode: false,
-              inputs: {
-                input_1: {
-                  connections: [
-                    { node: "5", input: "output_1" },
-                    { node: "7", input: "output_1" },
-                  ],
+              "4": {
+                id: 4,
+                name: "email",
+                data: {},
+                class: "email",
+                html:
+                  '\n            <div>\n              <div class="title-box">Send Email </div>\n            </div>\n            ',
+                typenode: false,
+                inputs: {
+                  input_1: { connections: [{ node: "5", input: "output_1" }] },
                 },
+                outputs: {},
+                pos_x: 1033,
+                pos_y: 439,
               },
-              outputs: {},
-              pos_x: 1031,
-              pos_y: 363,
+              "5": {
+                id: 5,
+                name: "template",
+                data: { template: "Write your template" },
+                class: "template",
+                html:
+                  '\n            <div>\n              <div class="title-box">Template</div>\n              <div class="box">\n                Ger Vars\n                <textarea df-template></textarea>\n                Output template with vars\n              </div>\n            </div>\n            ',
+                typenode: false,
+                inputs: {
+                  input_1: { connections: [{ node: "6", input: "output_1" }] },
+                },
+                outputs: {
+                  output_1: {
+                    connections: [
+                      { node: "4", output: "input_1" },
+                      { node: "11", output: "input_1" },
+                    ],
+                  },
+                },
+                pos_x: 607,
+                pos_y: 304,
+              },
+              "6": {
+                id: 6,
+                name: "github",
+                data: { name: "https://github.com/jerosoler/Drawflow" },
+                class: "github",
+                html:
+                  '\n          <div>\n            <div class="title-box">Github Stars</div>\n            <div class="box">\n              <p>Enter repository url</p>\n            <input type="text" df-name>\n            </div>\n          </div>\n          ',
+                typenode: false,
+                inputs: {},
+                outputs: {
+                  output_1: { connections: [{ node: "5", output: "input_1" }] },
+                },
+                pos_x: 341,
+                pos_y: 191,
+              },
+              "7": {
+                id: 7,
+                name: "menu",
+                data: {},
+                class: "menu",
+                html:
+                  '\n        <div>\n          <div class="title-box">Menu</div>\n        </div>\n        ',
+                typenode: false,
+                inputs: {},
+                outputs: {
+                  output_1: {
+                    connections: [
+                      { node: "2", output: "input_1" },
+                      { node: "3", output: "input_1" },
+                      { node: "11", output: "input_1" },
+                    ],
+                  },
+                },
+                pos_x: 347,
+                pos_y: 87,
+              },
+              "11": {
+                id: 11,
+                name: "log",
+                data: {},
+                class: "log",
+                html:
+                  '\n            <div>\n              <div class="title-box">Save log file </div>\n            </div>\n            ',
+                typenode: false,
+                inputs: {
+                  input_1: {
+                    connections: [
+                      { node: "5", input: "output_1" },
+                      { node: "7", input: "output_1" },
+                    ],
+                  },
+                },
+                outputs: {},
+                pos_x: 1031,
+                pos_y: 363,
+              },
+            },
+          },
+          Other: {
+            data: {
+              "8": {
+                id: 8,
+                name: "personalized",
+                data: {},
+                class: "personalized",
+                html:
+                  "\n            <div>\n              Personalized\n            </div>\n            ",
+                typenode: false,
+                inputs: {
+                  input_1: {
+                    connections: [
+                      { node: "12", input: "output_1" },
+                      { node: "12", input: "output_2" },
+                      { node: "12", input: "output_3" },
+                      { node: "12", input: "output_4" },
+                    ],
+                  },
+                },
+                outputs: {
+                  output_1: { connections: [{ node: "9", output: "input_1" }] },
+                },
+                pos_x: 764,
+                pos_y: 227,
+              },
+              "9": {
+                id: 9,
+                name: "dbclick",
+                data: { name: "Hello World!!" },
+                class: "dbclick",
+                html:
+                  '\n            <div>\n            <div class="title-box">Db Click</div>\n              <div class="box dbclickbox" ondblclick="showpopup(event)">\n                Db Click here\n                <div class="modal" style="display:none">\n                  <div class="modal-content">\n                    <span class="close" onclick="closemodal(event)">&times;</span>\n                    Change your variable {name} !\n                    <input type="text" df-name>\n                  </div>\n\n                </div>\n              </div>\n            </div>\n            ',
+                typenode: false,
+                inputs: {
+                  input_1: { connections: [{ node: "8", input: "output_1" }] },
+                },
+                outputs: {
+                  output_1: {
+                    connections: [{ node: "12", output: "input_2" }],
+                  },
+                },
+                pos_x: 209,
+                pos_y: 38,
+              },
+              "12": {
+                id: 12,
+                name: "multiple",
+                data: {},
+                class: "multiple",
+                html:
+                  '\n            <div>\n              <div class="box">\n                Multiple!\n              </div>\n            </div>\n            ',
+                typenode: false,
+                inputs: {
+                  input_1: { connections: [] },
+                  input_2: { connections: [{ node: "9", input: "output_1" }] },
+                  input_3: { connections: [] },
+                },
+                outputs: {
+                  output_1: { connections: [{ node: "8", output: "input_1" }] },
+                  output_2: { connections: [{ node: "8", output: "input_1" }] },
+                  output_3: { connections: [{ node: "8", output: "input_1" }] },
+                  output_4: { connections: [{ node: "8", output: "input_1" }] },
+                },
+                pos_x: 179,
+                pos_y: 272,
+              },
             },
           },
         },
-        Other: {
-          data: {
-            "8": {
-              id: 8,
-              name: "personalized",
-              data: {},
-              class: "personalized",
-              html:
-                "\n            <div>\n              Personalized\n            </div>\n            ",
-              typenode: false,
-              inputs: {
-                input_1: {
-                  connections: [
-                    { node: "12", input: "output_1" },
-                    { node: "12", input: "output_2" },
-                    { node: "12", input: "output_3" },
-                    { node: "12", input: "output_4" },
-                  ],
-                },
-              },
-              outputs: {
-                output_1: { connections: [{ node: "9", output: "input_1" }] },
-              },
-              pos_x: 764,
-              pos_y: 227,
-            },
-            "9": {
-              id: 9,
-              name: "dbclick",
-              data: { name: "Hello World!!" },
-              class: "dbclick",
-              html:
-                '\n            <div>\n            <div class="title-box">Db Click</div>\n              <div class="box dbclickbox" ondblclick="showpopup(event)">\n                Db Click here\n                <div class="modal" style="display:none">\n                  <div class="modal-content">\n                    <span class="close" onclick="closemodal(event)">&times;</span>\n                    Change your variable {name} !\n                    <input type="text" df-name>\n                  </div>\n\n                </div>\n              </div>\n            </div>\n            ',
-              typenode: false,
-              inputs: {
-                input_1: { connections: [{ node: "8", input: "output_1" }] },
-              },
-              outputs: {
-                output_1: { connections: [{ node: "12", output: "input_2" }] },
-              },
-              pos_x: 209,
-              pos_y: 38,
-            },
-            "12": {
-              id: 12,
-              name: "multiple",
-              data: {},
-              class: "multiple",
-              html:
-                '\n            <div>\n              <div class="box">\n                Multiple!\n              </div>\n            </div>\n            ',
-              typenode: false,
-              inputs: {
-                input_1: { connections: [] },
-                input_2: { connections: [{ node: "9", input: "output_1" }] },
-                input_3: { connections: [] },
-              },
-              outputs: {
-                output_1: { connections: [{ node: "8", output: "input_1" }] },
-                output_2: { connections: [{ node: "8", output: "input_1" }] },
-                output_3: { connections: [{ node: "8", output: "input_1" }] },
-                output_4: { connections: [{ node: "8", output: "input_1" }] },
-              },
-              pos_x: 179,
-              pos_y: 272,
-            },
-          },
-        },
-      },
-      }
+      };
     },
     allowDrop(ev) {
       ev.preventDefault();
@@ -481,38 +501,29 @@ export default {
             (this.editor.precanvas.clientHeight * this.editor.zoom));
 
       switch (name) {
-        case "facebook":
-          var facebook = `
+        case "menu":
+          var menu = `
         <div>
-          <div class="title-box">Facebook Message</div>
+          <div class="title-box">Menu</div>
         </div>
         `;
-          this.editor.addNode(
-            "facebook",
-            0,
-            1,
-            pos_x,
-            pos_y,
-            "facebook",
-            {},
-            facebook
-          );
+          this.editor.addNode("menu", 0, 1, pos_x, pos_y, "menu", {}, menu);
           break;
-        case "slack":
-          var slackchat = `
+        case "message":
+          var message = `
           <div>
-            <div class="title-box">Slack chat message</div>
+            <div class="title-box">Message</div>
           </div>
           `;
           this.editor.addNode(
-            "slack",
+            "message",
             1,
             0,
             pos_x,
             pos_y,
-            "slack",
+            "message",
             {},
-            slackchat
+            message
           );
           break;
         case "github":
