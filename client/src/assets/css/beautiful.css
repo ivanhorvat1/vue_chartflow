@@ -18,6 +18,8 @@ header {
   height: 66px;
   border-bottom: 1px solid var(--border-color);
   padding-left: 20px;
+  background-color: #605ca7;
+  color: white;
 }
 header h2 {
   margin: 0px;
