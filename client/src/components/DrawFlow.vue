@@ -10,42 +10,27 @@
     </header>
     <div class="wrapper">
       <div class="col">
-        <div class="drag-drawflow" draggable="true" v-on:dragstart="drag($event)" data-node="menu">
+        <div class="drag-drawflow" draggable="true" @dragstart="drag($event)" data-node="menu">
           <!-- <i class="fab fa-menu"></i> -->
           <span>Menu</span>
         </div>
-        <div
-          class="drag-drawflow"
-          draggable="true"
-          v-on:dragstart="drag($event)"
-          data-node="message"
-        >
+        <div class="drag-drawflow" draggable="true" @dragstart="drag($event)" data-node="message">
           <!-- <i class="fab fa-slack"></i> -->
           <span>Message</span>
         </div>
-        <div
-          class="drag-drawflow"
-          draggable="true"
-          v-on:dragstart="drag($event)"
-          data-node="sharefile"
-        >
+        <div class="drag-drawflow" draggable="true" @dragstart="drag($event)" data-node="sharefile">
           <span>Share File</span>
         </div>
-        <div
-          class="drag-drawflow"
-          draggable="true"
-          v-on:dragstart="drag($event)"
-          data-node="location"
-        >
+        <div class="drag-drawflow" draggable="true" @dragstart="drag($event)" data-node="location">
           <span>Location</span>
         </div>
-        <div class="drag-drawflow" draggable="true" v-on:dragstart="drag($event)" data-node="agent">
+        <div class="drag-drawflow" draggable="true" @dragstart="drag($event)" data-node="agent">
           <span>Agent</span>
         </div>
         <div
           class="drag-drawflow"
           draggable="true"
-          v-on:dragstart="drag($event)"
+          @dragstart="drag($event)"
           data-node="clientstore"
         >
           <span>Client Store</span>
@@ -53,7 +38,7 @@
         <div
           class="drag-drawflow"
           draggable="true"
-          v-on:dragstart="drag($event)"
+          @dragstart="drag($event)"
           data-node="clientbranch"
         >
           <span>Client Branch</span>
@@ -61,7 +46,7 @@
         <!-- <div
           class="drag-drawflow"
           draggable="true"
-          v-on:dragstart="drag($event)"
+          @dragstart="drag($event)"
           data-node="github"
         >
           <i class="fab fa-github"></i>
@@ -70,7 +55,7 @@
         <div
           class="drag-drawflow"
           draggable="true"
-          v-on:dragstart="drag($event)"
+          @dragstart="drag($event)"
           data-node="telegram"
         >
           <i class="fab fa-telegram"></i>
@@ -79,7 +64,7 @@
         <div
           class="drag-drawflow"
           draggable="true"
-          v-on:dragstart="drag($event)"
+          @dragstart="drag($event)"
           data-node="aws"
         >
           <i class="fab fa-aws"></i>
@@ -88,7 +73,7 @@
         <div
           class="drag-drawflow"
           draggable="true"
-          v-on:dragstart="drag($event)"
+          @dragstart="drag($event)"
           data-node="log"
         >
           <i class="fas fa-file-signature"></i>
@@ -97,7 +82,7 @@
         <div
           class="drag-drawflow"
           draggable="true"
-          v-on:dragstart="drag($event)"
+          @dragstart="drag($event)"
           data-node="google"
         >
           <i class="fab fa-google-drive"></i>
@@ -106,7 +91,7 @@
         <div
           class="drag-drawflow"
           draggable="true"
-          v-on:dragstart="drag($event)"
+          @dragstart="drag($event)"
           data-node="email"
         >
           <i class="fas fa-at"></i>
@@ -115,7 +100,7 @@
         <div
           class="drag-drawflow"
           draggable="true"
-          v-on:dragstart="drag($event)"
+          @dragstart="drag($event)"
           data-node="template"
         >
           <i class="fas fa-code"></i>
@@ -124,7 +109,7 @@
         <div
           class="drag-drawflow"
           draggable="true"
-          v-on:dragstart="drag($event)"
+          @dragstart="drag($event)"
           data-node="multiple"
         >
           <i class="fas fa-code-branch"></i>
@@ -133,7 +118,7 @@
         <div
           class="drag-drawflow"
           draggable="true"
-          v-on:dragstart="drag($event)"
+          @dragstart="drag($event)"
           data-node="personalized"
         >
           <i class="fas fa-fill"></i>
@@ -142,7 +127,7 @@
         <div
           class="drag-drawflow"
           draggable="true"
-          v-on:dragstart="drag($event)"
+          @dragstart="drag($event)"
           data-node="dbclick"
         >
           <i class="fas fa-mouse"></i>
@@ -152,17 +137,15 @@
       <div class="col-right">
         <div class="menu">
           <ul>
-            <li onclick="editor.changeModule('Home'); changeModule(event);" class="selected">Home</li>
-            <!-- <li onclick="editor.changeModule('Other'); changeModule(event);">
-              Other Module
-            </li>-->
+            <li @click="editor.changeModule('Home'); changeModule($event);" class="selected">Home</li>
+            <!-- <li v-on:click="editor.changeModule('Other'); changeModule1($event);">Other Module</li> -->
           </ul>
         </div>
-        <div id="drawflow" ref="myId" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)">
+        <div id="drawflow" ref="myId" @drop="drop($event)" @dragover="allowDrop($event)">
           <!-- <div class="btn-export" v-onclick="Swal.fire({ title: 'Export',
         html: '<pre><code>'+JSON.stringify(editor.export(), null,4)+'</code></pre>'
           })">Export</div>-->
-          <div class="btn-clear" onclick="editor.clearModuleSelected()">Clear</div>
+          <div class="btn-clear" @click="editor.clearModuleSelected()">Clear</div>
           <!-- <div class="btn-lock">
             <i
               id="lock"
@@ -177,10 +160,10 @@
             ></i>
           </div>-->
           <!-- <div class="bar-zoom">
-            <i class="fas fa-search-minus" v-on:click="zoom_out"></i>
-            <i class="fas fa-search" v-on:click="zoom_reset"></i>
-            <i class="fas fa-search-plus" v-on:click="zoom_in"></i>
-          </div> -->
+            <i class="fas fa-search-minus" @click="editor.zoom_out()"></i>
+            <i class="fas fa-search" @click="editor.zoom_reset()"></i>
+            <i class="fas fa-search-plus" @click="editor.zoom_in()"></i>
+          </div>-->
         </div>
       </div>
     </div>
@@ -198,6 +181,8 @@ export default {
       mobile_item_selec: "",
       mobile_last_move: null,
       editor: null,
+      data: null,
+      ex: null
     };
   },
   mounted() {
@@ -208,8 +193,8 @@ export default {
     this.editor.reroute_fix_curvature = true;
     this.editor.force_first_input = false;
 
-    let data = this.getData();
-    this.editor.drawflow = data;
+    this.data = this.getData();
+    this.editor.drawflow = this.data;
     //  this.editor.editor_mode = 'fixed';
     this.editor.start();
 
@@ -217,19 +202,36 @@ export default {
     // html.innerHTML =  "ivan";
     // this.editor.registerNode('myNode', html);
     // this.editor.addNode('newNode', 0, 1, 150, 300, 'newNode', this.editor.drawflow, 'myNode', true);
+    // this.exportData(this.editor);
+    // console.log(datadb);
+
     // var exportdata = this.editor.export();
     // this.editor.import(exportdata);
-
-    // editor.on('connectionCreated', function(connection) {
-    //   console.log('Connection created');
-    //   console.log(connection);
-    // })
-
-    // this.editor.on('nodeSelected', function(id) {
-    //   console.log("Node selected " + id);
-    // })
+    // this.editor.on("nodeSelected", function () {
+    //   console.log("Node selected " );
+    // });
   },
   methods: {
+    // exportData(editor) {
+    //   let vm = this;
+
+    //   editor.on("nodeSelected", function () {});
+    //   // console.log(exportdata);
+    //   editor.on("nodeCreated", function () {});
+
+    //   editor.on("nodeRemoved", function () {});
+
+    //   editor.on("nodeMoved", function () {
+    //     var exportdata = editor.export();
+    //     vm.ex = exportdata;
+    //     // console.log(exportdata);
+    //     // return exportdata;
+    //   });
+
+    //   editor.on("connectionCreated", function () {});
+
+    //   editor.on("connectionRemoved", function () {});
+    // },
     getData() {
       return {
         drawflow: {
@@ -257,10 +259,15 @@ export default {
                   '\n          <div>\n            <div class="title-box">Message</div>\n          </div>\n          ',
                 typenode: false,
                 inputs: {
-                  input_1: { connections: [{ node: "7", input: "output_1" }] },
+                  input_1: {
+                    connections: [
+                      { node: "7", input: "output_1" },
+                      { node: "3", input: "output_1" },
+                    ],
+                  },
                 },
                 outputs: {},
-                pos_x: 1028,
+                pos_x: 700,
                 pos_y: 87,
               },
               "7": {
@@ -282,10 +289,55 @@ export default {
                   },
                 },
                 pos_x: 347,
-                pos_y: 87,
+                pos_y: 100,
+              },
+              "3": {
+                id: 3,
+                name: "location",
+                data: {},
+                class: "location",
+                html:
+                  '\n        <div>\n          <div class="title-box">Location</div>\n        </div>\n        ',
+                typenode: false,
+                inputs: {},
+                outputs: {
+                  output_1: {
+                    connections: [
+                      { node: "2", output: "input_1" },
+                      { node: "11", output: "input_1" },
+                    ],
+                  },
+                },
+                pos_x: 347,
+                pos_y: 200,
               },
             },
           },
+          // Other: {
+          //   data: {
+          //     "7": {
+          //       id: 7,
+          //       name: "menu",
+          //       data: {},
+          //       class: "menu",
+          //       html:
+          //         '\n        <div>\n          <div class="title-box">Menu</div>\n        </div>\n        ',
+          //       typenode: false,
+          //       inputs: {},
+          //       outputs: {
+          //         output_1: {
+          //           connections: [
+          //             { node: "2", output: "input_1" },
+          //             { node: "3", output: "input_1" },
+          //             { node: "11", output: "input_1" },
+          //           ],
+          //         },
+          //       },
+          //       pos_x: 347,
+          //       pos_y: 87,
+          //     },
+          //   }
+          // }
         },
       };
     },
@@ -402,23 +454,14 @@ export default {
             {},
             location
           );
-          break;  
+          break;
         case "agent":
           var agent = `
           <div>
             <div class="title-box">Agent</div>
           </div>
           `;
-          this.editor.addNode(
-            "agent",
-            2,
-            2,
-            pos_x,
-            pos_y,
-            "agent",
-            {},
-            agent
-          );
+          this.editor.addNode("agent", 2, 2, pos_x, pos_y, "agent", {}, agent);
           break;
         case "clientstore":
           var clientstore = `
@@ -453,7 +496,7 @@ export default {
             {},
             clientbranch
           );
-          break;      
+          break;
 
         default:
       }
@@ -461,14 +504,12 @@ export default {
       // var exportdata = this.editor.export();
       // console.log(exportdata);
     },
-    zoom_in() {
-      this.editor.zoom_in();
-    },
-    zoom_out() {
-      this.editor.zoom_out();
-    },
-    zoom_reset() {
-      this.editor.zoom_reset();
+    changeModule(event) {
+      var all = document.querySelectorAll(".menu ul li");
+      for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove("selected");
+      }
+      event.target.classList.add("selected");
     },
   },
 };
