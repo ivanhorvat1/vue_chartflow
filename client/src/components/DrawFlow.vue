@@ -176,11 +176,11 @@
               style="display:none;"
             ></i>
           </div>-->
-          <div class="bar-zoom">
+          <!-- <div class="bar-zoom">
             <i class="fas fa-search-minus" v-on:click="zoom_out"></i>
             <i class="fas fa-search" v-on:click="zoom_reset"></i>
             <i class="fas fa-search-plus" v-on:click="zoom_in"></i>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -217,7 +217,6 @@ export default {
     // html.innerHTML =  "ivan";
     // this.editor.registerNode('myNode', html);
     // this.editor.addNode('newNode', 0, 1, 150, 300, 'newNode', this.editor.drawflow, 'myNode', true);
-
     // var exportdata = this.editor.export();
     // this.editor.import(exportdata);
 
@@ -264,73 +263,6 @@ export default {
                 pos_x: 1028,
                 pos_y: 87,
               },
-              "3": {
-                id: 3,
-                name: "telegram",
-                data: { channel: "channel_2" },
-                class: "telegram",
-                html:
-                  '\n          <div>\n            <div class="title-box">Telegram bot</div>\n            <div class="box">\n              <p>Send to telegram</p>\n              <p>select channel</p>\n              <select df-channel>\n                <option value="channel_1">Channel 1</option>\n                <option value="channel_2">Channel 2</option>\n                <option value="channel_3">Channel 3</option>\n                <option value="channel_4">Channel 4</option>\n              </select>\n            </div>\n          </div>\n          ',
-                typenode: false,
-                inputs: {
-                  input_1: { connections: [{ node: "7", input: "output_1" }] },
-                },
-                outputs: {},
-                pos_x: 1032,
-                pos_y: 184,
-              },
-              "4": {
-                id: 4,
-                name: "email",
-                data: {},
-                class: "email",
-                html:
-                  '\n            <div>\n              <div class="title-box">Send Email </div>\n            </div>\n            ',
-                typenode: false,
-                inputs: {
-                  input_1: { connections: [{ node: "5", input: "output_1" }] },
-                },
-                outputs: {},
-                pos_x: 1033,
-                pos_y: 439,
-              },
-              "5": {
-                id: 5,
-                name: "template",
-                data: { template: "Write your template" },
-                class: "template",
-                html:
-                  '\n            <div>\n              <div class="title-box">Template</div>\n              <div class="box">\n                Ger Vars\n                <textarea df-template></textarea>\n                Output template with vars\n              </div>\n            </div>\n            ',
-                typenode: false,
-                inputs: {
-                  input_1: { connections: [{ node: "6", input: "output_1" }] },
-                },
-                outputs: {
-                  output_1: {
-                    connections: [
-                      { node: "4", output: "input_1" },
-                      { node: "11", output: "input_1" },
-                    ],
-                  },
-                },
-                pos_x: 607,
-                pos_y: 304,
-              },
-              "6": {
-                id: 6,
-                name: "github",
-                data: { name: "https://github.com/jerosoler/Drawflow" },
-                class: "github",
-                html:
-                  '\n          <div>\n            <div class="title-box">Github Stars</div>\n            <div class="box">\n              <p>Enter repository url</p>\n            <input type="text" df-name>\n            </div>\n          </div>\n          ',
-                typenode: false,
-                inputs: {},
-                outputs: {
-                  output_1: { connections: [{ node: "5", output: "input_1" }] },
-                },
-                pos_x: 341,
-                pos_y: 191,
-              },
               "7": {
                 id: 7,
                 name: "menu",
@@ -351,95 +283,6 @@ export default {
                 },
                 pos_x: 347,
                 pos_y: 87,
-              },
-              "11": {
-                id: 11,
-                name: "log",
-                data: {},
-                class: "log",
-                html:
-                  '\n            <div>\n              <div class="title-box">Save log file </div>\n            </div>\n            ',
-                typenode: false,
-                inputs: {
-                  input_1: {
-                    connections: [
-                      { node: "5", input: "output_1" },
-                      { node: "7", input: "output_1" },
-                    ],
-                  },
-                },
-                outputs: {},
-                pos_x: 1031,
-                pos_y: 363,
-              },
-            },
-          },
-          Other: {
-            data: {
-              "8": {
-                id: 8,
-                name: "personalized",
-                data: {},
-                class: "personalized",
-                html:
-                  "\n            <div>\n              Personalized\n            </div>\n            ",
-                typenode: false,
-                inputs: {
-                  input_1: {
-                    connections: [
-                      { node: "12", input: "output_1" },
-                      { node: "12", input: "output_2" },
-                      { node: "12", input: "output_3" },
-                      { node: "12", input: "output_4" },
-                    ],
-                  },
-                },
-                outputs: {
-                  output_1: { connections: [{ node: "9", output: "input_1" }] },
-                },
-                pos_x: 764,
-                pos_y: 227,
-              },
-              "9": {
-                id: 9,
-                name: "dbclick",
-                data: { name: "Hello World!!" },
-                class: "dbclick",
-                html:
-                  '\n            <div>\n            <div class="title-box">Db Click</div>\n              <div class="box dbclickbox" ondblclick="showpopup(event)">\n                Db Click here\n                <div class="modal" style="display:none">\n                  <div class="modal-content">\n                    <span class="close" onclick="closemodal(event)">&times;</span>\n                    Change your variable {name} !\n                    <input type="text" df-name>\n                  </div>\n\n                </div>\n              </div>\n            </div>\n            ',
-                typenode: false,
-                inputs: {
-                  input_1: { connections: [{ node: "8", input: "output_1" }] },
-                },
-                outputs: {
-                  output_1: {
-                    connections: [{ node: "12", output: "input_2" }],
-                  },
-                },
-                pos_x: 209,
-                pos_y: 38,
-              },
-              "12": {
-                id: 12,
-                name: "multiple",
-                data: {},
-                class: "multiple",
-                html:
-                  '\n            <div>\n              <div class="box">\n                Multiple!\n              </div>\n            </div>\n            ',
-                typenode: false,
-                inputs: {
-                  input_1: { connections: [] },
-                  input_2: { connections: [{ node: "9", input: "output_1" }] },
-                  input_3: { connections: [] },
-                },
-                outputs: {
-                  output_1: { connections: [{ node: "8", output: "input_1" }] },
-                  output_2: { connections: [{ node: "8", output: "input_1" }] },
-                  output_3: { connections: [{ node: "8", output: "input_1" }] },
-                  output_4: { connections: [{ node: "8", output: "input_1" }] },
-                },
-                pos_x: 179,
-                pos_y: 272,
               },
             },
           },
@@ -526,200 +369,97 @@ export default {
             message
           );
           break;
-        case "github":
-          var githubtemplate = `
+        case "sharefile":
+          var sharefile = `
           <div>
-            <div class="title-box">Github Stars</div>
-            <div class="box">
-              <p>Enter repository url</p>
-            <input type="text" df-name>
-            </div>
+            <div class="title-box">Share File</div>
           </div>
           `;
           this.editor.addNode(
-            "github",
-            0,
+            "sharefile",
+            1,
             1,
             pos_x,
             pos_y,
-            "github",
-            { name: "" },
-            githubtemplate
+            "sharefile",
+            {},
+            sharefile
           );
           break;
-        case "telegram":
-          var telegrambot = `
+        case "location":
+          var location = `
           <div>
-            <div class="title-box">Telegram bot</div>
-            <div class="box">
-              <p>Send to telegram</p>
-              <p>select channel</p>
-              <select df-channel>
-                <option value="channel_1">Channel 1</option>
-                <option value="channel_2">Channel 2</option>
-                <option value="channel_3">Channel 3</option>
-                <option value="channel_4">Channel 4</option>
-              </select>
-            </div>
+            <div class="title-box">Location</div>
           </div>
           `;
           this.editor.addNode(
-            "telegram",
-            1,
-            0,
+            "location",
+            2,
+            2,
             pos_x,
             pos_y,
-            "telegram",
-            { channel: "channel_3" },
-            telegrambot
+            "location",
+            {},
+            location
           );
-          break;
-        case "aws":
-          var aws = `
+          break;  
+        case "agent":
+          var agent = `
           <div>
-            <div class="title-box">Aws Save </div>
-            <div class="box">
-              <p>Save in aws</p>
-              <input type="text" df-db-dbname placeholder="DB name"><br><br>
-              <input type="text" df-db-key placeholder="DB key">
-              <p>Output Log</p>
-            </div>
+            <div class="title-box">Agent</div>
           </div>
           `;
           this.editor.addNode(
-            "aws",
-            1,
-            1,
+            "agent",
+            2,
+            2,
             pos_x,
             pos_y,
-            "aws",
-            { db: { dbname: "", key: "" } },
-            aws
-          );
-          break;
-        case "log":
-          var log = `
-            <div>
-              <div class="title-box">Save log file </div>
-            </div>
-            `;
-          this.editor.addNode("log", 1, 0, pos_x, pos_y, "log", {}, log);
-          break;
-        case "google":
-          var google = `
-            <div>
-              <div class="title-box">Google Drive save </div>
-            </div>
-            `;
-          this.editor.addNode(
-            "google",
-            1,
-            0,
-            pos_x,
-            pos_y,
-            "google",
+            "agent",
             {},
-            google
+            agent
           );
           break;
-        case "email":
-          var email = `
-            <div>
-              <div class="title-box">Send Email </div>
-            </div>
-            `;
-          this.editor.addNode("email", 1, 0, pos_x, pos_y, "email", {}, email);
-          break;
-
-        case "template":
-          var template = `
-            <div>
-              <div class="title-box">Template</div>
-              <div class="box">
-                Ger Vars
-                <textarea df-template></textarea>
-                Output template with vars
-              </div>
-            </div>
-            `;
+        case "clientstore":
+          var clientstore = `
+          <div>
+            <div class="title-box">Client Store</div>
+          </div>
+          `;
           this.editor.addNode(
-            "template",
-            1,
-            1,
+            "clientstore",
+            2,
+            2,
             pos_x,
             pos_y,
-            "template",
-            { template: "Write your template" },
-            template
-          );
-          break;
-        case "multiple":
-          var multiple = `
-            <div>
-              <div class="box">
-                Multiple!
-              </div>
-            </div>
-            `;
-          this.editor.addNode(
-            "multiple",
-            3,
-            4,
-            pos_x,
-            pos_y,
-            "multiple",
+            "clientstore",
             {},
-            multiple
+            clientstore
           );
           break;
-        case "personalized":
-          var personalized = `
-            <div>
-              Personalized
-            </div>
-            `;
+        case "clientbranch":
+          var clientbranch = `
+          <div>
+            <div class="title-box">Client Branch</div>
+          </div>
+          `;
           this.editor.addNode(
-            "personalized",
-            1,
-            1,
+            "clientbranch",
+            2,
+            2,
             pos_x,
             pos_y,
-            "personalized",
+            "clientbranch",
             {},
-            personalized
+            clientbranch
           );
-          break;
-        case "dbclick":
-          var dbclick = `
-            <div>
-            <div class="title-box">Db Click</div>
-              <div class="box dbclickbox" ondblclick="showpopup(event)">
-                Db Click here
-                <div class="modal" style="display:none">
-                  <div class="modal-content">
-                    <span class="close" onclick="closemodal(event)">&times;</span>
-                    Change your variable {name} !
-                    <input type="text" df-name>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-            `;
-          this.editor.addNode(
-            "dbclick",
-            1,
-            1,
-            pos_x,
-            pos_y,
-            "dbclick",
-            { name: "" },
-            dbclick
-          );
-          break;
+          break;      
 
         default:
       }
+
+      // var exportdata = this.editor.export();
+      // console.log(exportdata);
     },
     zoom_in() {
       this.editor.zoom_in();
