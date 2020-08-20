@@ -10,21 +10,46 @@
     </header>
     <div class="wrapper">
       <div class="col">
-        <div class="drag-drawflow" draggable="true" @dragstart="drag($event)" data-node="menu">
+        <div
+          class="drag-drawflow"
+          draggable="true"
+          @dragstart="drag($event)"
+          data-node="menu"
+        >
           <!-- <i class="fab fa-menu"></i> -->
           <span>Menu</span>
         </div>
-        <div class="drag-drawflow" draggable="true" @dragstart="drag($event)" data-node="message">
+        <div
+          class="drag-drawflow"
+          draggable="true"
+          @dragstart="drag($event)"
+          data-node="message"
+        >
           <!-- <i class="fab fa-slack"></i> -->
           <span>Message</span>
         </div>
-        <div class="drag-drawflow" draggable="true" @dragstart="drag($event)" data-node="sharefile">
+        <div
+          class="drag-drawflow"
+          draggable="true"
+          @dragstart="drag($event)"
+          data-node="sharefile"
+        >
           <span>Share File</span>
         </div>
-        <div class="drag-drawflow" draggable="true" @dragstart="drag($event)" data-node="location">
+        <div
+          class="drag-drawflow"
+          draggable="true"
+          @dragstart="drag($event)"
+          data-node="location"
+        >
           <span>Location</span>
         </div>
-        <div class="drag-drawflow" draggable="true" @dragstart="drag($event)" data-node="agent">
+        <div
+          class="drag-drawflow"
+          draggable="true"
+          @dragstart="drag($event)"
+          data-node="agent"
+        >
           <span>Agent</span>
         </div>
         <div
@@ -137,15 +162,30 @@
       <div class="col-right">
         <div class="menu">
           <ul>
-            <li @click="editor.changeModule('Home'); changeModule($event);" class="selected">Home</li>
+            <li
+              @click="
+                editor.changeModule('Home');
+                changeModule($event);
+              "
+              class="selected"
+            >
+              Home
+            </li>
             <!-- <li v-on:click="editor.changeModule('Other'); changeModule1($event);">Other Module</li> -->
           </ul>
         </div>
-        <div id="drawflow" ref="myId" @drop="drop($event)" @dragover="allowDrop($event)">
+        <div
+          id="drawflow"
+          ref="myId"
+          @drop="drop($event)"
+          @dragover="allowDrop($event)"
+        >
           <!-- <div class="btn-export" v-onclick="Swal.fire({ title: 'Export',
         html: '<pre><code>'+JSON.stringify(editor.export(), null,4)+'</code></pre>'
           })">Export</div>-->
-          <div class="btn-clear" @click="editor.clearModuleSelected()">Clear</div>
+          <div class="btn-clear" @click="editor.clearModuleSelected()">
+            Clear
+          </div>
           <!-- <div class="btn-lock">
             <i
               id="lock"
@@ -173,6 +213,7 @@
 <script>
 // import Vue from 'vue'
 import Drawflow from "drawflow";
+// import axios from "axios";
 
 export default {
   name: "DrawFlow",
@@ -182,7 +223,7 @@ export default {
       mobile_last_move: null,
       editor: null,
       data: null,
-      ex: null
+      ex: null,
     };
   },
   mounted() {
@@ -202,7 +243,7 @@ export default {
     // html.innerHTML =  "ivan";
     // this.editor.registerNode('myNode', html);
     // this.editor.addNode('newNode', 0, 1, 150, 300, 'newNode', this.editor.drawflow, 'myNode', true);
-    // this.exportData(this.editor);
+    this.exportData(this.editor);
     // console.log(datadb);
 
     // var exportdata = this.editor.export();
@@ -212,26 +253,38 @@ export default {
     // });
   },
   methods: {
-    // exportData(editor) {
-    //   let vm = this;
+    exportData(editor) {
+      // let vm = this;
 
-    //   editor.on("nodeSelected", function () {});
-    //   // console.log(exportdata);
-    //   editor.on("nodeCreated", function () {});
+      editor.on("nodeSelected", function () {});
+      // console.log(exportdata);
+      editor.on("nodeCreated", function () {});
 
-    //   editor.on("nodeRemoved", function () {});
+      editor.on("nodeRemoved", function () {});
 
-    //   editor.on("nodeMoved", function () {
-    //     var exportdata = editor.export();
-    //     vm.ex = exportdata;
-    //     // console.log(exportdata);
-    //     // return exportdata;
-    //   });
+      editor.on("nodeMoved", function () {
+        // axios
+        // .get("api/action_drink_fetch_separate", {
+        //   // timeout: 60 * 4 * 1000,
+        //   params: {
+        //       shop: 'shop',
+        //       sort: 'a'
+        //   }
+        // })
+        // .then((res) => {
+        //   this.data = res;
+        //   console.log(res);
+        // });
+        // var exportdata = editor.export();
+        // vm.ex = exportdata;
+        // console.log(exportdata);
+        // return exportdata;
+      });
 
-    //   editor.on("connectionCreated", function () {});
+      editor.on("connectionCreated", function () {});
 
-    //   editor.on("connectionRemoved", function () {});
-    // },
+      editor.on("connectionRemoved", function () {});
+    },
     getData() {
       return {
         drawflow: {
