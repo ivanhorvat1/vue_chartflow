@@ -15,58 +15,65 @@
           draggable="true"
           @dragstart="drag($event)"
           data-node="menu"
+          @dblclick="changeElementName($event)"
         >
           <!-- <i class="fab fa-menu"></i> -->
-          <span>Menu</span>
+          <span>{{menuElementTitle}}</span>
         </div>
         <div
           class="drag-drawflow"
           draggable="true"
           @dragstart="drag($event)"
+          @dblclick="changeElementName($event)"
           data-node="message"
         >
           <!-- <i class="fab fa-slack"></i> -->
-          <span>Message</span>
+          <span>{{messageElementTitle}}</span>
         </div>
         <div
           class="drag-drawflow"
           draggable="true"
           @dragstart="drag($event)"
+          @dblclick="changeElementName($event)"
           data-node="sharefile"
         >
-          <span>Share File</span>
+          <span>{{shareFileElementTitle}}</span>
         </div>
         <div
           class="drag-drawflow"
           draggable="true"
           @dragstart="drag($event)"
+          @dblclick="changeElementName($event)"
           data-node="location"
         >
-          <span>Location</span>
+          <span>{{locationElementTitle}}</span>
         </div>
         <div
           class="drag-drawflow"
           draggable="true"
           @dragstart="drag($event)"
+          @dblclick="changeElementName($event)"
           data-node="agent"
         >
-          <span>Agent</span>
+          <span>{{agentElementTitle}}</span>
         </div>
         <div
           class="drag-drawflow"
           draggable="true"
           @dragstart="drag($event)"
+          @dblclick="changeElementName($event)"
           data-node="clientstore"
         >
-          <span>Client Store</span>
+          <span>{{clientStoreElementTitle}}</span>
         </div>
         <div
           class="drag-drawflow"
           draggable="true"
           @dragstart="drag($event)"
+          @dblclick="changeElementName($event)"
           data-node="clientbranch"
         >
-          <span>Client Branch</span>
+          <span>{{clientBranchElementTitle}}</span>
         </div>
         <!-- <div
           class="drag-drawflow"
@@ -168,42 +175,15 @@
                 changeModule($event);
               "
               class="selected"
-            >
-              Home
-            </li>
+            >Home</li>
             <!-- <li v-on:click="editor.changeModule('Other'); changeModule1($event);">Other Module</li> -->
           </ul>
         </div>
-        <div
-          id="drawflow"
-          ref="myId"
-          @drop="drop($event)"
-          @dragover="allowDrop($event)"
-        >
+        <div id="drawflow" ref="myId" @drop="drop($event)" @dragover="allowDrop($event)">
           <!-- <div class="btn-export" v-onclick="Swal.fire({ title: 'Export',
         html: '<pre><code>'+JSON.stringify(editor.export(), null,4)+'</code></pre>'
           })">Export</div>-->
-          <div class="btn-clear" @click="editor.clearModuleSelected()">
-            Clear
-          </div>
-          <!-- <div class="btn-lock">
-            <i
-              id="lock"
-              class="fas fa-lock"
-              onclick="editor.editor_mode='fixed'; changeMode('lock');"
-            ></i>
-            <i
-              id="unlock"
-              class="fas fa-lock-open"
-              onclick="editor.editor_mode='edit'; changeMode('unlock');"
-              style="display:none;"
-            ></i>
-          </div>-->
-          <!-- <div class="bar-zoom">
-            <i class="fas fa-search-minus" @click="editor.zoom_out()"></i>
-            <i class="fas fa-search" @click="editor.zoom_reset()"></i>
-            <i class="fas fa-search-plus" @click="editor.zoom_in()"></i>
-          </div>-->
+          <div class="btn-clear" @click="editor.clearModuleSelected()">Clear</div>
         </div>
       </div>
     </div>
@@ -224,9 +204,17 @@ export default {
       editor: null,
       data: null,
       ex: null,
+      menuElementTitle: null,
+      messageElementTitle: null,
+      shareFileElementTitle: null,
+      locationElementTitle: null,
+      agentElementTitle: null,
+      clientStoreElementTitle: null,
+      clientBranchElementTitle: null,
     };
   },
   mounted() {
+    this.getElementsNames();
     var id = this.$refs["myId"];
     this.editor = new Drawflow(id);
     // this.editor = new Drawflow(id, Vue);
@@ -253,6 +241,50 @@ export default {
     // });
   },
   methods: {
+    getElementsNames() {
+      this.menuElementTitle = "Menu";
+      this.messageElementTitle = "Message";
+      this.shareFileElementTitle = "Share File";
+      this.locationElementTitle = "Location";
+      this.agentElementTitle = "Agent";
+      this.clientStoreElementTitle = "Client Store";
+      this.clientBranchElementTitle = "Client Branch";
+    },
+    changeElementName(ev) {
+      var name = prompt("Please enter name for element");
+      let node = ev.target.getAttribute("data-node");
+
+      if (name != null || name != "") {
+        switch (node) {
+          case "menu":
+            this.menuElementTitle = name;
+            break;
+          case "message":
+            this.messageElementTitle = name;
+            break;
+          case "sharefile":
+            this.shareFileElementTitle = name;
+            break;
+          case "location":
+            this.locationElementTitle = name;
+            break;
+          case "agent":
+            this.agentElementTitle = name;
+            break;
+          case "clientstore":
+            this.clientStoreElementTitle = name;
+            break;
+          case "clientbranch":
+            this.clientBranchElementTitle = name;
+            break;
+
+          default:
+        }
+
+        this.data = this.getData();
+        this.editor.import(this.data);
+      }
+    },
     exportData(editor) {
       // let vm = this;
 
@@ -296,7 +328,7 @@ export default {
                 data: {},
                 class: "welcome",
                 html:
-                  '\n    <div>\n      <div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n        <p>Simple flow library <b>demo</b>\n        <a href="https://github.com/jerosoler/Drawflow" target="_blank">Drawflow</a> by <b>Jero Soler</b></p><br>\n\n        <p>Multiple input / outputs<br>\n           Data sync nodes<br>\n           Import / export<br>\n           Modules support<br>\n           Simple use<br>\n           Type: Fixed or Edit<br>\n           Events: view console<br>\n           Pure Javascript<br>\n        </p>\n        <br>\n        <p><b><u>Shortkeys:</u></b></p>\n        <p>🎹 <b>Delete</b> for remove selected<br>\n        💠 Mouse Left Click == Move<br>\n        ❌ Mouse Right == Delete Option<br>\n        🔍 Ctrl + Wheel == Zoom<br>\n        📱 Mobile support<br>\n        ...</p>\n      </div>\n    </div>\n    ',
+                  '\n    <div>\n      <div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n        <p>Simple flow library <b>demo</b>\n        <a href="https://github.com/jerosoler/Drawflow" target="_blank">Drawflow</a> by <b>Jero Soler</b></p><br>\n\n        <p>Multiple input / outputs<br>\n           Data sync nodes<br>\n           Import / export<br>\n           Modules support<br>\n           Simple use<br>\n           Type: Fixed or Edit<br>\n           Events: view console<br>\n           Pure Javascript<br>\n        </p>\n        <br>\n        <p><b><u>Shortkeys:</u></b></p>\n        <p>🎹 <b>Delete</b> for remove selected<br>\n        💠 Mouse Left Click == Move<br>\n        💠 dbl click on left sidebar element  == chagne name<br>\n        ❌ Mouse Right == Delete Option<br>\n        🔍 Ctrl + Wheel == Zoom<br>\n        📱 Mobile support<br>\n        ...</p>\n      </div>\n    </div>\n    ',
                 typenode: false,
                 inputs: {},
                 outputs: {},
@@ -309,7 +341,9 @@ export default {
                 data: {},
                 class: "message",
                 html:
-                  '\n          <div>\n            <div class="title-box">Message</div>\n          </div>\n          ',
+                  '\n          <div>\n            <div class="title-box">' +
+                  this.messageElementTitle +
+                  "</div>\n          </div>\n          ",
                 typenode: false,
                 inputs: {
                   input_1: {
@@ -329,7 +363,9 @@ export default {
                 data: {},
                 class: "menu",
                 html:
-                  '\n        <div>\n          <div class="title-box">Menu</div>\n        </div>\n        ',
+                  '\n        <div>\n          <div class="title-box">' +
+                  this.menuElementTitle +
+                  "</div>\n        </div>\n        ",
                 typenode: false,
                 inputs: {},
                 outputs: {
@@ -350,7 +386,9 @@ export default {
                 data: {},
                 class: "location",
                 html:
-                  '\n        <div>\n          <div class="title-box">Location</div>\n        </div>\n        ',
+                  '\n        <div>\n          <div class="title-box">' +
+                  this.locationElementTitle +
+                  "</div>\n        </div>\n        ",
                 typenode: false,
                 inputs: {},
                 outputs: {
@@ -450,19 +488,21 @@ export default {
 
       switch (name) {
         case "menu":
-          var menu = `
-        <div>
-          <div class="title-box">Menu</div>
-        </div>
-        `;
+          var menu =
+            "<div>" +
+            '<div class="title-box">' +
+            this.menuElementTitle +
+            "</div>" +
+            "</div>";
           this.editor.addNode("menu", 0, 1, pos_x, pos_y, "menu", {}, menu);
           break;
         case "message":
-          var message = `
-          <div>
-            <div class="title-box">Message</div>
-          </div>
-          `;
+          var message =
+            "<div>" +
+            '<div class="title-box">' +
+            this.messageElementTitle +
+            "</div>" +
+            "</div>";
           this.editor.addNode(
             "message",
             1,
@@ -475,11 +515,12 @@ export default {
           );
           break;
         case "sharefile":
-          var sharefile = `
-          <div>
-            <div class="title-box">Share File</div>
-          </div>
-          `;
+          var sharefile =
+            "<div>" +
+            '<div class="title-box">' +
+            this.shareFileElementTitle +
+            "</div>" +
+            "</div>";
           this.editor.addNode(
             "sharefile",
             1,
@@ -492,11 +533,12 @@ export default {
           );
           break;
         case "location":
-          var location = `
-          <div>
-            <div class="title-box">Location</div>
-          </div>
-          `;
+          var location =
+            "<div>" +
+            '<div class="title-box">' +
+            this.locationElementTitle +
+            "</div>" +
+            "</div>";
           this.editor.addNode(
             "location",
             2,
@@ -509,19 +551,21 @@ export default {
           );
           break;
         case "agent":
-          var agent = `
-          <div>
-            <div class="title-box">Agent</div>
-          </div>
-          `;
+          var agent =
+            "<div>" +
+            '<div class="title-box">' +
+            this.agentElementTitle +
+            "</div>" +
+            "</div>";
           this.editor.addNode("agent", 2, 2, pos_x, pos_y, "agent", {}, agent);
           break;
         case "clientstore":
-          var clientstore = `
-          <div>
-            <div class="title-box">Client Store</div>
-          </div>
-          `;
+          var clientstore =
+            "<div>" +
+            '<div class="title-box">' +
+            this.clientStoreElementTitle +
+            "</div>" +
+            "</div>";
           this.editor.addNode(
             "clientstore",
             2,
@@ -534,11 +578,12 @@ export default {
           );
           break;
         case "clientbranch":
-          var clientbranch = `
-          <div>
-            <div class="title-box">Client Branch</div>
-          </div>
-          `;
+          var clientbranch =
+            "<div>" +
+            '<div class="title-box">' +
+            this.clientBranchElementTitle +
+            "</div>" +
+            "</div>";
           this.editor.addNode(
             "clientbranch",
             2,
