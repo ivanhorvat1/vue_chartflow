@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const url = "api/posts/";
+const url = "api/data/";
 
 class PostService {
-  // Get Posts
-  static getPosts() {
+  // Get Data
+  static getData() {
     return new Promise((resolve, reject) => {
       try {
         axios.get(url).then((res) => {
@@ -22,16 +22,11 @@ class PostService {
     });
   }
 
-  // Create Post
-  static insertPost(text) {
+  // Create Data
+  static insertData(text) {
     return axios.post(url, {
       text,
     });
-  }
-
-  //Delete Post
-  static deletePost(id) {
-    return axios.delete(`${url}${id}`);
   }
 }
 
