@@ -253,8 +253,8 @@ export default {
     changeElementName(ev) {
       var name = prompt("Please enter name for element");
       let node = ev.target.getAttribute("data-node");
-
-      if (name != null || name != "") {
+      
+      if (name != null && name != "") {
         switch (node) {
           case "menu":
             this.menuElementTitle = name;
