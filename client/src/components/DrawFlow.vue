@@ -19,6 +19,10 @@
         >
           <!-- <i class="fab fa-menu"></i> -->
           <span>{{menuElementTitle}}</span>
+          <i
+            style="position:absolute; width:20px; margin-left:90px; font-size:14px; text-align:center; cursor:pointer; background-color: red;"
+            @click="changeNumberNodeElement()"
+          ><b>O</b></i>
         </div>
         <div
           class="drag-drawflow"
@@ -115,6 +119,8 @@ export default {
       data: null,
       ex: null,
       menuElementTitle: null,
+      menuElementInputNoNodes: 0,
+      menuElementOutputNoNodes: 2,
       messageElementTitle: null,
       shareFileElementTitle: null,
       locationElementTitle: null,
@@ -163,7 +169,7 @@ export default {
     changeElementName(ev) {
       var name = prompt("Please enter name for element");
       let node = ev.target.getAttribute("data-node");
-      
+
       if (name != null && name != "") {
         switch (node) {
           case "menu":
@@ -194,6 +200,27 @@ export default {
         this.data = this.getData();
         this.editor.import(this.data);
       }
+    },
+    changeNumberNodeElement() {
+      var input = prompt(
+        "Please enter number of input nodes of Element",
+        this.menuElementInputNoNodes
+      );
+      var output = prompt(
+        "Please enter number of output nodes of Element",
+        this.menuElementOutputNoNodes
+      );
+
+      if (input != null && input != "") {
+        this.menuElementInputNoNodes = input;
+      }
+
+      if (output != null && output != "") {
+        this.menuElementOutputNoNodes = output;
+      }
+
+      this.data = this.getData();
+      this.editor.import(this.data);
     },
     saveData(editor) {
       // let vm = this;
@@ -234,7 +261,7 @@ export default {
                 data: {},
                 class: "welcome",
                 html:
-                  '\n    <div>\n      <div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n        <p>Simple flow library <b>demo</b>\n        <a href="https://github.com/jerosoler/Drawflow" target="_blank">Drawflow</a> by <b>Jero Soler</b></p><br>\n\n        <p>Multiple input / outputs<br>\n           Data sync nodes<br>\n           Import / export<br>\n           Modules support<br>\n           Simple use<br>\n           Type: Fixed or Edit<br>\n           Events: view console<br>\n           Pure Javascript<br>\n        </p>\n        <br>\n        <p><b><u>Shortkeys:</u></b></p>\n        <p>🎹 <b>Delete</b> for remove selected<br>\n        💠 Mouse Left Click == Move<br>\n        💠 dbl click on left sidebar element  == chagne name<br>\n        ❌ Mouse Right == Delete Option<br>\n        🔍 Ctrl + Wheel == Zoom<br>\n        📱 Mobile support<br>\n        ...</p>\n      </div>\n    </div>\n    ',
+                  '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n<div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br>\n💠 <b>Mouse Left Click</b> == Move<br>\n💠 <b>Mouse Click</b> on red vertical square in element == change number of nodes<br>\n💠 <b>dbl click</b> on left sidebar element  == chagne name<br>\n❌ Mouse Right == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n📱 Mobile support<br>\n...</p>\n</div>\n</div>\n',
                 typenode: false,
                 inputs: {},
                 outputs: {},
@@ -247,9 +274,9 @@ export default {
                 data: {},
                 class: "message",
                 html:
-                  '\n          <div>\n            <div class="title-box">' +
+                  '\n<div>\n<div class="title-box">' +
                   this.messageElementTitle +
-                  "</div>\n          </div>\n          ",
+                  "</div>\n</div>\n",
                 typenode: false,
                 inputs: {
                   input_1: {
@@ -269,9 +296,9 @@ export default {
                 data: {},
                 class: "menu",
                 html:
-                  '\n        <div>\n          <div class="title-box">' +
+                  '\n<div>\n<div class="title-box">' +
                   this.menuElementTitle +
-                  "</div>\n        </div>\n        ",
+                  "</div>\n</div>\n",
                 typenode: false,
                 inputs: {},
                 outputs: {
@@ -292,9 +319,9 @@ export default {
                 data: {},
                 class: "location",
                 html:
-                  '\n        <div>\n          <div class="title-box">' +
+                  '\n<div>\n<div class="title-box">' +
                   this.locationElementTitle +
-                  "</div>\n        </div>\n        ",
+                  "</div>\n</div>\n",
                 typenode: false,
                 inputs: {},
                 outputs: {
@@ -400,7 +427,16 @@ export default {
             this.menuElementTitle +
             "</div>" +
             "</div>";
-          this.editor.addNode("menu", 0, 1, pos_x, pos_y, "menu", {}, menu);
+          this.editor.addNode(
+            "menu",
+            this.menuElementInputNoNodes,
+            this.menuElementOutputNoNodes,
+            pos_x,
+            pos_y,
+            "menu",
+            {},
+            menu
+          );
           break;
         case "message":
           var message =
