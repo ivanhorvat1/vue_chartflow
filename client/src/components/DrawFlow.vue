@@ -231,7 +231,7 @@ export default {
     // html.innerHTML =  "ivan";
     // this.editor.registerNode('myNode', html);
     // this.editor.addNode('newNode', 0, 1, 150, 300, 'newNode', this.editor.drawflow, 'myNode', true);
-    this.exportData(this.editor);
+    this.saveData(this.editor);
     // console.log(datadb);
 
     // var exportdata = this.editor.export();
@@ -285,7 +285,7 @@ export default {
         this.editor.import(this.data);
       }
     },
-    exportData(editor) {
+    saveData(editor) {
       // let vm = this;
 
       editor.on("nodeSelected", function () {});
@@ -307,10 +307,6 @@ export default {
         //   this.data = res;
         //   console.log(res);
         // });
-        // var exportdata = editor.export();
-        // vm.ex = exportdata;
-        // console.log(exportdata);
-        // return exportdata;
       });
 
       editor.on("connectionCreated", function () {});
