@@ -19,10 +19,10 @@
         >
           <!-- <i class="fab fa-menu"></i> -->
           <span>{{menuElementTitle}}</span>
-          <i
-            style="position:absolute; width:20px; margin-left:90px; font-size:14px; text-align:center; cursor:pointer; background-color: red;"
+          <span
+            style="position:absolute; width:30px; margin-left:80px; font-size:14px; text-align:center; cursor:pointer; background-color: red;"
             @click="changeNumberNodeElement()"
-          ><b>O</b></i>
+          ><b>O</b></span>
         </div>
         <div
           class="drag-drawflow"
@@ -261,7 +261,7 @@ export default {
                 data: {},
                 class: "welcome",
                 html:
-                  '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n<div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br>\n💠 <b>Mouse Left Click</b> == Move<br>\n💠 <b>Mouse Click</b> on red vertical square in element == change number of nodes<br>\n💠 <b>dbl click</b> on left sidebar element  == chagne name<br>\n❌ Mouse Right == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n📱 Mobile support<br>\n...</p>\n</div>\n</div>\n',
+                  '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n<div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br><br>\n💠 <b>Mouse Left Click</b> == Move<br><br>\n💠 <b>Mouse Click</b> on red vertical square in element == change number of nodes<br><br>\n💠 <b>Mouse Double Click</b> on left sidebar element  == chagne name<br><br>\n❌ <b>Mouse Right Click</b> == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n...</p>\n</div>\n</div>\n',
                 typenode: false,
                 inputs: {},
                 outputs: {},
