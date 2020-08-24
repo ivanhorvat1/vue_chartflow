@@ -8,19 +8,81 @@
         </a>
       </div>-->
     </header>
-    <modal name="my-first-modal">
+    <modal
+      name="my-first-modal"
+      resizable
+      :adaptive="true"
+      :minWidth="800"
+      :minHeight="500"
+      draggable=".modal-window-header"
+    >
+      <div
+        class="modal-window-header"
+        style="background-color: grey; color:white; cursor:move; height:30px; text-align:center"
+      >
+        {{ menuElementTitle }}
+      </div>
       <div style="padding:20px">
         <p>Message</p>
         <textarea style="width:100%; height:100px"></textarea>
-        <button @click="addInput()">+</button>
-        <div class="form-group" v-for="(input,k) in inputs" :key="k">
-          <input type="text" class="form-control" v-model="input.name">
-          <input type="text" class="form-control" v-model="input.party">
-          <span>
-            <i class="fas fa-minus-circle" @click="remove(k)" v-show="k || ( !k && inputs.length > 1)">Remove</i>
-            <i class="fas fa-plus-circle" @click="add(k)" v-show="k == inputs.length-1">Add fields</i>
-          </span>
-        </div>
+        <!-- <button @click="addInput()">+</button> -->
+        <table>
+          <tr>
+            <th>No.</th>
+            <th>key words</th>
+            <th>I/O</th>
+            <th>connection</th>
+            <th>button</th>
+          </tr>
+          <tr v-for="(input, k) in inputs" :key="k">
+            <td>
+              <input type="text" class="form-control" v-model="input.name" />
+            </td>
+            <td>
+              <input type="text" class="form-control" v-model="input.party" />
+            </td>
+            <td>
+              <select name="i_o">
+                <option value="input">Input</option>
+                <option value="output">Output</option>
+              </select>
+            </td>
+            <td>
+              <!-- <span v-if="showSpan">
+                <select>
+                  <option
+                    v-for="(name, id) in data[0].drawflow.Home.data"
+                    :key="id"
+                    value=""
+                    >{{ name.name }}</option
+                  >
+                </select>
+              </span> -->
+              <select name="i_o">
+                <option value="location">Location</option>
+                <option value="welcome">Welcome</option>
+              </select>
+            </td>
+            <td>
+              <span>
+                <button
+                  style="margin-left:10px"
+                  @click="remove(k)"
+                  v-show="k || (!k && inputs.length > 1)"
+                >
+                  <vue-fontawesome icon="minus" color="red"></vue-fontawesome>
+                </button>
+                <button
+                  style="margin-left:10px; background-color:green"
+                  @click="add(k)"
+                  v-show="k == inputs.length - 1"
+                >
+                  <vue-fontawesome icon="plus" color="white"></vue-fontawesome>
+                </button>
+              </span>
+            </td>
+          </tr>
+        </table>
       </div>
     </modal>
     <div class="wrapper">
@@ -35,17 +97,17 @@
           <!-- <i class="fab fa-menu"></i> -->
           <span>{{ menuElementTitle }}</span>
           <div
-            style="position:absolute;cursor:pointer;margin-top:-45px;margin-left:120px"
+            style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:120px"
             @click="changeNumberNodeElement()"
           >
             <div
-              style="width: 35px;height: 5px;background-color: white;margin: 6px 0;"
+              style="width: 25px;height: 3px;background-color: white;margin: 3px 0;"
             ></div>
             <div
-              style="width: 35px;height: 5px;background-color: white;margin: 6px 0;"
+              style="width: 25px;height: 3px;background-color: white;margin: 3px 0;"
             ></div>
             <div
-              style="width: 35px;height: 5px;background-color: white;margin: 6px 0;"
+              style="width: 25px;height: 3px;background-color: white;margin: 3px 0;"
             ></div>
           </div>
         </div>
@@ -149,10 +211,12 @@ export default {
   name: "DrawFlow",
   data() {
     return {
-      inputs: [{
-        name: '',
-        party: ''
-      }],
+      inputs: [
+        {
+          name: "",
+          party: "",
+        },
+      ],
       mobile_item_selec: "",
       mobile_last_move: null,
       editor: null,
@@ -168,6 +232,7 @@ export default {
       agentElementTitle: null,
       clientStoreElementTitle: null,
       clientBranchElementTitle: null,
+      showSpan: false
     };
   },
   mounted() {
@@ -201,15 +266,15 @@ export default {
     // });
   },
   methods: {
-    add () {
+    add() {
       this.inputs.push({
-        name: '',
-        party: ''
-      })
-      console.log(this.inputs)
+        name: "",
+        party: "",
+      });
+      console.log(this.inputs);
     },
-    remove (index) {
-      this.inputs.splice(index, 1)
+    remove(index) {
+      this.inputs.splice(index, 1);
     },
     show() {
       this.$modal.show("my-first-modal");
@@ -262,7 +327,7 @@ export default {
           default:
         }
 
-        this.data = this.getData();
+        // this.data = this.getData();
         this.editor.import(this.data);
       }
     },
@@ -318,6 +383,26 @@ export default {
     },
     async getData() {
       let dbData = await DataService.getData();
+      this.data = dbData[0];
+      
+      // axios
+      //   .get("api/data/")
+      //   .then((res) => {
+      //     this.data = res;
+      //     var id = this.$refs["myId"];
+      //     this.editor = new Drawflow(id);
+      //     // this.data = this.getData(this.editor);
+
+      //     this.editor.reroute = true;
+      //     this.editor.reroute_fix_curvature = true;
+      //     this.editor.force_first_input = false;
+
+      //     this.editor.drawflow = res.data[0];
+      //     this.editor.start();
+      //   })
+      //   .then(() => {
+      //       this.showSpan = true;
+      //   });
 
       var id = this.$refs["myId"];
       this.editor = new Drawflow(id);
@@ -645,6 +730,22 @@ export default {
 };
 </script>
 <style scoped>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
 /* @import ".././assets/css/beautiful.css";
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap"); */

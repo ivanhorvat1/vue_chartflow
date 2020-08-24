@@ -9,7 +9,7 @@ class DataService {
       try {
         axios.get(url).then((res) => {
           // console.log(res.data[0].drawflow);
-          
+
           const data = res.data;
           resolve(
             data.map((post) => ({
