@@ -18,11 +18,12 @@
           @dblclick="changeElementName($event)"
         >
           <!-- <i class="fab fa-menu"></i> -->
-          <span>{{menuElementTitle}}</span>
+          <span>{{ menuElementTitle }}</span>
           <span
             style="position:absolute; width:30px; margin-left:80px; font-size:14px; text-align:center; cursor:pointer; background-color: red;"
             @click="changeNumberNodeElement()"
-          ><b>O</b></span>
+            ><b>O</b></span
+          >
         </div>
         <div
           class="drag-drawflow"
@@ -32,7 +33,7 @@
           data-node="message"
         >
           <!-- <i class="fab fa-slack"></i> -->
-          <span>{{messageElementTitle}}</span>
+          <span>{{ messageElementTitle }}</span>
         </div>
         <div
           class="drag-drawflow"
@@ -41,7 +42,7 @@
           @dblclick="changeElementName($event)"
           data-node="sharefile"
         >
-          <span>{{shareFileElementTitle}}</span>
+          <span>{{ shareFileElementTitle }}</span>
         </div>
         <div
           class="drag-drawflow"
@@ -50,7 +51,7 @@
           @dblclick="changeElementName($event)"
           data-node="location"
         >
-          <span>{{locationElementTitle}}</span>
+          <span>{{ locationElementTitle }}</span>
         </div>
         <div
           class="drag-drawflow"
@@ -59,7 +60,7 @@
           @dblclick="changeElementName($event)"
           data-node="agent"
         >
-          <span>{{agentElementTitle}}</span>
+          <span>{{ agentElementTitle }}</span>
         </div>
         <div
           class="drag-drawflow"
@@ -68,7 +69,7 @@
           @dblclick="changeElementName($event)"
           data-node="clientstore"
         >
-          <span>{{clientStoreElementTitle}}</span>
+          <span>{{ clientStoreElementTitle }}</span>
         </div>
         <div
           class="drag-drawflow"
@@ -77,7 +78,7 @@
           @dblclick="changeElementName($event)"
           data-node="clientbranch"
         >
-          <span>{{clientBranchElementTitle}}</span>
+          <span>{{ clientBranchElementTitle }}</span>
         </div>
       </div>
       <div class="col-right">
@@ -89,15 +90,24 @@
                 changeModule($event);
               "
               class="selected"
-            >Home</li>
+            >
+              Home
+            </li>
             <!-- <li v-on:click="editor.changeModule('Other'); changeModule1($event);">Other Module</li> -->
           </ul>
         </div>
-        <div id="drawflow" ref="myId" @drop="drop($event)" @dragover="allowDrop($event)">
+        <div
+          id="drawflow"
+          ref="myId"
+          @drop="drop($event)"
+          @dragover="allowDrop($event)"
+        >
           <!-- <div class="btn-export" v-onclick="Swal.fire({ title: 'Export',
         html: '<pre><code>'+JSON.stringify(editor.export(), null,4)+'</code></pre>'
           })">Export</div>-->
-          <div class="btn-clear" @click="editor.clearModuleSelected()">Clear</div>
+          <div class="btn-clear" @click="editor.clearModuleSelected()">
+            Clear
+          </div>
         </div>
       </div>
     </div>
@@ -106,7 +116,7 @@
 
 <script>
 // import Vue from 'vue'
-// import DataService from '../DataService'; 
+// import DataService from '../DataService';
 import Drawflow from "drawflow";
 // import axios from "axios";
 
@@ -226,13 +236,13 @@ export default {
     saveData(editor) {
       // let vm = this;
 
-      editor.on("nodeSelected", function () {});
+      editor.on("nodeSelected", function() {});
       // console.log(exportdata);
-      editor.on("nodeCreated", function () {});
+      editor.on("nodeCreated", function() {});
 
-      editor.on("nodeRemoved", function () {});
+      editor.on("nodeRemoved", function() {});
 
-      editor.on("nodeMoved", function () {
+      editor.on("nodeMoved", function() {
         // axios
         // .get("api/action_drink_fetch_separate", {
         //   // timeout: 60 * 4 * 1000,
@@ -247,11 +257,11 @@ export default {
         // });
       });
 
-      editor.on("connectionCreated", function () {});
+      editor.on("connectionCreated", function() {});
 
-      editor.on("connectionRemoved", function () {});
+      editor.on("connectionRemoved", function() {});
     },
-    async getData() {
+    getData() {
       // let dbData = await DataService.getData();
       // console.log(dbData[0]);
       // return {dbData[0]};
@@ -265,44 +275,42 @@ export default {
                 data: {},
                 class: "welcome",
                 html:
-                  '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n<div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br><br>\n💠 <b>Mouse Left Click</b> == Move<br><br>\n💠 <b>Mouse Click</b> on red vertical square in element == change number of nodes<br><br>\n💠 <b>Mouse Double Click</b> on left sidebar element  == chagne name<br><br>\n❌ <b>Mouse Right Click</b> == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n...</p>\n</div>\n</div>\n',
+                  '\n    <div>\n      <div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n        <p>Simple flow library <b>demo</b>\n        <a href="https://github.com/jerosoler/Drawflow" target="_blank">Drawflow</a> by <b>Jero Soler</b></p><br>\n\n        <p>Multiple input / outputs<br>\n           Data sync nodes<br>\n           Import / export<br>\n           Modules support<br>\n           Simple use<br>\n           Type: Fixed or Edit<br>\n           Events: view console<br>\n           Pure Javascript<br>\n        </p>\n        <br>\n        <p><b><u>Shortkeys:</u></b></p>\n        <p>🎹 <b>Delete</b> for remove selected<br>\n        💠 Mouse Left Click == Move<br>\n        ❌ Mouse Right == Delete Option<br>\n        🔍 Ctrl + Wheel == Zoom<br>\n        📱 Mobile support<br>\n        ...</p>\n      </div>\n    </div>\n    ',
                 typenode: false,
                 inputs: {},
                 outputs: {},
                 pos_x: 50,
                 pos_y: 50,
               },
-              "2": {
-                id: 2,
-                name: "message",
-                data: {},
-                class: "message",
-                html:
-                  '\n<div>\n<div class="title-box">' +
-                  this.messageElementTitle +
-                  "</div>\n</div>\n",
-                typenode: false,
-                inputs: {
-                  input_1: {
-                    connections: [
-                      { node: "7", input: "output_1" },
-                      { node: "3", input: "output_1" },
-                    ],
-                  },
-                },
-                outputs: {},
-                pos_x: 700,
-                pos_y: 87,
-              },
+              // "5": {
+              //   id: 5,
+              //   name: "template",
+              //   data: { template: "Write your template" },
+              //   class: "template",
+              //   html:
+              //     '\n            <div>\n              <div class="title-box"><i class="fas fa-code"></i> Template</div>\n              <div class="box">\n                Ger Vars\n                <textarea df-template></textarea>\n                Output template with vars\n              </div>\n            </div>\n            ',
+              //   typenode: false,
+              //   inputs: {
+              //     input_1: { connections: [{ node: "6", input: "output_1" }] },
+              //   },
+              //   outputs: {
+              //     output_1: {
+              //       connections: [
+              //         { node: "4", output: "input_1" },
+              //         { node: "11", output: "input_1" },
+              //       ],
+              //     },
+              //   },
+              //   pos_x: 607,
+              //   pos_y: 304,
+              // },
               "7": {
                 id: 7,
                 name: "menu",
-                data: {},
-                class: "menu",
+                data: { template: "Write your template" },
+                class: "men",
                 html:
-                  '\n<div>\n<div class="title-box">' +
-                  this.menuElementTitle +
-                  "</div>\n</div>\n",
+                  '\n<div>\n<div class="title-box">Menu</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
                 typenode: false,
                 inputs: {},
                 outputs: {
@@ -317,15 +325,33 @@ export default {
                 pos_x: 347,
                 pos_y: 100,
               },
+              "2": {
+                id: 2,
+                name: "message",
+                data: { template: "Write your template" },
+                class: "message",
+                html:
+                  '\n<div>\n<div class="title-box">Message</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n            ',
+                typenode: false,
+                inputs: {
+                  input_1: {
+                    connections: [
+                      { node: "7", input: "output_1" },
+                      { node: "3", input: "output_1" },
+                    ],
+                  },
+                },
+                outputs: {},
+                pos_x: 700,
+                pos_y: 87,
+              },
               "3": {
                 id: 3,
                 name: "location",
-                data: {},
-                class: "location",
+                data: { template: "Write your template" },
+                class: "template",
                 html:
-                  '\n<div>\n<div class="title-box">' +
-                  this.locationElementTitle +
-                  "</div>\n</div>\n",
+                  '\n<div>\n<div class="title-box">Location</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
                 typenode: false,
                 inputs: {},
                 outputs: {
@@ -337,7 +363,7 @@ export default {
                   },
                 },
                 pos_x: 347,
-                pos_y: 200,
+                pos_y: 400,
               },
             },
           },
@@ -426,29 +452,25 @@ export default {
       switch (name) {
         case "menu":
           var menu =
-            "<div>" +
-            '<div class="title-box">' +
+            '<div><div class="title-box">' +
             this.menuElementTitle +
-            "</div>" +
-            "</div>";
+            '</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>';
           this.editor.addNode(
             "menu",
             this.menuElementInputNoNodes,
             this.menuElementOutputNoNodes,
             pos_x,
             pos_y,
-            "menu",
-            {},
+            "men",
+            { template: "Write your template" },
             menu
           );
           break;
         case "message":
           var message =
-            "<div>" +
-            '<div class="title-box">' +
+            `<div><div class="title-box">` +
             this.messageElementTitle +
-            "</div>" +
-            "</div>";
+            `</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>`;
           this.editor.addNode(
             "message",
             1,
@@ -456,17 +478,15 @@ export default {
             pos_x,
             pos_y,
             "message",
-            {},
+            { template: "Write your template" },
             message
           );
           break;
         case "sharefile":
           var sharefile =
-            "<div>" +
-            '<div class="title-box">' +
+            `<div><div class="title-box">` +
             this.shareFileElementTitle +
-            "</div>" +
-            "</div>";
+            `</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>`;
           this.editor.addNode(
             "sharefile",
             1,
@@ -474,17 +494,15 @@ export default {
             pos_x,
             pos_y,
             "sharefile",
-            {},
+            { template: "Write your template" },
             sharefile
           );
           break;
         case "location":
           var location =
-            "<div>" +
-            '<div class="title-box">' +
+            `<div><div class="title-box">` +
             this.locationElementTitle +
-            "</div>" +
-            "</div>";
+            `</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>`;
           this.editor.addNode(
             "location",
             2,
@@ -492,26 +510,31 @@ export default {
             pos_x,
             pos_y,
             "location",
-            {},
+            { template: "Write your template" },
             location
           );
           break;
         case "agent":
           var agent =
-            "<div>" +
-            '<div class="title-box">' +
+            `<div><div class="title-box">` +
             this.agentElementTitle +
-            "</div>" +
-            "</div>";
-          this.editor.addNode("agent", 2, 2, pos_x, pos_y, "agent", {}, agent);
+            `</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>`;
+          this.editor.addNode(
+            "agent",
+            2,
+            2,
+            pos_x,
+            pos_y,
+            "agent",
+            { template: "Write your template" },
+            agent
+          );
           break;
         case "clientstore":
           var clientstore =
-            "<div>" +
-            '<div class="title-box">' +
+            `<div><div class="title-box">` +
             this.clientStoreElementTitle +
-            "</div>" +
-            "</div>";
+            `</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>`;
           this.editor.addNode(
             "clientstore",
             2,
@@ -519,17 +542,15 @@ export default {
             pos_x,
             pos_y,
             "clientstore",
-            {},
+            { template: "Write your template" },
             clientstore
           );
           break;
         case "clientbranch":
           var clientbranch =
-            "<div>" +
-            '<div class="title-box">' +
+            `<div><div class="title-box">` +
             this.clientBranchElementTitle +
-            "</div>" +
-            "</div>";
+            `</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>`;
           this.editor.addNode(
             "clientbranch",
             2,
@@ -537,13 +558,135 @@ export default {
             pos_x,
             pos_y,
             "clientbranch",
-            {},
+            { template: "Write your template" },
             clientbranch
           );
           break;
 
         default:
       }
+
+      // switch (name) {
+      //   case "menu":
+      //     var menu =
+      //       "<div>" +
+      //       '<div class="title-box">' +
+      //       this.menuElementTitle +
+      //       "</div>" +
+      //       "</div>";
+      //     this.editor.addNode(
+      //       "menu",
+      //       this.menuElementInputNoNodes,
+      //       this.menuElementOutputNoNodes,
+      //       pos_x,
+      //       pos_y,
+      //       "menu",
+      //       {},
+      //       menu
+      //     );
+      //     break;
+      //   case "message":
+      //     var message =
+      //       "<div>" +
+      //       '<div class="title-box">' +
+      //       this.messageElementTitle +
+      //       "</div>" +
+      //       "</div>";
+      //     this.editor.addNode(
+      //       "message",
+      //       1,
+      //       0,
+      //       pos_x,
+      //       pos_y,
+      //       "message",
+      //       {},
+      //       message
+      //     );
+      //     break;
+      //   case "sharefile":
+      //     var sharefile =
+      //       "<div>" +
+      //       '<div class="title-box">' +
+      //       this.shareFileElementTitle +
+      //       "</div>" +
+      //       "</div>";
+      //     this.editor.addNode(
+      //       "sharefile",
+      //       1,
+      //       1,
+      //       pos_x,
+      //       pos_y,
+      //       "sharefile",
+      //       {},
+      //       sharefile
+      //     );
+      //     break;
+      //   case "location":
+      //     var location =
+      //       "<div>" +
+      //       '<div class="title-box">' +
+      //       this.locationElementTitle +
+      //       "</div>" +
+      //       "</div>";
+      //     this.editor.addNode(
+      //       "location",
+      //       2,
+      //       2,
+      //       pos_x,
+      //       pos_y,
+      //       "location",
+      //       {},
+      //       location
+      //     );
+      //     break;
+      //   case "agent":
+      //     var agent =
+      //       "<div>" +
+      //       '<div class="title-box">' +
+      //       this.agentElementTitle +
+      //       "</div>" +
+      //       "</div>";
+      //     this.editor.addNode("agent", 2, 2, pos_x, pos_y, "agent", {}, agent);
+      //     break;
+      //   case "clientstore":
+      //     var clientstore =
+      //       "<div>" +
+      //       '<div class="title-box">' +
+      //       this.clientStoreElementTitle +
+      //       "</div>" +
+      //       "</div>";
+      //     this.editor.addNode(
+      //       "clientstore",
+      //       2,
+      //       2,
+      //       pos_x,
+      //       pos_y,
+      //       "clientstore",
+      //       {},
+      //       clientstore
+      //     );
+      //     break;
+      //   case "clientbranch":
+      //     var clientbranch =
+      //       "<div>" +
+      //       '<div class="title-box">' +
+      //       this.clientBranchElementTitle +
+      //       "</div>" +
+      //       "</div>";
+      //     this.editor.addNode(
+      //       "clientbranch",
+      //       2,
+      //       2,
+      //       pos_x,
+      //       pos_y,
+      //       "clientbranch",
+      //       {},
+      //       clientbranch
+      //     );
+      //     break;
+
+      //   default:
+      // }
 
       // var exportdata = this.editor.export();
       // console.log(exportdata);
