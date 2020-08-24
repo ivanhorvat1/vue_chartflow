@@ -106,6 +106,7 @@
 
 <script>
 // import Vue from 'vue'
+import DataService from '../DataService'; 
 import Drawflow from "drawflow";
 // import axios from "axios";
 
@@ -116,7 +117,7 @@ export default {
       mobile_item_selec: "",
       mobile_last_move: null,
       editor: null,
-      data: null,
+      data: [],
       ex: null,
       menuElementTitle: null,
       menuElementInputNoNodes: 0,
@@ -250,120 +251,123 @@ export default {
 
       editor.on("connectionRemoved", function () {});
     },
-    getData() {
-      return {
-        drawflow: {
-          Home: {
-            data: {
-              "1": {
-                id: 1,
-                name: "welcome",
-                data: {},
-                class: "welcome",
-                html:
-                  '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n<div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br><br>\n💠 <b>Mouse Left Click</b> == Move<br><br>\n💠 <b>Mouse Click</b> on red vertical square in element == change number of nodes<br><br>\n💠 <b>Mouse Double Click</b> on left sidebar element  == chagne name<br><br>\n❌ <b>Mouse Right Click</b> == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n...</p>\n</div>\n</div>\n',
-                typenode: false,
-                inputs: {},
-                outputs: {},
-                pos_x: 50,
-                pos_y: 50,
-              },
-              "2": {
-                id: 2,
-                name: "message",
-                data: {},
-                class: "message",
-                html:
-                  '\n<div>\n<div class="title-box">' +
-                  this.messageElementTitle +
-                  "</div>\n</div>\n",
-                typenode: false,
-                inputs: {
-                  input_1: {
-                    connections: [
-                      { node: "7", input: "output_1" },
-                      { node: "3", input: "output_1" },
-                    ],
-                  },
-                },
-                outputs: {},
-                pos_x: 700,
-                pos_y: 87,
-              },
-              "7": {
-                id: 7,
-                name: "menu",
-                data: {},
-                class: "menu",
-                html:
-                  '\n<div>\n<div class="title-box">' +
-                  this.menuElementTitle +
-                  "</div>\n</div>\n",
-                typenode: false,
-                inputs: {},
-                outputs: {
-                  output_1: {
-                    connections: [
-                      { node: "2", output: "input_1" },
-                      { node: "3", output: "input_1" },
-                      { node: "11", output: "input_1" },
-                    ],
-                  },
-                },
-                pos_x: 347,
-                pos_y: 100,
-              },
-              "3": {
-                id: 3,
-                name: "location",
-                data: {},
-                class: "location",
-                html:
-                  '\n<div>\n<div class="title-box">' +
-                  this.locationElementTitle +
-                  "</div>\n</div>\n",
-                typenode: false,
-                inputs: {},
-                outputs: {
-                  output_1: {
-                    connections: [
-                      { node: "2", output: "input_1" },
-                      { node: "11", output: "input_1" },
-                    ],
-                  },
-                },
-                pos_x: 347,
-                pos_y: 200,
-              },
-            },
-          },
-          // Other: {
-          //   data: {
-          //     "7": {
-          //       id: 7,
-          //       name: "menu",
-          //       data: {},
-          //       class: "menu",
-          //       html:
-          //         '\n        <div>\n          <div class="title-box">Menu</div>\n        </div>\n        ',
-          //       typenode: false,
-          //       inputs: {},
-          //       outputs: {
-          //         output_1: {
-          //           connections: [
-          //             { node: "2", output: "input_1" },
-          //             { node: "3", output: "input_1" },
-          //             { node: "11", output: "input_1" },
-          //           ],
-          //         },
-          //       },
-          //       pos_x: 347,
-          //       pos_y: 87,
-          //     },
-          //   }
-          // }
-        },
-      };
+    async getData() {
+      let dbData = await DataService.getData();
+      console.log(dbData[0]);
+      // return {dbData[0]};
+      // return {
+      //   drawflow: {
+      //     Home: {
+      //       data: {
+      //         "1": {
+      //           id: 1,
+      //           name: "welcome",
+      //           data: {},
+      //           class: "welcome",
+      //           html:
+      //             '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n<div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br><br>\n💠 <b>Mouse Left Click</b> == Move<br><br>\n💠 <b>Mouse Click</b> on red vertical square in element == change number of nodes<br><br>\n💠 <b>Mouse Double Click</b> on left sidebar element  == chagne name<br><br>\n❌ <b>Mouse Right Click</b> == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n...</p>\n</div>\n</div>\n',
+      //           typenode: false,
+      //           inputs: {},
+      //           outputs: {},
+      //           pos_x: 50,
+      //           pos_y: 50,
+      //         },
+      //         "2": {
+      //           id: 2,
+      //           name: "message",
+      //           data: {},
+      //           class: "message",
+      //           html:
+      //             '\n<div>\n<div class="title-box">' +
+      //             this.messageElementTitle +
+      //             "</div>\n</div>\n",
+      //           typenode: false,
+      //           inputs: {
+      //             input_1: {
+      //               connections: [
+      //                 { node: "7", input: "output_1" },
+      //                 { node: "3", input: "output_1" },
+      //               ],
+      //             },
+      //           },
+      //           outputs: {},
+      //           pos_x: 700,
+      //           pos_y: 87,
+      //         },
+      //         "7": {
+      //           id: 7,
+      //           name: "menu",
+      //           data: {},
+      //           class: "menu",
+      //           html:
+      //             '\n<div>\n<div class="title-box">' +
+      //             this.menuElementTitle +
+      //             "</div>\n</div>\n",
+      //           typenode: false,
+      //           inputs: {},
+      //           outputs: {
+      //             output_1: {
+      //               connections: [
+      //                 { node: "2", output: "input_1" },
+      //                 { node: "3", output: "input_1" },
+      //                 { node: "11", output: "input_1" },
+      //               ],
+      //             },
+      //           },
+      //           pos_x: 347,
+      //           pos_y: 100,
+      //         },
+      //         "3": {
+      //           id: 3,
+      //           name: "location",
+      //           data: {},
+      //           class: "location",
+      //           html:
+      //             '\n<div>\n<div class="title-box">' +
+      //             this.locationElementTitle +
+      //             "</div>\n</div>\n",
+      //           typenode: false,
+      //           inputs: {},
+      //           outputs: {
+      //             output_1: {
+      //               connections: [
+      //                 { node: "2", output: "input_1" },
+      //                 { node: "11", output: "input_1" },
+      //               ],
+      //             },
+      //           },
+      //           pos_x: 347,
+      //           pos_y: 200,
+      //         },
+      //       },
+      //     },
+      //     // Other: {
+      //     //   data: {
+      //     //     "7": {
+      //     //       id: 7,
+      //     //       name: "menu",
+      //     //       data: {},
+      //     //       class: "menu",
+      //     //       html:
+      //     //         '\n        <div>\n          <div class="title-box">Menu</div>\n        </div>\n        ',
+      //     //       typenode: false,
+      //     //       inputs: {},
+      //     //       outputs: {
+      //     //         output_1: {
+      //     //           connections: [
+      //     //             { node: "2", output: "input_1" },
+      //     //             { node: "3", output: "input_1" },
+      //     //             { node: "11", output: "input_1" },
+      //     //           ],
+      //     //         },
+      //     //       },
+      //     //       pos_x: 347,
+      //     //       pos_y: 87,
+      //     //     },
+      //     //   }
+      //     // }
+      //   },
+      // };
     },
     allowDrop(ev) {
       ev.preventDefault();

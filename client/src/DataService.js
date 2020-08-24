@@ -2,17 +2,19 @@ import axios from "axios";
 
 const url = "api/data/";
 
-class PostService {
+class DataService {
   // Get Data
   static getData() {
     return new Promise((resolve, reject) => {
       try {
         axios.get(url).then((res) => {
+          // console.log(res.data[0].drawflow);
+          
           const data = res.data;
           resolve(
             data.map((post) => ({
               ...post,
-              createdAt: new Date(post.createdAt),
+              //createdAt: new Date(post.createdAt),
             }))
           );
         });
@@ -30,4 +32,4 @@ class PostService {
   }
 }
 
-export default PostService;
+export default DataService;
