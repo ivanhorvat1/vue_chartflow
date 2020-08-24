@@ -131,6 +131,7 @@ export default {
       data: [],
       ex: null,
       menuElementTitle: null,
+      changedMenuTextareaInput: '',
       menuElementInputNoNodes: 0,
       menuElementOutputNoNodes: 2,
       messageElementTitle: null,
@@ -142,10 +143,12 @@ export default {
     };
   },
   mounted() {
-    var id = this.$refs["myId"];
-    this.editor = new Drawflow(id);
-    this.data = this.getData(this.editor);
+    this.getData();
     this.getElementsNames();
+    // var id = this.$refs["myId"];
+    // this.editor = new Drawflow(id);
+    // this.data = this.getData(this.editor);
+    // this.getElementsNames();
     // this.editor = new Drawflow(id, Vue);
     // this.editor.reroute = true;
     // this.editor.reroute_fix_curvature = true;
@@ -160,7 +163,7 @@ export default {
     // html.innerHTML =  "ivan";
     // this.editor.registerNode('myNode', html);
     // this.editor.addNode('newNode', 0, 1, 150, 300, 'newNode', this.editor.drawflow, 'myNode', true);
-    this.saveData(this.editor);
+    // this.saveData(this.editor);
     // console.log(datadb);
 
     // var exportdata = this.editor.export();
@@ -170,6 +173,9 @@ export default {
     // });
   },
   methods: {
+    changedMenuTextarea(){
+      console.log(this.changedMenuTextareaInput)
+    },
     async getElementsNames() {
       let sidebarTitles = await MenuTitle.getData();
 
@@ -265,15 +271,149 @@ export default {
 
       editor.on("connectionRemoved", function() {});
     },
-    async getData(editor) {
+    async getData() {
       let dbData = await DataService.getData();
 
-      editor.reroute = true;
-      editor.reroute_fix_curvature = true;
-      editor.force_first_input = false;
+      var id = this.$refs["myId"];
+      this.editor = new Drawflow(id);
+      // this.data = this.getData(this.editor);
 
-      editor.drawflow = dbData[0];
-      editor.start();
+      this.editor.reroute = true;
+      this.editor.reroute_fix_curvature = true;
+      this.editor.force_first_input = false;
+
+      this.editor.drawflow = dbData[0];
+      this.editor.start();
+
+      // return {
+      //   drawflow: {
+      //     Home: {
+      //       data: {
+      //         "1": {
+      //           id: 1,
+      //           name: "welcome",
+      //           data: {},
+      //           class: "welcome",
+      //           html:
+      //             '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br>\n💠 <b>Mouse Left Click</b> == Move<br>\n💠 <b>Mouse double Click on leftsidebar element</b> == change name<br>\n💠 <b>Mouse Click on red square in element</b> == change number of input and output nodes<br>\n❌ Mouse Right == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n...</p>\n</div>\n</div>\n',
+      //           typenode: false,
+      //           inputs: {},
+      //           outputs: {},
+      //           pos_x: 50,
+      //           pos_y: 50,
+      //         },
+      //         // "5": {
+      //         //   id: 5,
+      //         //   name: "template",
+      //         //   data: { template: "Write your template" },
+      //         //   class: "template",
+      //         //   html:
+      //         //     '\n            <div>\n              <div class="title-box"><i class="fas fa-code"></i> Template</div>\n              <div class="box">\n                Ger Vars\n                <textarea df-template></textarea>\n                Output template with vars\n              </div>\n            </div>\n            ',
+      //         //   typenode: false,
+      //         //   inputs: {
+      //         //     input_1: { connections: [{ node: "6", input: "output_1" }] },
+      //         //   },
+      //         //   outputs: {
+      //         //     output_1: {
+      //         //       connections: [
+      //         //         { node: "4", output: "input_1" },
+      //         //         { node: "11", output: "input_1" },
+      //         //       ],
+      //         //     },
+      //         //   },
+      //         //   pos_x: 607,
+      //         //   pos_y: 304,
+      //         // },
+      //         "7": {
+      //           id: 7,
+      //           name: "menu",
+      //           data: { template: "Write your template" },
+      //           class: "men",
+      //           html:
+      //             '\n<div>\n<div class="title-box">'+this.menuElementTitle+'</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
+      //           typenode: false,
+      //           inputs: {},
+      //           outputs: {
+      //             output_1: {
+      //               connections: [
+      //                 { node: "2", output: "input_1" },
+      //                 { node: "3", output: "input_1" },
+      //                 { node: "11", output: "input_1" },
+      //               ],
+      //             },
+      //           },
+      //           pos_x: 347,
+      //           pos_y: 100,
+      //         },
+      //         "2": {
+      //           id: 2,
+      //           name: "message",
+      //           data: { template: "Write your template" },
+      //           class: "message",
+      //           html:
+      //             '\n<div>\n<div class="title-box">'+this.messageElementTitle+'</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n            ',
+      //           typenode: false,
+      //           inputs: {
+      //             input_1: {
+      //               connections: [
+      //                 { node: "7", input: "output_1" },
+      //                 { node: "3", input: "output_1" },
+      //               ],
+      //             },
+      //           },
+      //           outputs: {},
+      //           pos_x: 700,
+      //           pos_y: 87,
+      //         },
+      //         "3": {
+      //           id: 3,
+      //           name: "location",
+      //           data: { template: "Write your template" },
+      //           class: "template",
+      //           html:
+      //             '\n<div>\n<div class="title-box">'+this.locationElementTitle+'</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
+      //           typenode: false,
+      //           inputs: {},
+      //           outputs: {
+      //             output_1: {
+      //               connections: [
+      //                 { node: "2", output: "input_1" },
+      //                 { node: "11", output: "input_1" },
+      //               ],
+      //             },
+      //           },
+      //           pos_x: 347,
+      //           pos_y: 400,
+      //         },
+      //       },
+      //     },
+      //     // Other: {
+      //     //   data: {
+      //     //     "7": {
+      //     //       id: 7,
+      //     //       name: "menu",
+      //     //       data: {},
+      //     //       class: "menu",
+      //     //       html:
+      //     //         '\n        <div>\n          <div class="title-box">Menu</div>\n        </div>\n        ',
+      //     //       typenode: false,
+      //     //       inputs: {},
+      //     //       outputs: {
+      //     //         output_1: {
+      //     //           connections: [
+      //     //             { node: "2", output: "input_1" },
+      //     //             { node: "3", output: "input_1" },
+      //     //             { node: "11", output: "input_1" },
+      //     //           ],
+      //     //         },
+      //     //       },
+      //     //       pos_x: 347,
+      //     //       pos_y: 87,
+      //     //     },
+      //     //   }
+      //     // }
+      //   },
+      // };
     },
     allowDrop(ev) {
       ev.preventDefault();
