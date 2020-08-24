@@ -11,7 +11,8 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "drawflow": "0.0.21",
-    "vue": "^2.6.12"
+    "vue": "^2.6.12",
+    "vue-js-modal": "^2.0.0-rc.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

@@ -8,6 +8,21 @@
         </a>
       </div>-->
     </header>
+    <modal name="my-first-modal">
+      <div style="padding:20px">
+        <p>Message</p>
+        <textarea style="width:100%; height:100px"></textarea>
+        <button @click="addInput()">+</button>
+        <div class="form-group" v-for="(input,k) in inputs" :key="k">
+          <input type="text" class="form-control" v-model="input.name">
+          <input type="text" class="form-control" v-model="input.party">
+          <span>
+            <i class="fas fa-minus-circle" @click="remove(k)" v-show="k || ( !k && inputs.length > 1)">Remove</i>
+            <i class="fas fa-plus-circle" @click="add(k)" v-show="k == inputs.length-1">Add fields</i>
+          </span>
+        </div>
+      </div>
+    </modal>
     <div class="wrapper">
       <div class="col">
         <div
@@ -19,11 +34,20 @@
         >
           <!-- <i class="fab fa-menu"></i> -->
           <span>{{ menuElementTitle }}</span>
-          <span
-            style="position:absolute; width:30px; margin-left:80px; font-size:14px; text-align:center; cursor:pointer; background-color: red;"
+          <div
+            style="position:absolute;cursor:pointer;margin-top:-45px;margin-left:120px"
             @click="changeNumberNodeElement()"
-            ><b>O</b></span
           >
+            <div
+              style="width: 35px;height: 5px;background-color: white;margin: 6px 0;"
+            ></div>
+            <div
+              style="width: 35px;height: 5px;background-color: white;margin: 6px 0;"
+            ></div>
+            <div
+              style="width: 35px;height: 5px;background-color: white;margin: 6px 0;"
+            ></div>
+          </div>
         </div>
         <div
           class="drag-drawflow"
@@ -125,13 +149,17 @@ export default {
   name: "DrawFlow",
   data() {
     return {
+      inputs: [{
+        name: '',
+        party: ''
+      }],
       mobile_item_selec: "",
       mobile_last_move: null,
       editor: null,
       data: [],
       ex: null,
       menuElementTitle: null,
-      changedMenuTextareaInput: '',
+      changedMenuTextareaInput: "",
       menuElementInputNoNodes: 0,
       menuElementOutputNoNodes: 2,
       messageElementTitle: null,
@@ -173,8 +201,24 @@ export default {
     // });
   },
   methods: {
-    changedMenuTextarea(){
-      console.log(this.changedMenuTextareaInput)
+    add () {
+      this.inputs.push({
+        name: '',
+        party: ''
+      })
+      console.log(this.inputs)
+    },
+    remove (index) {
+      this.inputs.splice(index, 1)
+    },
+    show() {
+      this.$modal.show("my-first-modal");
+    },
+    hide() {
+      this.$modal.hide("my-first-modal");
+    },
+    changedMenuTextarea() {
+      console.log(this.changedMenuTextareaInput);
     },
     async getElementsNames() {
       let sidebarTitles = await MenuTitle.getData();
@@ -223,25 +267,26 @@ export default {
       }
     },
     changeNumberNodeElement() {
-      var input = prompt(
-        "Please enter number of input nodes of Element",
-        this.menuElementInputNoNodes
-      );
-      var output = prompt(
-        "Please enter number of output nodes of Element",
-        this.menuElementOutputNoNodes
-      );
+      this.show();
+      // var input = prompt(
+      //   "Please enter number of input nodes of Element",
+      //   this.menuElementInputNoNodes
+      // );
+      // var output = prompt(
+      //   "Please enter number of output nodes of Element",
+      //   this.menuElementOutputNoNodes
+      // );
 
-      if (input != null && input != "") {
-        this.menuElementInputNoNodes = input;
-      }
+      // if (input != null && input != "") {
+      //   this.menuElementInputNoNodes = input;
+      // }
 
-      if (output != null && output != "") {
-        this.menuElementOutputNoNodes = output;
-      }
+      // if (output != null && output != "") {
+      //   this.menuElementOutputNoNodes = output;
+      // }
 
-      this.data = this.getData();
-      this.editor.import(this.data);
+      // this.data = this.getData();
+      // this.editor.import(this.data);
     },
     saveData(editor) {
       // let vm = this;
