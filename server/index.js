@@ -9,8 +9,12 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const posts = require('./routes/api/post');
+const menuTitle = require('./routes/api/menuTitle');
+
 
 app.use('/api/data', posts);
+app.use('/api/menuTitle', menuTitle);
+
 
 // handle production
 if(process.env.NODE_ENV === 'production') {
