@@ -275,7 +275,7 @@ export default {
                 data: {},
                 class: "welcome",
                 html:
-                  '\n    <div>\n      <div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n        <p>Simple flow library <b>demo</b>\n        <a href="https://github.com/jerosoler/Drawflow" target="_blank">Drawflow</a> by <b>Jero Soler</b></p><br>\n\n        <p>Multiple input / outputs<br>\n           Data sync nodes<br>\n           Import / export<br>\n           Modules support<br>\n           Simple use<br>\n           Type: Fixed or Edit<br>\n           Events: view console<br>\n           Pure Javascript<br>\n        </p>\n        <br>\n        <p><b><u>Shortkeys:</u></b></p>\n        <p>🎹 <b>Delete</b> for remove selected<br>\n        💠 Mouse Left Click == Move<br>\n        ❌ Mouse Right == Delete Option<br>\n        🔍 Ctrl + Wheel == Zoom<br>\n        📱 Mobile support<br>\n        ...</p>\n      </div>\n    </div>\n    ',
+                  '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br>\n💠 <b>Mouse Left Click</b> == Move<br>\n💠 <b>Mouse double Click on leftsidebar element</b> == change name<br>\n💠 <b>Mouse Click on red square in element</b> == change number of input and output nodes<br>\n❌ Mouse Right == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n...</p>\n</div>\n</div>\n',
                 typenode: false,
                 inputs: {},
                 outputs: {},
@@ -565,128 +565,6 @@ export default {
 
         default:
       }
-
-      // switch (name) {
-      //   case "menu":
-      //     var menu =
-      //       "<div>" +
-      //       '<div class="title-box">' +
-      //       this.menuElementTitle +
-      //       "</div>" +
-      //       "</div>";
-      //     this.editor.addNode(
-      //       "menu",
-      //       this.menuElementInputNoNodes,
-      //       this.menuElementOutputNoNodes,
-      //       pos_x,
-      //       pos_y,
-      //       "menu",
-      //       {},
-      //       menu
-      //     );
-      //     break;
-      //   case "message":
-      //     var message =
-      //       "<div>" +
-      //       '<div class="title-box">' +
-      //       this.messageElementTitle +
-      //       "</div>" +
-      //       "</div>";
-      //     this.editor.addNode(
-      //       "message",
-      //       1,
-      //       0,
-      //       pos_x,
-      //       pos_y,
-      //       "message",
-      //       {},
-      //       message
-      //     );
-      //     break;
-      //   case "sharefile":
-      //     var sharefile =
-      //       "<div>" +
-      //       '<div class="title-box">' +
-      //       this.shareFileElementTitle +
-      //       "</div>" +
-      //       "</div>";
-      //     this.editor.addNode(
-      //       "sharefile",
-      //       1,
-      //       1,
-      //       pos_x,
-      //       pos_y,
-      //       "sharefile",
-      //       {},
-      //       sharefile
-      //     );
-      //     break;
-      //   case "location":
-      //     var location =
-      //       "<div>" +
-      //       '<div class="title-box">' +
-      //       this.locationElementTitle +
-      //       "</div>" +
-      //       "</div>";
-      //     this.editor.addNode(
-      //       "location",
-      //       2,
-      //       2,
-      //       pos_x,
-      //       pos_y,
-      //       "location",
-      //       {},
-      //       location
-      //     );
-      //     break;
-      //   case "agent":
-      //     var agent =
-      //       "<div>" +
-      //       '<div class="title-box">' +
-      //       this.agentElementTitle +
-      //       "</div>" +
-      //       "</div>";
-      //     this.editor.addNode("agent", 2, 2, pos_x, pos_y, "agent", {}, agent);
-      //     break;
-      //   case "clientstore":
-      //     var clientstore =
-      //       "<div>" +
-      //       '<div class="title-box">' +
-      //       this.clientStoreElementTitle +
-      //       "</div>" +
-      //       "</div>";
-      //     this.editor.addNode(
-      //       "clientstore",
-      //       2,
-      //       2,
-      //       pos_x,
-      //       pos_y,
-      //       "clientstore",
-      //       {},
-      //       clientstore
-      //     );
-      //     break;
-      //   case "clientbranch":
-      //     var clientbranch =
-      //       "<div>" +
-      //       '<div class="title-box">' +
-      //       this.clientBranchElementTitle +
-      //       "</div>" +
-      //       "</div>";
-      //     this.editor.addNode(
-      //       "clientbranch",
-      //       2,
-      //       2,
-      //       pos_x,
-      //       pos_y,
-      //       "clientbranch",
-      //       {},
-      //       clientbranch
-      //     );
-      //     break;
-
-      //   default:
-      // }
 
       // var exportdata = this.editor.export();
       // console.log(exportdata);
