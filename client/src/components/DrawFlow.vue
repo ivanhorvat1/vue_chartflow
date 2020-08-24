@@ -310,7 +310,7 @@ export default {
                 data: { template: "Write your template" },
                 class: "men",
                 html:
-                  '\n<div>\n<div class="title-box">Menu</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
+                  '\n<div>\n<div class="title-box">'+this.menuElementTitle+'</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
                 typenode: false,
                 inputs: {},
                 outputs: {
@@ -331,7 +331,7 @@ export default {
                 data: { template: "Write your template" },
                 class: "message",
                 html:
-                  '\n<div>\n<div class="title-box">Message</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n            ',
+                  '\n<div>\n<div class="title-box">'+this.messageElementTitle+'</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n            ',
                 typenode: false,
                 inputs: {
                   input_1: {
@@ -351,7 +351,7 @@ export default {
                 data: { template: "Write your template" },
                 class: "template",
                 html:
-                  '\n<div>\n<div class="title-box">Location</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
+                  '\n<div>\n<div class="title-box">'+this.locationElementTitle+'</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
                 typenode: false,
                 inputs: {},
                 outputs: {
