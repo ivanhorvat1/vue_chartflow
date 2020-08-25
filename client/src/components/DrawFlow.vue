@@ -9,7 +9,7 @@
       </div>-->
     </header>
     <modal
-      name="my-first-modal"
+      name="menuModal"
       resizable
       :adaptive="true"
       :minWidth="800"
@@ -19,11 +19,16 @@
       <div
         class="modal-window-header"
         style="background-color: grey; color:white; cursor:move; height:30px; text-align:center"
-      >{{ menuElementTitle }}</div>
+      >
+        {{ menuElementTitle }}
+      </div>
       <div style="padding:20px">
         <p>Message</p>
         <textarea style="width:100%; height:100px; resize: none;"></textarea>
-        <button style="background-color:green; margin-bottom: 10px" @click="add(inputs.length)">
+        <button
+          style="background-color:green; margin-bottom: 10px"
+          @click="add(inputs.length)"
+        >
           <vue-fontawesome icon="plus" color="white"></vue-fontawesome>
         </button>
         <table>
@@ -36,7 +41,7 @@
           </tr>
           <tr v-for="(input, k) in inputs" :key="k">
             <td>
-              <span>{{k}}</span>
+              <span>{{ k }}</span>
             </td>
             <td>
               <input type="text" class="form-control" v-model="input.title" />
@@ -54,7 +59,8 @@
                     v-for="(name, id) in menuElementDropdown"
                     :key="id"
                     :value="name"
-                  >{{ name }}</option>
+                    >{{ name }}</option
+                  >
                 </select>
               </span>
             </td>
@@ -167,15 +173,24 @@
                 changeModule($event);
               "
               class="selected"
-            >Home</li>
+            >
+              Home
+            </li>
             <!-- <li v-on:click="editor.changeModule('Other'); changeModule1($event);">Other Module</li> -->
           </ul>
         </div>
-        <div id="drawflow" ref="myId" @drop="drop($event)" @dragover="allowDrop($event)">
+        <div
+          id="drawflow"
+          ref="myId"
+          @drop="drop($event)"
+          @dragover="allowDrop($event)"
+        >
           <!-- <div class="btn-export" v-onclick="Swal.fire({ title: 'Export',
         html: '<pre><code>'+JSON.stringify(editor.export(), null,4)+'</code></pre>'
           })">Export</div>-->
-          <div class="btn-clear" @click="editor.clearModuleSelected()">Clear</div>
+          <div class="btn-clear" @click="editor.clearModuleSelected()">
+            Clear
+          </div>
         </div>
       </div>
     </div>
@@ -187,6 +202,7 @@
 // import DataService from "../DataService";
 // import MenuTitle from "../MenuTitle";
 import Drawflow from "drawflow";
+// import $ from "jquery";
 // import axios from "axios";
 
 export default {
@@ -215,6 +231,7 @@ export default {
       clientStoreElementTitle: null,
       clientBranchElementTitle: null,
       showSpan: false,
+      // counterAddedMenu: 0
     };
   },
   mounted() {
@@ -246,9 +263,15 @@ export default {
   methods: {
     giveElementClick() {
       let vm = this;
-      document.getElementById("menuElement").onclick = function () {
-        vm.showModal();
-      };
+      // document.getElementById("menuElement").onclick = function() {
+      //   vm.showModal("menuModal");
+      // };
+      const targets = document.getElementsByClassName("menuElement");
+      for (var i = 0; i < targets.length; i++) {
+        targets[i].addEventListener("click", function() {
+          vm.showModal("menuModal");
+        });
+      }
     },
     getMenuElementDropdown(data) {
       if (typeof data != "string") {
@@ -275,11 +298,11 @@ export default {
       this.inputs.splice(index, 1);
       this.menuElementOutputNoNodes = this.inputs.length;
     },
-    show() {
-      this.$modal.show("my-first-modal");
+    show(modal) {
+      this.$modal.show(modal);
     },
     hide() {
-      this.$modal.hide("my-first-modal");
+      this.$modal.hide();
     },
     changedMenuTextarea() {
       console.log(this.changedMenuTextareaInput);
@@ -338,21 +361,21 @@ export default {
         this.editor.import(this.data);
       }
     },
-    showModal() {
+    showModal(modal) {
       this.showSpan = true;
-      this.show();
+      this.show(modal);
     },
     saveData(editor) {
       // let vm = this;
 
-      editor.on("nodeSelected", function () {});
+      editor.on("nodeSelected", function() {});
 
       // console.log(exportdata);
-      editor.on("nodeCreated", function () {});
+      editor.on("nodeCreated", function() {});
 
-      editor.on("nodeRemoved", function () {});
+      editor.on("nodeRemoved", function() {});
 
-      editor.on("nodeMoved", function () {
+      editor.on("nodeMoved", function() {
         // vm.showModal()
         // axios
         // .get("api/action_drink_fetch_separate", {
@@ -368,9 +391,9 @@ export default {
         // });
       });
 
-      editor.on("connectionCreated", function () {});
+      editor.on("connectionCreated", function() {});
 
-      editor.on("connectionRemoved", function () {});
+      editor.on("connectionRemoved", function() {});
     },
     getData() {
       // let dbData = await DataService.getData();
@@ -423,7 +446,7 @@ export default {
                 html:
                   '\n<div>\n<div class="title-box">' +
                   this.menuElementTitle +
-                  '</div><div id="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
+                  '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
                 typenode: false,
                 inputs: {},
                 outputs: {
@@ -563,7 +586,7 @@ export default {
           var menu =
             '<div><div class="title-box">' +
             this.menuElementTitle +
-            '</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>';
+            '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>';
           this.editor.addNode(
             "menu",
             this.menuElementInputNoNodes,
