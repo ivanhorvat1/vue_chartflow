@@ -19,27 +19,27 @@
       <div
         class="modal-window-header"
         style="background-color: grey; color:white; cursor:move; height:30px; text-align:center"
-      >
-        {{ menuElementTitle }}
-      </div>
+      >{{ menuElementTitle }}</div>
       <div style="padding:20px">
         <p>Message</p>
-        <textarea style="width:100%; height:100px"></textarea>
-        <!-- <button @click="addInput()">+</button> -->
+        <textarea style="width:100%; height:100px; resize: none;"></textarea>
+        <button style="background-color:green; margin-bottom: 10px" @click="add(inputs.length)">
+          <vue-fontawesome icon="plus" color="white"></vue-fontawesome>
+        </button>
         <table>
           <tr>
             <th>No.</th>
             <th>key words</th>
             <th>I/O</th>
             <th>connection</th>
-            <th>button</th>
+            <th v-show="inputs.length > 1">button</th>
           </tr>
           <tr v-for="(input, k) in inputs" :key="k">
             <td>
-              <input type="text" class="form-control" v-model="input.name" />
+              <span>{{k}}</span>
             </td>
             <td>
-              <input type="text" class="form-control" v-model="input.party" />
+              <input type="text" class="form-control" v-model="input.title" />
             </td>
             <td>
               <select name="i_o">
@@ -48,37 +48,28 @@
               </select>
             </td>
             <td>
-              <!-- <span v-if="showSpan">
+              <span v-if="showSpan">
                 <select>
                   <option
-                    v-for="(name, id) in data[0].drawflow.Home.data"
+                    v-for="(name, id) in data.drawflow.Home.data"
                     :key="id"
-                    value=""
-                    >{{ name.name }}</option
-                  >
+                    value
+                  >{{ name.name }}</option>
                 </select>
-              </span> -->
-              <select name="i_o">
-                <option value="location">Location</option>
-                <option value="welcome">Welcome</option>
-              </select>
+              </span>
             </td>
-            <td>
+            <td v-show="k || (!k && inputs.length > 1)">
               <span>
-                <button
-                  style="margin-left:10px"
-                  @click="remove(k)"
-                  v-show="k || (!k && inputs.length > 1)"
-                >
+                <button style="margin-left:10px" @click="remove(k)">
                   <vue-fontawesome icon="minus" color="red"></vue-fontawesome>
                 </button>
-                <button
+                <!-- <button
                   style="margin-left:10px; background-color:green"
                   @click="add(k)"
                   v-show="k == inputs.length - 1"
                 >
                   <vue-fontawesome icon="plus" color="white"></vue-fontawesome>
-                </button>
+                </button>-->
               </span>
             </td>
           </tr>
@@ -96,9 +87,9 @@
         >
           <!-- <i class="fab fa-menu"></i> -->
           <span>{{ menuElementTitle }}</span>
-          <div
+          <!-- <div
             style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:120px"
-            @click="changeNumberNodeElement()"
+            @click="showModal()"
           >
             <div
               style="width: 25px;height: 3px;background-color: white;margin: 3px 0;"
@@ -109,7 +100,7 @@
             <div
               style="width: 25px;height: 3px;background-color: white;margin: 3px 0;"
             ></div>
-          </div>
+          </div>-->
         </div>
         <div
           class="drag-drawflow"
@@ -176,24 +167,15 @@
                 changeModule($event);
               "
               class="selected"
-            >
-              Home
-            </li>
+            >Home</li>
             <!-- <li v-on:click="editor.changeModule('Other'); changeModule1($event);">Other Module</li> -->
           </ul>
         </div>
-        <div
-          id="drawflow"
-          ref="myId"
-          @drop="drop($event)"
-          @dragover="allowDrop($event)"
-        >
+        <div id="drawflow" ref="myId" @drop="drop($event)" @dragover="allowDrop($event)">
           <!-- <div class="btn-export" v-onclick="Swal.fire({ title: 'Export',
         html: '<pre><code>'+JSON.stringify(editor.export(), null,4)+'</code></pre>'
           })">Export</div>-->
-          <div class="btn-clear" @click="editor.clearModuleSelected()">
-            Clear
-          </div>
+          <div class="btn-clear" @click="editor.clearModuleSelected()">Clear</div>
         </div>
       </div>
     </div>
@@ -202,8 +184,8 @@
 
 <script>
 // import Vue from 'vue'
-import DataService from "../DataService";
-import MenuTitle from "../MenuTitle";
+// import DataService from "../DataService";
+// import MenuTitle from "../MenuTitle";
 import Drawflow from "drawflow";
 // import axios from "axios";
 
@@ -213,8 +195,7 @@ export default {
     return {
       inputs: [
         {
-          name: "",
-          party: "",
+          title: ""
         },
       ],
       mobile_item_selec: "",
@@ -224,46 +205,44 @@ export default {
       ex: null,
       menuElementTitle: null,
       changedMenuTextareaInput: "",
-      menuElementInputNoNodes: 0,
-      menuElementOutputNoNodes: 2,
+      menuElementInputNoNodes: 1,
+      menuElementOutputNoNodes: 1,
       messageElementTitle: null,
       shareFileElementTitle: null,
       locationElementTitle: null,
       agentElementTitle: null,
       clientStoreElementTitle: null,
       clientBranchElementTitle: null,
-      showSpan: false
+      showSpan: false,
     };
   },
   mounted() {
-    this.getData();
     this.getElementsNames();
-    // var id = this.$refs["myId"];
-    // this.editor = new Drawflow(id);
-    // this.data = this.getData(this.editor);
-    // this.getElementsNames();
+    var id = this.$refs["myId"];
+    this.editor = new Drawflow(id);
     // this.editor = new Drawflow(id, Vue);
     // this.editor.reroute = true;
     // this.editor.reroute_fix_curvature = true;
     // this.editor.force_first_input = false;
 
-    // this.data = this.getData();
-    // this.editor.drawflow = this.data;
+    this.data = this.getData();
+    this.editor.drawflow = this.data;
     //  this.editor.editor_mode = 'fixed';
-    // this.editor.start();
+    this.editor.start();
 
     // var html = document.createElement("div");
     // html.innerHTML =  "ivan";
     // this.editor.registerNode('myNode', html);
     // this.editor.addNode('newNode', 0, 1, 150, 300, 'newNode', this.editor.drawflow, 'myNode', true);
-    // this.saveData(this.editor);
+    this.saveData(this.editor);
     // console.log(datadb);
 
     // var exportdata = this.editor.export();
     // this.editor.import(exportdata);
-    // this.editor.on("nodeSelected", function () {
-    //   console.log("Node selected " );
-    // });
+    let vm = this;
+    document.getElementById("menuElement").onclick = function () {
+      vm.showModal();
+    };
   },
   methods: {
     add() {
@@ -271,10 +250,13 @@ export default {
         name: "",
         party: "",
       });
+
+      this.menuElementOutputNoNodes = this.inputs.length;
       console.log(this.inputs);
     },
     remove(index) {
       this.inputs.splice(index, 1);
+      this.menuElementOutputNoNodes = this.inputs.length;
     },
     show() {
       this.$modal.show("my-first-modal");
@@ -285,16 +267,24 @@ export default {
     changedMenuTextarea() {
       console.log(this.changedMenuTextareaInput);
     },
-    async getElementsNames() {
-      let sidebarTitles = await MenuTitle.getData();
+    getElementsNames() {
+      // let sidebarTitles = await MenuTitle.getData();
 
-      this.menuElementTitle = sidebarTitles[0].menuElementTitle;
-      this.messageElementTitle = sidebarTitles[0].messageElementTitle;
-      this.shareFileElementTitle = sidebarTitles[0].shareFileElementTitle;
-      this.locationElementTitle = sidebarTitles[0].locationElementTitle;
-      this.agentElementTitle = sidebarTitles[0].agentElementTitle;
-      this.clientStoreElementTitle = sidebarTitles[0].clientStoreElementTitle;
-      this.clientBranchElementTitle = sidebarTitles[0].clientBranchElementTitle;
+      // this.menuElementTitle = sidebarTitles[0].menuElementTitle;
+      // this.messageElementTitle = sidebarTitles[0].messageElementTitle;
+      // this.shareFileElementTitle = sidebarTitles[0].shareFileElementTitle;
+      // this.locationElementTitle = sidebarTitles[0].locationElementTitle;
+      // this.agentElementTitle = sidebarTitles[0].agentElementTitle;
+      // this.clientStoreElementTitle = sidebarTitles[0].clientStoreElementTitle;
+      // this.clientBranchElementTitle = sidebarTitles[0].clientBranchElementTitle;
+
+      this.menuElementTitle = "Menu";
+      this.messageElementTitle = "Message";
+      this.shareFileElementTitle = "Share File";
+      this.locationElementTitle = "Location";
+      this.agentElementTitle = "Agent";
+      this.clientStoreElementTitle = "Client Store";
+      this.clientBranchElementTitle = "Client Branch";
     },
     changeElementName(ev) {
       var name = prompt("Please enter name for element");
@@ -327,42 +317,28 @@ export default {
           default:
         }
 
-        // this.data = this.getData();
+        this.data = this.getData();
         this.editor.import(this.data);
       }
     },
-    changeNumberNodeElement() {
+    showModal() {
+      this.showSpan = true;
       this.show();
-      // var input = prompt(
-      //   "Please enter number of input nodes of Element",
-      //   this.menuElementInputNoNodes
-      // );
-      // var output = prompt(
-      //   "Please enter number of output nodes of Element",
-      //   this.menuElementOutputNoNodes
-      // );
-
-      // if (input != null && input != "") {
-      //   this.menuElementInputNoNodes = input;
-      // }
-
-      // if (output != null && output != "") {
-      //   this.menuElementOutputNoNodes = output;
-      // }
-
-      // this.data = this.getData();
-      // this.editor.import(this.data);
     },
     saveData(editor) {
       // let vm = this;
 
-      editor.on("nodeSelected", function() {});
+      editor.on("nodeSelected", function () {
+        console.log('selected')
+      });
+
       // console.log(exportdata);
-      editor.on("nodeCreated", function() {});
+      editor.on("nodeCreated", function () {});
 
-      editor.on("nodeRemoved", function() {});
+      editor.on("nodeRemoved", function () {});
 
-      editor.on("nodeMoved", function() {
+      editor.on("nodeMoved", function () {
+        // vm.showModal()
         // axios
         // .get("api/action_drink_fetch_separate", {
         //   // timeout: 60 * 4 * 1000,
@@ -377,173 +353,139 @@ export default {
         // });
       });
 
-      editor.on("connectionCreated", function() {});
+      editor.on("connectionCreated", function () {});
 
-      editor.on("connectionRemoved", function() {});
+      editor.on("connectionRemoved", function () {});
     },
-    async getData() {
-      let dbData = await DataService.getData();
-      this.data = dbData[0];
-      
-      // axios
-      //   .get("api/data/")
-      //   .then((res) => {
-      //     this.data = res;
-      //     var id = this.$refs["myId"];
-      //     this.editor = new Drawflow(id);
-      //     // this.data = this.getData(this.editor);
+    getData() {
+      // let dbData = await DataService.getData();
+      // this.data = dbData[0];
 
-      //     this.editor.reroute = true;
-      //     this.editor.reroute_fix_curvature = true;
-      //     this.editor.force_first_input = false;
-
-      //     this.editor.drawflow = res.data[0];
-      //     this.editor.start();
-      //   })
-      //   .then(() => {
-      //       this.showSpan = true;
-      //   });
-
-      var id = this.$refs["myId"];
-      this.editor = new Drawflow(id);
-      // this.data = this.getData(this.editor);
-
-      this.editor.reroute = true;
-      this.editor.reroute_fix_curvature = true;
-      this.editor.force_first_input = false;
-
-      this.editor.drawflow = dbData[0];
-      this.editor.start();
-
-      // return {
-      //   drawflow: {
-      //     Home: {
-      //       data: {
-      //         "1": {
-      //           id: 1,
-      //           name: "welcome",
-      //           data: {},
-      //           class: "welcome",
-      //           html:
-      //             '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br>\n💠 <b>Mouse Left Click</b> == Move<br>\n💠 <b>Mouse double Click on leftsidebar element</b> == change name<br>\n💠 <b>Mouse Click on red square in element</b> == change number of input and output nodes<br>\n❌ Mouse Right == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n...</p>\n</div>\n</div>\n',
-      //           typenode: false,
-      //           inputs: {},
-      //           outputs: {},
-      //           pos_x: 50,
-      //           pos_y: 50,
-      //         },
-      //         // "5": {
-      //         //   id: 5,
-      //         //   name: "template",
-      //         //   data: { template: "Write your template" },
-      //         //   class: "template",
-      //         //   html:
-      //         //     '\n            <div>\n              <div class="title-box"><i class="fas fa-code"></i> Template</div>\n              <div class="box">\n                Ger Vars\n                <textarea df-template></textarea>\n                Output template with vars\n              </div>\n            </div>\n            ',
-      //         //   typenode: false,
-      //         //   inputs: {
-      //         //     input_1: { connections: [{ node: "6", input: "output_1" }] },
-      //         //   },
-      //         //   outputs: {
-      //         //     output_1: {
-      //         //       connections: [
-      //         //         { node: "4", output: "input_1" },
-      //         //         { node: "11", output: "input_1" },
-      //         //       ],
-      //         //     },
-      //         //   },
-      //         //   pos_x: 607,
-      //         //   pos_y: 304,
-      //         // },
-      //         "7": {
-      //           id: 7,
-      //           name: "menu",
-      //           data: { template: "Write your template" },
-      //           class: "men",
-      //           html:
-      //             '\n<div>\n<div class="title-box">'+this.menuElementTitle+'</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
-      //           typenode: false,
-      //           inputs: {},
-      //           outputs: {
-      //             output_1: {
-      //               connections: [
-      //                 { node: "2", output: "input_1" },
-      //                 { node: "3", output: "input_1" },
-      //                 { node: "11", output: "input_1" },
-      //               ],
-      //             },
-      //           },
-      //           pos_x: 347,
-      //           pos_y: 100,
-      //         },
-      //         "2": {
-      //           id: 2,
-      //           name: "message",
-      //           data: { template: "Write your template" },
-      //           class: "message",
-      //           html:
-      //             '\n<div>\n<div class="title-box">'+this.messageElementTitle+'</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n            ',
-      //           typenode: false,
-      //           inputs: {
-      //             input_1: {
-      //               connections: [
-      //                 { node: "7", input: "output_1" },
-      //                 { node: "3", input: "output_1" },
-      //               ],
-      //             },
-      //           },
-      //           outputs: {},
-      //           pos_x: 700,
-      //           pos_y: 87,
-      //         },
-      //         "3": {
-      //           id: 3,
-      //           name: "location",
-      //           data: { template: "Write your template" },
-      //           class: "template",
-      //           html:
-      //             '\n<div>\n<div class="title-box">'+this.locationElementTitle+'</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
-      //           typenode: false,
-      //           inputs: {},
-      //           outputs: {
-      //             output_1: {
-      //               connections: [
-      //                 { node: "2", output: "input_1" },
-      //                 { node: "11", output: "input_1" },
-      //               ],
-      //             },
-      //           },
-      //           pos_x: 347,
-      //           pos_y: 400,
-      //         },
-      //       },
-      //     },
-      //     // Other: {
-      //     //   data: {
-      //     //     "7": {
-      //     //       id: 7,
-      //     //       name: "menu",
-      //     //       data: {},
-      //     //       class: "menu",
-      //     //       html:
-      //     //         '\n        <div>\n          <div class="title-box">Menu</div>\n        </div>\n        ',
-      //     //       typenode: false,
-      //     //       inputs: {},
-      //     //       outputs: {
-      //     //         output_1: {
-      //     //           connections: [
-      //     //             { node: "2", output: "input_1" },
-      //     //             { node: "3", output: "input_1" },
-      //     //             { node: "11", output: "input_1" },
-      //     //           ],
-      //     //         },
-      //     //       },
-      //     //       pos_x: 347,
-      //     //       pos_y: 87,
-      //     //     },
-      //     //   }
-      //     // }
-      //   },
+      return {
+        drawflow: {
+          Home: {
+            data: {
+              "1": {
+                id: 1,
+                name: "welcome",
+                data: {},
+                class: "welcome",
+                html:
+                  '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br>\n💠 <b>Mouse Left Click</b> == Move<br>\n💠 <b>Mouse double Click on leftsidebar element</b> == change name<br>\n💠 <b>Mouse Click on red square in element</b> == change number of input and output nodes<br>\n❌ Mouse Right == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n...</p>\n</div>\n</div>\n',
+                typenode: false,
+                inputs: {},
+                outputs: {},
+                pos_x: 50,
+                pos_y: 50,
+              },
+              // "5": {
+              //   id: 5,
+              //   name: "template",
+              //   data: { template: "Write your template" },
+              //   class: "template",
+              //   html:
+              //     '\n            <div>\n              <div class="title-box"><i class="fas fa-code"></i> Template</div>\n              <div class="box">\n                Ger Vars\n                <textarea df-template></textarea>\n                Output template with vars\n              </div>\n            </div>\n            ',
+              //   typenode: false,
+              //   inputs: {
+              //     input_1: { connections: [{ node: "6", input: "output_1" }] },
+              //   },
+              //   outputs: {
+              //     output_1: {
+              //       connections: [
+              //         { node: "4", output: "input_1" },
+              //         { node: "11", output: "input_1" },
+              //       ],
+              //     },
+              //   },
+              //   pos_x: 607,
+              //   pos_y: 304,
+              // },
+              "7": {
+                id: 7,
+                name: "menu",
+                data: { template: "Write your template" },
+                class: "men",
+                html:
+                  '\n<div>\n<div class="title-box">' +
+                  this.menuElementTitle +
+                  '</div><div id="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
+                typenode: false,
+                inputs: {},
+                outputs: {
+                  output_1: {
+                    connections: [
+                      { node: "2", output: "input_1" },
+                      { node: "3", output: "input_1" },
+                      { node: "11", output: "input_1" },
+                    ],
+                  },
+                },
+                pos_x: 347,
+                pos_y: 100,
+              },
+              "2": {
+                id: 2,
+                name: "message",
+                data: { template: "Write your template" },
+                class: "message",
+                html:
+                  '\n<div>\n<div class="title-box">' +
+                  this.messageElementTitle +
+                  '</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n            ',
+                typenode: false,
+                inputs: {
+                  input_1: {
+                    connections: [
+                      { node: "7", input: "output_1" },
+                      { node: "3", input: "output_1" },
+                    ],
+                  },
+                },
+                outputs: {},
+                pos_x: 700,
+                pos_y: 87,
+              },
+              "3": {
+                id: 3,
+                name: "location",
+                data: { template: "Write your template" },
+                class: "template",
+                html:
+                  '\n<div>\n<div class="title-box">' +
+                  this.locationElementTitle +
+                  '</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
+                typenode: false,
+                inputs: {},
+                outputs: {
+                  output_1: {
+                    connections: [
+                      { node: "2", output: "input_1" },
+                      { node: "11", output: "input_1" },
+                    ],
+                  },
+                },
+                pos_x: 347,
+                pos_y: 400,
+              },
+            },
+          }
+        },
+      };
       // };
+      // this.data = dbData;
+
+      //   var id = this.$refs["myId"];
+      //   this.editor = new Drawflow(id);
+      //   // this.data = this.getData(this.editor);
+
+      //   this.editor.reroute = true;
+      //   this.editor.reroute_fix_curvature = true;
+      //   this.editor.force_first_input = false;
+
+      //   this.editor.drawflow = dbData;
+      //   this.editor.start();
+
+      //   this.saveData(this.editor);
     },
     allowDrop(ev) {
       ev.preventDefault();
@@ -746,7 +688,4 @@ th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
-/* @import ".././assets/css/beautiful.css";
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap"); */
 </style>
