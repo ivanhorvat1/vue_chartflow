@@ -49,12 +49,12 @@
             </td>
             <td>
               <span v-if="showSpan">
-                <select>
+                <select style="width:100%">
                   <option
-                    v-for="(name, id) in data.drawflow.Home.data"
+                    v-for="(name, id) in menuElementDropdown"
                     :key="id"
-                    value
-                  >{{ name.name }}</option>
+                    :value="name"
+                  >{{ name }}</option>
                 </select>
               </span>
             </td>
@@ -195,13 +195,14 @@ export default {
     return {
       inputs: [
         {
-          title: ""
+          title: "",
         },
       ],
       mobile_item_selec: "",
       mobile_last_move: null,
       editor: null,
       data: [],
+      menuElementDropdown: [],
       ex: null,
       menuElementTitle: null,
       changedMenuTextareaInput: "",
@@ -239,20 +240,36 @@ export default {
 
     // var exportdata = this.editor.export();
     // this.editor.import(exportdata);
-    let vm = this;
-    document.getElementById("menuElement").onclick = function () {
-      vm.showModal();
-    };
+    this.giveElementClick();
+    this.getMenuElementDropdown(this.data.drawflow.Home.data);
   },
   methods: {
+    giveElementClick() {
+      let vm = this;
+      document.getElementById("menuElement").onclick = function () {
+        vm.showModal();
+      };
+    },
+    getMenuElementDropdown(data) {
+      if (typeof data != "string") {
+        for (var element in data) {
+          if (data[element].name != "menu") {
+            if (this.menuElementDropdown.indexOf(data[element].name) === -1)
+              this.menuElementDropdown.push(data[element].name);
+          }
+        }
+      } else {
+        if (this.menuElementDropdown.indexOf(data) === -1 && data != "menu")
+          this.menuElementDropdown.push(data);
+      }
+    },
     add() {
       this.inputs.push({
-        name: "",
-        party: "",
+        title: "",
       });
 
       this.menuElementOutputNoNodes = this.inputs.length;
-      console.log(this.inputs);
+      // console.log(this.inputs);
     },
     remove(index) {
       this.inputs.splice(index, 1);
@@ -328,9 +345,7 @@ export default {
     saveData(editor) {
       // let vm = this;
 
-      editor.on("nodeSelected", function () {
-        console.log('selected')
-      });
+      editor.on("nodeSelected", function () {});
 
       // console.log(exportdata);
       editor.on("nodeCreated", function () {});
@@ -468,7 +483,7 @@ export default {
                 pos_y: 400,
               },
             },
-          }
+          },
         },
       };
       // };
@@ -525,6 +540,8 @@ export default {
       if (this.editor.editor_mode === "fixed") {
         return false;
       }
+
+      this.getMenuElementDropdown(name);
       //   console.log(this.editor);
       pos_x =
         pos_x *
