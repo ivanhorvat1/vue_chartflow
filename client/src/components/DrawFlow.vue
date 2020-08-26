@@ -12,59 +12,47 @@
       name="menuModal"
       resizable
       :adaptive="true"
-      :minWidth="800"
+      :minWidth="700"
       :minHeight="500"
       draggable=".modal-window-header"
     >
       <div
         class="modal-window-header"
-        style="background-color: grey; color:white; cursor:move; height:30px; text-align:center"
-      >
-        {{ menuElementTitle }}
-      </div>
+        style="background-color: grey; color:white; cursor:move; height:30px; text-align:center; padding-top:10px"
+      >Settings<div @click="hide" style="cursor:pointer; width:5px; text-align:right; font-size:30px; margin-top: -27px; margin-left: 670px">x</div></div>
       <div style="padding:20px">
         <p>Message</p>
         <textarea style="width:100%; height:100px; resize: none;"></textarea>
-        <button
-          style="background-color:green; margin-bottom: 10px"
-          @click="add(inputs.length)"
-        >
+        <button style="background-color:green; margin-bottom: 10px" @click="add(outputs.length)">
           <vue-fontawesome icon="plus" color="white"></vue-fontawesome>
         </button>
         <table>
           <tr>
             <th>No.</th>
             <th>key words</th>
-            <th>I/O</th>
             <th>connection</th>
-            <th v-show="inputs.length > 1">button</th>
+            <th v-show="outputs.length > 1">button</th>
           </tr>
-          <tr v-for="(input, k) in inputs" :key="k">
+          <tr v-for="(input, k) in outputs" :key="k">
             <td>
-              <span>{{ k }}</span>
+              <span>{{ k+1 }}</span>
             </td>
             <td>
               <input type="text" class="form-control" v-model="input.title" />
             </td>
             <td>
-              <select name="i_o">
-                <option value="input">Input</option>
-                <option value="output">Output</option>
-              </select>
-            </td>
-            <td>
               <span v-if="showSpan">
                 <select style="width:100%">
+                  <option value="none">none</option>
                   <option
                     v-for="(name, id) in menuElementDropdown"
                     :key="id"
                     :value="name"
-                    >{{ name }}</option
-                  >
+                  >{{ name }}</option>
                 </select>
               </span>
             </td>
-            <td v-show="k || (!k && inputs.length > 1)">
+            <td v-show="k || (!k && outputs.length > 1)">
               <span>
                 <button style="margin-left:10px" @click="remove(k)">
                   <vue-fontawesome icon="minus" color="red"></vue-fontawesome>
@@ -72,7 +60,7 @@
                 <!-- <button
                   style="margin-left:10px; background-color:green"
                   @click="add(k)"
-                  v-show="k == inputs.length - 1"
+                  v-show="k == outputs.length - 1"
                 >
                   <vue-fontawesome icon="plus" color="white"></vue-fontawesome>
                 </button>-->
@@ -173,24 +161,15 @@
                 changeModule($event);
               "
               class="selected"
-            >
-              Home
-            </li>
+            >Home</li>
             <!-- <li v-on:click="editor.changeModule('Other'); changeModule1($event);">Other Module</li> -->
           </ul>
         </div>
-        <div
-          id="drawflow"
-          ref="myId"
-          @drop="drop($event)"
-          @dragover="allowDrop($event)"
-        >
+        <div id="drawflow" ref="myId" @drop="drop($event)" @dragover="allowDrop($event)">
           <!-- <div class="btn-export" v-onclick="Swal.fire({ title: 'Export',
         html: '<pre><code>'+JSON.stringify(editor.export(), null,4)+'</code></pre>'
           })">Export</div>-->
-          <div class="btn-clear" @click="editor.clearModuleSelected()">
-            Clear
-          </div>
+          <div class="btn-clear" @click="editor.clearModuleSelected()">Clear</div>
         </div>
       </div>
     </div>
@@ -209,7 +188,7 @@ export default {
   name: "DrawFlow",
   data() {
     return {
-      inputs: [
+      outputs: [
         {
           title: "",
         },
@@ -268,7 +247,7 @@ export default {
       // };
       const targets = document.getElementsByClassName("menuElement");
       for (var i = 0; i < targets.length; i++) {
-        targets[i].addEventListener("click", function() {
+        targets[i].addEventListener("click", function () {
           vm.showModal("menuModal");
         });
       }
@@ -287,22 +266,22 @@ export default {
       }
     },
     add() {
-      this.inputs.push({
+      this.outputs.push({
         title: "",
       });
 
-      this.menuElementOutputNoNodes = this.inputs.length;
-      // console.log(this.inputs);
+      this.menuElementOutputNoNodes = this.outputs.length;
+      // console.log(this.outputs);
     },
     remove(index) {
-      this.inputs.splice(index, 1);
-      this.menuElementOutputNoNodes = this.inputs.length;
+      this.outputs.splice(index, 1);
+      this.menuElementOutputNoNodes = this.outputs.length;
     },
     show(modal) {
       this.$modal.show(modal);
     },
     hide() {
-      this.$modal.hide();
+      this.$modal.hide("menuModal");
     },
     changedMenuTextarea() {
       console.log(this.changedMenuTextareaInput);
@@ -368,14 +347,14 @@ export default {
     saveData(editor) {
       // let vm = this;
 
-      editor.on("nodeSelected", function() {});
+      editor.on("nodeSelected", function () {});
 
       // console.log(exportdata);
-      editor.on("nodeCreated", function() {});
+      editor.on("nodeCreated", function () {});
 
-      editor.on("nodeRemoved", function() {});
+      editor.on("nodeRemoved", function () {});
 
-      editor.on("nodeMoved", function() {
+      editor.on("nodeMoved", function () {
         // vm.showModal()
         // axios
         // .get("api/action_drink_fetch_separate", {
@@ -391,9 +370,43 @@ export default {
         // });
       });
 
-      editor.on("connectionCreated", function() {});
+      editor.on("connectionCreated", function (connection) {
+        console.log("Connection created");
+        console.log(connection);
+      });
 
-      editor.on("connectionRemoved", function() {});
+      editor.on("connectionRemoved", function () {});
+    },
+    menuOutputs() {
+      
+      // for (var [key, value] of Object.entries(this.outputs)) {
+      //   key = parseInt(key)+1;
+      //   let string = "output_"+key;
+      //   // console.log(key,value.title,string);
+
+      //   string = {
+      //     connections: [{ node: "2", output: "input_1" }],
+      //   }
+
+      //   console.log(value,string)
+
+      //   // var outputsMenu = {};
+      //   // outputsMenu.push({
+      //   //   string: "",
+      //   // });
+      // }
+
+      return {
+        output_1: {
+          connections: [{ node: "2", output: "input_1" }],
+        },
+        output_2: {
+          connections: [{ node: "3", output: "input_1" }],
+        },
+        output_3: {
+          connections: [{ node: "4", output: "input_1" }],
+        },
+      };
     },
     getData() {
       // let dbData = await DataService.getData();
@@ -412,54 +425,32 @@ export default {
                   '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br>\n💠 <b>Mouse Left Click</b> == Move<br>\n💠 <b>Mouse double Click on leftsidebar element</b> == change name<br>\n💠 <b>Mouse Click on red square in element</b> == change number of input and output nodes<br>\n❌ Mouse Right == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n...</p>\n</div>\n</div>\n',
                 typenode: false,
                 inputs: {},
-                outputs: {},
+                outputs: {
+                  output_1: {
+                    connections: [{ node: "7", output: "input_1" }],
+                  },
+                },
                 pos_x: 50,
                 pos_y: 50,
               },
-              // "5": {
-              //   id: 5,
-              //   name: "template",
-              //   data: { template: "Write your template" },
-              //   class: "template",
-              //   html:
-              //     '\n            <div>\n              <div class="title-box"><i class="fas fa-code"></i> Template</div>\n              <div class="box">\n                Ger Vars\n                <textarea df-template></textarea>\n                Output template with vars\n              </div>\n            </div>\n            ',
-              //   typenode: false,
-              //   inputs: {
-              //     input_1: { connections: [{ node: "6", input: "output_1" }] },
-              //   },
-              //   outputs: {
-              //     output_1: {
-              //       connections: [
-              //         { node: "4", output: "input_1" },
-              //         { node: "11", output: "input_1" },
-              //       ],
-              //     },
-              //   },
-              //   pos_x: 607,
-              //   pos_y: 304,
-              // },
               "7": {
                 id: 7,
                 name: "menu",
                 data: { template: "Write your template" },
                 class: "men",
                 html:
-                  '\n<div>\n<div class="title-box">' +
+                  '<div><div class="title-box">' +
                   this.menuElementTitle +
-                  '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
+                  '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div><div class="menu-box">e<br><br>t<br><br>o</div></div>',
                 typenode: false,
-                inputs: {},
-                outputs: {
-                  output_1: {
-                    connections: [
-                      { node: "2", output: "input_1" },
-                      { node: "3", output: "input_1" },
-                      { node: "11", output: "input_1" },
-                    ],
+                inputs: {
+                  input_1: {
+                    connections: [{ node: "1", input: "output_1" }],
                   },
                 },
+                outputs: this.menuOutputs(),
                 pos_x: 347,
-                pos_y: 100,
+                pos_y: 150,
               },
               "2": {
                 id: 2,
@@ -469,41 +460,54 @@ export default {
                 html:
                   '\n<div>\n<div class="title-box">' +
                   this.messageElementTitle +
-                  '</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n            ',
+                  '</div><div class="box">\n</div>',
                 typenode: false,
                 inputs: {
                   input_1: {
-                    connections: [
-                      { node: "7", input: "output_1" },
-                      { node: "3", input: "output_1" },
-                    ],
+                    connections: [{ node: "7", input: "output_1" }],
                   },
                 },
                 outputs: {},
                 pos_x: 700,
-                pos_y: 87,
+                pos_y: 150,
               },
               "3": {
                 id: 3,
                 name: "location",
                 data: { template: "Write your template" },
-                class: "template",
+                class: "location",
                 html:
                   '\n<div>\n<div class="title-box">' +
                   this.locationElementTitle +
-                  '</div>\n<div class="box">\nGer Vars\n<textarea df-template></textarea>\nOutput template with vars\n</div>\n</div>\n',
+                  '</div><div class="box">\n</div>',
                 typenode: false,
-                inputs: {},
-                outputs: {
-                  output_1: {
-                    connections: [
-                      { node: "2", output: "input_1" },
-                      { node: "11", output: "input_1" },
-                    ],
+                inputs: {
+                  input_1: {
+                    connections: [{ node: "7", input: "output_2" }],
                   },
                 },
-                pos_x: 347,
-                pos_y: 400,
+                outputs: {},
+                pos_x: 700,
+                pos_y: 250,
+              },
+              "4": {
+                id: 4,
+                name: "sharefile",
+                data: {},
+                class: "sharefile",
+                html:
+                  '\n<div>\n<div class="title-box">' +
+                  this.shareFileElementTitle +
+                  '</div><div class="box">\n</div>',
+                typenode: false,
+                inputs: {
+                  input_1: {
+                    connections: [{ node: "7", input: "output_3" }],
+                  },
+                },
+                outputs: {},
+                pos_x: 700,
+                pos_y: 350,
               },
             },
           },
@@ -586,7 +590,7 @@ export default {
           var menu =
             '<div><div class="title-box">' +
             this.menuElementTitle +
-            '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>';
+            '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div><div class="menu-box">e<br><br>t<br><br>o</div></div>';
           this.editor.addNode(
             "menu",
             this.menuElementInputNoNodes,
@@ -594,7 +598,7 @@ export default {
             pos_x,
             pos_y,
             "men",
-            { template: "Write your template" },
+            {},
             menu
           );
           break;
@@ -602,7 +606,7 @@ export default {
           var message =
             `<div><div class="title-box">` +
             this.messageElementTitle +
-            `</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>`;
+            `</div>`;
           this.editor.addNode(
             "message",
             1,
@@ -618,11 +622,11 @@ export default {
           var sharefile =
             `<div><div class="title-box">` +
             this.shareFileElementTitle +
-            `</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>`;
+            `</div>`;
           this.editor.addNode(
             "sharefile",
             1,
-            1,
+            0,
             pos_x,
             pos_y,
             "sharefile",
@@ -634,11 +638,11 @@ export default {
           var location =
             `<div><div class="title-box">` +
             this.locationElementTitle +
-            `</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>`;
+            `</div>`;
           this.editor.addNode(
             "location",
-            2,
-            2,
+            1,
+            0,
             pos_x,
             pos_y,
             "location",
@@ -648,13 +652,11 @@ export default {
           break;
         case "agent":
           var agent =
-            `<div><div class="title-box">` +
-            this.agentElementTitle +
-            `</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>`;
+            `<div><div class="title-box">` + this.agentElementTitle + `</div>`;
           this.editor.addNode(
             "agent",
-            2,
-            2,
+            1,
+            0,
             pos_x,
             pos_y,
             "agent",
@@ -666,11 +668,11 @@ export default {
           var clientstore =
             `<div><div class="title-box">` +
             this.clientStoreElementTitle +
-            `</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>`;
+            `</div>`;
           this.editor.addNode(
             "clientstore",
-            2,
-            2,
+            1,
+            0,
             pos_x,
             pos_y,
             "clientstore",
@@ -682,11 +684,11 @@ export default {
           var clientbranch =
             `<div><div class="title-box">` +
             this.clientBranchElementTitle +
-            `</div><div class="box">Ger Vars<textarea df-template></textarea>Output template</div></div>`;
+            `</div>`;
           this.editor.addNode(
             "clientbranch",
-            2,
-            2,
+            1,
+            0,
             pos_x,
             pos_y,
             "clientbranch",
