@@ -19,7 +19,13 @@
       <div
         class="modal-window-header"
         style="background-color: grey; color:white; cursor:move; height:30px; text-align:center; padding-top:10px"
-      >Settings<div @click="hide" style="cursor:pointer; width:5px; text-align:right; font-size:30px; margin-top: -27px; margin-left: 670px">x</div></div>
+      >
+        Settings
+        <div
+          @click="hide"
+          style="cursor:pointer; width:5px; text-align:right; font-size:30px; margin-top: -27px; margin-left: 670px"
+        >x</div>
+      </div>
       <div style="padding:20px">
         <p>Message</p>
         <textarea style="width:100%; height:100px; resize: none;"></textarea>
@@ -42,12 +48,12 @@
             </td>
             <td>
               <span v-if="showSpan">
-                <select style="width:100%">
-                  <option value="none">none</option>
+                <select style="width:100%" v-model="input.value" @change="menuOutputs">
+                  <option :value="null">none</option>
                   <option
-                    v-for="(name, id) in menuElementDropdown"
-                    :key="id"
-                    :value="name"
+                    v-for="(name, index) in menuElementDropdown"
+                    :key="index"
+                    :value="index+`-`+name"
                   >{{ name }}</option>
                 </select>
               </span>
@@ -57,13 +63,6 @@
                 <button style="margin-left:10px" @click="remove(k)">
                   <vue-fontawesome icon="minus" color="red"></vue-fontawesome>
                 </button>
-                <!-- <button
-                  style="margin-left:10px; background-color:green"
-                  @click="add(k)"
-                  v-show="k == outputs.length - 1"
-                >
-                  <vue-fontawesome icon="plus" color="white"></vue-fontawesome>
-                </button>-->
               </span>
             </td>
           </tr>
@@ -81,20 +80,6 @@
         >
           <!-- <i class="fab fa-menu"></i> -->
           <span>{{ menuElementTitle }}</span>
-          <!-- <div
-            style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:120px"
-            @click="showModal()"
-          >
-            <div
-              style="width: 25px;height: 3px;background-color: white;margin: 3px 0;"
-            ></div>
-            <div
-              style="width: 25px;height: 3px;background-color: white;margin: 3px 0;"
-            ></div>
-            <div
-              style="width: 25px;height: 3px;background-color: white;margin: 3px 0;"
-            ></div>
-          </div>-->
         </div>
         <div
           class="drag-drawflow"
@@ -191,13 +176,14 @@ export default {
       outputs: [
         {
           title: "",
+          value: "null",
         },
       ],
       mobile_item_selec: "",
       mobile_last_move: null,
       editor: null,
       data: [],
-      menuElementDropdown: [],
+      menuElementDropdown: {},
       ex: null,
       menuElementTitle: null,
       changedMenuTextareaInput: "",
@@ -210,6 +196,13 @@ export default {
       clientStoreElementTitle: null,
       clientBranchElementTitle: null,
       showSpan: false,
+      outputsMenu: {},
+      messageInput: {},
+      shareFileInput: {},
+      locationInput: {},
+      agentInput: {},
+      cleintStoreInput: {},
+      cleintBranchInput: {},
       // counterAddedMenu: 0
     };
   },
@@ -253,24 +246,37 @@ export default {
       }
     },
     getMenuElementDropdown(data) {
-      if (typeof data != "string") {
-        for (var element in data) {
-          if (data[element].name != "menu") {
-            if (this.menuElementDropdown.indexOf(data[element].name) === -1)
-              this.menuElementDropdown.push(data[element].name);
-          }
+      // console.log(data);
+      for (var element in data) {
+        if (data[element].name != "menu" && data[element].name != "welcome") {
+          this.menuElementDropdown[data[element].id] = data[element].name;
         }
-      } else {
-        if (this.menuElementDropdown.indexOf(data) === -1 && data != "menu")
-          this.menuElementDropdown.push(data);
       }
+      // this.menuElementDropdown = this.removeDuplicates(this.menuElementDropdown);
+    },
+    removeDuplicates(originalArray) {
+      var newArray = [];
+      var lookupObject = {};
+
+      for (var [i, value] in originalArray) {
+        lookupObject[value] = originalArray[i];
+      }
+
+      console.log(lookupObject);
+
+      for (i in lookupObject) {
+        newArray.push(lookupObject[i]);
+      }
+      return newArray;
     },
     add() {
       this.outputs.push({
         title: "",
+        value: "null",
       });
 
       this.menuElementOutputNoNodes = this.outputs.length;
+      // this.menuOutputs();
       // console.log(this.outputs);
     },
     remove(index) {
@@ -336,8 +342,8 @@ export default {
           default:
         }
 
-        this.data = this.getData();
-        this.editor.import(this.data);
+        this.editor.import(this.getData());
+        this.giveElementClick();
       }
     },
     showModal(modal) {
@@ -378,35 +384,55 @@ export default {
       editor.on("connectionRemoved", function () {});
     },
     menuOutputs() {
-      
-      // for (var [key, value] of Object.entries(this.outputs)) {
-      //   key = parseInt(key)+1;
-      //   let string = "output_"+key;
-      //   // console.log(key,value.title,string);
+      // console.log(this.outputs);
+      for (var [key, value] of Object.entries(this.outputs)) {
+        key = parseInt(key) + 1;
+        var changeid = "output_" + key;
+        var split = value.value.split("-");
+        // console.log(split[1],changeid)
 
-      //   string = {
-      //     connections: [{ node: "2", output: "input_1" }],
-      //   }
+        switch (split[1]) {
+          case "message":
+            this.messageInput['input_1'] = {
+              connections: [{ node: '7', input: changeid }],
+            };
+            break;
+          case "sharefile":
+            this.shareFileInput['input_1'] = {
+              connections: [{ node: '7', input: changeid }],
+            };
+            break;
+          case "location":
+            this.locationInput['input_1'] = {
+              connections: [{ node: '7', input: changeid }],
+            };
+            break;
+          case "agent":
+            this.agentInput['input_1'] = {
+              connections: [{ node: '7', input: changeid }],
+            };
+            break;
+          case "clientstore":
+            this.cleintStoreInput['input_1'] = {
+              connections: [{ node: '7', input: changeid }],
+            };
+            break;
+          case "clientbranch":
+            this.cleintBranchInput['input_1'] = {
+              connections: [{ node: '7', input: changeid }],
+            };
+            break;
 
-      //   console.log(value,string)
+          default:
+        }
 
-      //   // var outputsMenu = {};
-      //   // outputsMenu.push({
-      //   //   string: "",
-      //   // });
-      // }
-
-      return {
-        output_1: {
-          connections: [{ node: "2", output: "input_1" }],
-        },
-        output_2: {
-          connections: [{ node: "3", output: "input_1" }],
-        },
-        output_3: {
-          connections: [{ node: "4", output: "input_1" }],
-        },
-      };
+        this.outputsMenu[changeid] = {
+          connections: [{ node: split[0], output: "input_1" }],
+        };
+      }
+      console.log(this.messageInput)
+      this.editor.import(this.getData());
+      this.giveElementClick();
     },
     getData() {
       // let dbData = await DataService.getData();
@@ -448,7 +474,7 @@ export default {
                     connections: [{ node: "1", input: "output_1" }],
                   },
                 },
-                outputs: this.menuOutputs(),
+                outputs: this.outputsMenu,
                 pos_x: 347,
                 pos_y: 150,
               },
@@ -462,11 +488,14 @@ export default {
                   this.messageElementTitle +
                   '</div><div class="box">\n</div>',
                 typenode: false,
-                inputs: {
-                  input_1: {
-                    connections: [{ node: "7", input: "output_1" }],
-                  },
-                },
+                inputs: this.messageInput,
+                // {
+                //   input_1: {
+                //     connections: [
+                //       // { node: "7", input: "output_1" }
+                //     ],
+                //   },
+                // },
                 outputs: {},
                 pos_x: 700,
                 pos_y: 150,
@@ -481,11 +510,14 @@ export default {
                   this.locationElementTitle +
                   '</div><div class="box">\n</div>',
                 typenode: false,
-                inputs: {
-                  input_1: {
-                    connections: [{ node: "7", input: "output_2" }],
-                  },
-                },
+                inputs: this.locationInput,
+                // {
+                //   input_1: {
+                //     connections: [
+                //       // { node: "7", input: "output_2" }
+                //     ],
+                //   },
+                // },
                 outputs: {},
                 pos_x: 700,
                 pos_y: 250,
@@ -500,11 +532,14 @@ export default {
                   this.shareFileElementTitle +
                   '</div><div class="box">\n</div>',
                 typenode: false,
-                inputs: {
-                  input_1: {
-                    connections: [{ node: "7", input: "output_3" }],
-                  },
-                },
+                inputs: this.shareFileInput,
+                // {
+                //   input_1: {
+                //     connections: [
+                //       // { node: "7", input: "output_3" }
+                //     ],
+                //   },
+                // },
                 outputs: {},
                 pos_x: 700,
                 pos_y: 350,
@@ -568,8 +603,6 @@ export default {
         return false;
       }
 
-      this.getMenuElementDropdown(name);
-      //   console.log(this.editor);
       pos_x =
         pos_x *
           (this.editor.precanvas.clientWidth /
@@ -700,7 +733,8 @@ export default {
         default:
       }
 
-      // var exportdata = this.editor.export();
+      var exportdata = this.editor.export();
+      this.getMenuElementDropdown(exportdata.drawflow.Home.data);
       // console.log(exportdata);
     },
     changeModule(event) {
