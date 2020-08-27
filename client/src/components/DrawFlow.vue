@@ -180,7 +180,7 @@ export default {
     return {
       outputs: [
         {
-          title: "e",
+          title: "",
           value: "null",
         },
       ],
@@ -289,8 +289,8 @@ export default {
       let exportdata = this.editor.export();
       for (var element in exportdata.drawflow.Home.data) {
         if (exportdata.drawflow.Home.data[element].name == "menu") {
-          exportdata.drawflow.Home.data[element].outputs = NoOfNodes;
           if (this.outputs[this.outputs.length - 1].title != "") {
+            exportdata.drawflow.Home.data[element].outputs = NoOfNodes;
             exportdata.drawflow.Home.data[
               element
             ].html = exportdata.drawflow.Home.data[element].html.replace(
