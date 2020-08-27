@@ -44,7 +44,12 @@
               <span>{{ k+1 }}</span>
             </td>
             <td>
-              <input type="text" class="form-control" v-model="input.title" />
+              <input
+                @change="addOutputNodeToMenuEl"
+                type="text"
+                class="form-control"
+                v-model="input.title"
+              />
             </td>
             <td>
               <span v-if="showSpan">
@@ -175,7 +180,7 @@ export default {
     return {
       outputs: [
         {
-          title: "",
+          title: "e",
           value: "null",
         },
       ],
@@ -203,6 +208,7 @@ export default {
       agentInput: {},
       cleintStoreInput: {},
       cleintBranchInput: {},
+      menuLabelString: 'menu-box">',
       // counterAddedMenu: 0
     };
   },
@@ -229,6 +235,7 @@ export default {
 
     // var exportdata = this.editor.export();
     // this.editor.import(exportdata);
+    this.addOutputNodeToMenuEl();
     this.giveElementClick();
     this.getMenuElementDropdown(this.data.drawflow.Home.data);
   },
@@ -244,6 +251,31 @@ export default {
           vm.showModal("menuModal");
         });
       }
+    },
+    addOutputNodeToMenuEl() {
+      let NoOfNodes = {};
+      for (let i = 1; i <= this.outputs.length; i++) {
+        NoOfNodes["output_" + i] = {
+          connections: [],
+        };
+      }
+
+      let exportdata = this.editor.export();
+      for (var element in exportdata.drawflow.Home.data) {
+        if (exportdata.drawflow.Home.data[element].name == "menu") {
+          exportdata.drawflow.Home.data[element].outputs = NoOfNodes;
+          if (this.outputs[this.outputs.length - 1].title != "") {
+            exportdata.drawflow.Home.data[
+              element
+            ].html = exportdata.drawflow.Home.data[element].html.replace(
+              this.menuLabelString,
+              (this.menuLabelString +=
+                this.outputs[this.outputs.length - 1].title + "<br><br>")
+            );
+          }
+        }
+      }
+      this.editor.import(exportdata);
     },
     getMenuElementDropdown(data) {
       // console.log(data);
@@ -276,12 +308,17 @@ export default {
       });
 
       this.menuElementOutputNoNodes = this.outputs.length;
+      this.addOutputNodeToMenuEl();
+
+      // let exportdata = this.editor.export();
+      // console.log(exportdata);
       // this.menuOutputs();
       // console.log(this.outputs);
     },
     remove(index) {
       this.outputs.splice(index, 1);
       this.menuElementOutputNoNodes = this.outputs.length;
+      this.addOutputNodeToMenuEl();
     },
     show(modal) {
       this.$modal.show(modal);
@@ -393,33 +430,33 @@ export default {
 
         switch (split[1]) {
           case "message":
-            this.messageInput['input_1'] = {
-              connections: [{ node: '7', input: changeid }],
+            this.messageInput["input_1"] = {
+              connections: [{ node: "7", input: changeid }],
             };
             break;
           case "sharefile":
-            this.shareFileInput['input_1'] = {
-              connections: [{ node: '7', input: changeid }],
+            this.shareFileInput["input_1"] = {
+              connections: [{ node: "7", input: changeid }],
             };
             break;
           case "location":
-            this.locationInput['input_1'] = {
-              connections: [{ node: '7', input: changeid }],
+            this.locationInput["input_1"] = {
+              connections: [{ node: "7", input: changeid }],
             };
             break;
           case "agent":
-            this.agentInput['input_1'] = {
-              connections: [{ node: '7', input: changeid }],
+            this.agentInput["input_1"] = {
+              connections: [{ node: "7", input: changeid }],
             };
             break;
           case "clientstore":
-            this.cleintStoreInput['input_1'] = {
-              connections: [{ node: '7', input: changeid }],
+            this.cleintStoreInput["input_1"] = {
+              connections: [{ node: "7", input: changeid }],
             };
             break;
           case "clientbranch":
-            this.cleintBranchInput['input_1'] = {
-              connections: [{ node: '7', input: changeid }],
+            this.cleintBranchInput["input_1"] = {
+              connections: [{ node: "7", input: changeid }],
             };
             break;
 
@@ -430,7 +467,7 @@ export default {
           connections: [{ node: split[0], output: "input_1" }],
         };
       }
-      console.log(this.messageInput)
+      console.log(this.messageInput);
       this.editor.import(this.getData());
       this.giveElementClick();
     },
@@ -467,7 +504,7 @@ export default {
                 html:
                   '<div><div class="title-box">' +
                   this.menuElementTitle +
-                  '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div><div class="menu-box">e<br><br>t<br><br>o</div></div>',
+                  '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div><div style="margin-top:15px" class="menu-box"></div></div>',
                 typenode: false,
                 inputs: {
                   input_1: {
@@ -735,7 +772,9 @@ export default {
 
       var exportdata = this.editor.export();
       this.getMenuElementDropdown(exportdata.drawflow.Home.data);
-      // console.log(exportdata);
+      this.giveElementClick();
+
+      console.log(exportdata);
     },
     changeModule(event) {
       var all = document.querySelectorAll(".menu ul li");
