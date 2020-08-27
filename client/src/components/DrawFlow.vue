@@ -202,13 +202,38 @@ export default {
       clientBranchElementTitle: null,
       showSpan: false,
       outputsMenu: {},
-      messageInput: {},
-      shareFileInput: {},
-      locationInput: {},
-      agentInput: {},
-      cleintStoreInput: {},
-      cleintBranchInput: {},
+      messageInput: {
+        input_1: {
+          connections: [],
+        },
+      },
+      shareFileInput: {
+        input_1: {
+          connections: [],
+        },
+      },
+      locationInput: {
+        input_1: {
+          connections: [],
+        },
+      },
+      agentInput: {
+        input_1: {
+          connections: [],
+        },
+      },
+      cleintStoreInput: {
+        input_1: {
+          connections: [],
+        },
+      },
+      cleintBranchInput: {
+        input_1: {
+          connections: [],
+        },
+      },
       menuLabelString: 'menu-box">',
+      getMenuElId: null,
       // counterAddedMenu: 0
     };
   },
@@ -253,6 +278,7 @@ export default {
       }
     },
     addOutputNodeToMenuEl() {
+      
       let NoOfNodes = {};
       for (let i = 1; i <= this.outputs.length; i++) {
         NoOfNodes["output_" + i] = {
@@ -308,7 +334,7 @@ export default {
       });
 
       this.menuElementOutputNoNodes = this.outputs.length;
-      this.addOutputNodeToMenuEl();
+      // this.addOutputNodeToMenuEl();
 
       // let exportdata = this.editor.export();
       // console.log(exportdata);
@@ -379,7 +405,7 @@ export default {
           default:
         }
 
-        this.editor.import(this.getData());
+        this.editor.import(this.editor.export());
         this.giveElementClick();
       }
     },
@@ -421,43 +447,100 @@ export default {
       editor.on("connectionRemoved", function () {});
     },
     menuOutputs() {
-      // console.log(this.outputs);
+      let exportdata = this.editor.export();
       for (var [key, value] of Object.entries(this.outputs)) {
         key = parseInt(key) + 1;
         var changeid = "output_" + key;
         var split = value.value.split("-");
-        // console.log(split[1],changeid)
 
         switch (split[1]) {
           case "message":
-            this.messageInput["input_1"] = {
-              connections: [{ node: "7", input: changeid }],
-            };
+            for (let element in exportdata.drawflow.Home.data) {
+              if (exportdata.drawflow.Home.data[element].name == "menu") {
+                this.messageInput.input_1.connections.push(
+                  this.returnInputConnection(element, exportdata, changeid)
+                );
+              }
+
+              if (exportdata.drawflow.Home.data[element].name == split[1]) {
+                exportdata.drawflow.Home.data[
+                  element
+                ].inputs = this.messageInput;
+              }
+            }
             break;
           case "sharefile":
-            this.shareFileInput["input_1"] = {
-              connections: [{ node: "7", input: changeid }],
-            };
+            for (let element in exportdata.drawflow.Home.data) {
+              if (exportdata.drawflow.Home.data[element].name == "menu") {
+                this.shareFileInput.input_1.connections.push(
+                  this.returnInputConnection(element, exportdata, changeid)
+                );
+              }
+
+              if (exportdata.drawflow.Home.data[element].name == split[1]) {
+                exportdata.drawflow.Home.data[
+                  element
+                ].inputs = this.shareFileInput;
+              }
+            }
             break;
           case "location":
-            this.locationInput["input_1"] = {
-              connections: [{ node: "7", input: changeid }],
-            };
+            for (let element in exportdata.drawflow.Home.data) {
+              if (exportdata.drawflow.Home.data[element].name == "menu") {
+                this.locationInput.input_1.connections.push(
+                  this.returnInputConnection(element, exportdata, changeid)
+                );
+              }
+
+              if (exportdata.drawflow.Home.data[element].name == split[1]) {
+                exportdata.drawflow.Home.data[
+                  element
+                ].inputs = this.locationInput;
+              }
+            }
             break;
           case "agent":
-            this.agentInput["input_1"] = {
-              connections: [{ node: "7", input: changeid }],
-            };
+            for (let element in exportdata.drawflow.Home.data) {
+              if (exportdata.drawflow.Home.data[element].name == "menu") {
+                this.agentInput.input_1.connections.push(
+                  this.returnInputConnection(element, exportdata, changeid)
+                );
+              }
+
+              if (exportdata.drawflow.Home.data[element].name == split[1]) {
+                exportdata.drawflow.Home.data[element].inputs = this.agentInput;
+              }
+            }
             break;
           case "clientstore":
-            this.cleintStoreInput["input_1"] = {
-              connections: [{ node: "7", input: changeid }],
-            };
+            for (let element in exportdata.drawflow.Home.data) {
+              if (exportdata.drawflow.Home.data[element].name == "menu") {
+                this.cleintStoreInput.input_1.connections.push(
+                  this.returnInputConnection(element, exportdata, changeid)
+                );
+              }
+
+              if (exportdata.drawflow.Home.data[element].name == split[1]) {
+                exportdata.drawflow.Home.data[
+                  element
+                ].inputs = this.cleintStoreInput;
+              }
+            }
             break;
           case "clientbranch":
-            this.cleintBranchInput["input_1"] = {
-              connections: [{ node: "7", input: changeid }],
-            };
+            for (let element in exportdata.drawflow.Home.data) {
+              if (exportdata.drawflow.Home.data[element].name == "menu") {
+                this.cleintBranchInput.input_1.connections.push(
+                  this.returnInputConnection(element, exportdata, changeid)
+                );
+              }
+
+              if (exportdata.drawflow.Home.data[element].name == split[1]) {
+                exportdata.drawflow.Home.data[
+                  element
+                ].inputs = this.cleintBranchInput;
+              }
+            }
             break;
 
           default:
@@ -467,9 +550,17 @@ export default {
           connections: [{ node: split[0], output: "input_1" }],
         };
       }
-      console.log(this.messageInput);
-      this.editor.import(this.getData());
+
+      this.editor.import(exportdata);
       this.giveElementClick();
+    },
+    returnInputConnection(element, exportdata, changeid) {
+      if (exportdata.drawflow.Home.data[element].name == "menu") {
+        return {
+          node: exportdata.drawflow.Home.data[element].id,
+          input: changeid,
+        };
+      }
     },
     getData() {
       // let dbData = await DataService.getData();
