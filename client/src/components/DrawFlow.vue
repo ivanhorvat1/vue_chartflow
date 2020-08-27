@@ -278,7 +278,6 @@ export default {
       }
     },
     addOutputNodeToMenuEl() {
-      
       let NoOfNodes = {};
       for (let i = 1; i <= this.outputs.length; i++) {
         NoOfNodes["output_" + i] = {
@@ -602,7 +601,7 @@ export default {
                     connections: [{ node: "1", input: "output_1" }],
                   },
                 },
-                outputs: this.outputsMenu,
+                outputs: {},
                 pos_x: 347,
                 pos_y: 150,
               },
@@ -616,7 +615,11 @@ export default {
                   this.messageElementTitle +
                   '</div><div class="box">\n</div>',
                 typenode: false,
-                inputs: this.messageInput,
+                inputs: {
+                  input_1: {
+                    connections: [],
+                  },
+                },
                 // {
                 //   input_1: {
                 //     connections: [
@@ -638,7 +641,11 @@ export default {
                   this.locationElementTitle +
                   '</div><div class="box">\n</div>',
                 typenode: false,
-                inputs: this.locationInput,
+                inputs: {
+                  input_1: {
+                    connections: [],
+                  },
+                },
                 // {
                 //   input_1: {
                 //     connections: [
@@ -660,7 +667,11 @@ export default {
                   this.shareFileElementTitle +
                   '</div><div class="box">\n</div>',
                 typenode: false,
-                inputs: this.shareFileInput,
+                inputs: {
+                  input_1: {
+                    connections: [],
+                  },
+                },
                 // {
                 //   input_1: {
                 //     connections: [
