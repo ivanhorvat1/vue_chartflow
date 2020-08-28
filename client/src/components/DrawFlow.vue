@@ -305,7 +305,10 @@ export default {
               exportdata.drawflow.Home.data[element].outputs = NoOfNodes;
               classs[0].innerHTML += this.outputs[output].title + "<br><br>";
             }else{
-              exportdata.drawflow.Home.data[element].outputs = []
+              let no = parseInt(output)+1;
+              if(exportdata.drawflow.Home.data[element].outputs["output_" + no]){
+                delete exportdata.drawflow.Home.data[element].outputs["output_" + no]
+              }
             }
           }
           exportdata.drawflow.Home.data[element].html =
