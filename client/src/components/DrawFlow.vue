@@ -427,7 +427,7 @@ export default {
       this.show(modal);
     },
     saveData(editor) {
-      // let vm = this;
+      let vm = this;
 
       editor.on("nodeSelected", function () {});
 
@@ -455,6 +455,7 @@ export default {
       editor.on("connectionCreated", function (connection) {
         console.log("Connection created");
         console.log(connection);
+        vm.giveElementClick();
       });
 
       editor.on("connectionRemoved", function (connection) {
