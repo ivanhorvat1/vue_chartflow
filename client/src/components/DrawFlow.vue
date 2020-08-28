@@ -317,6 +317,7 @@ export default {
         }
       }
       this.editor.import(exportdata);
+      this.giveElementClick();
     },
     getMenuElementDropdown(data) {
       // console.log(data);
@@ -471,15 +472,34 @@ export default {
       });
 
       editor.on("connectionCreated", function (connection) {
-        console.log("Connection created");
-        console.log(connection);
-        // console.log(vm.outputs)
+        // console.log("Connection created");
+        // console.log(connection);
+        let index = connection.output_class.split('_')[1]
+        index = parseInt(index)-1;
+
+        let exportdata = vm.editor.export();
+        for (let element in exportdata.drawflow.Home.data) {
+          if (exportdata.drawflow.Home.data[element].id == connection.input_id) {
+            vm.outputs[index].value = connection.input_id+'-'+exportdata.drawflow.Home.data[element].name
+          }
+        }
+        
         vm.giveElementClick();
       });
 
       editor.on("connectionRemoved", function (connection) {
-        console.log("Connection removed");
-        console.log(connection);
+        // console.log("Connection removed");
+        // console.log(connection);
+        let index = connection.output_class.split('_')[1]
+        index = parseInt(index)-1;
+
+        let exportdata = vm.editor.export();
+        for (let element in exportdata.drawflow.Home.data) {
+          if (exportdata.drawflow.Home.data[element].id == connection.input_id) {
+            vm.outputs[index].value = '0-none'
+          }
+        }
+
         vm.giveElementClick();
       });
     },
