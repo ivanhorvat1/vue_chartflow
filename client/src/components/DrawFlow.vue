@@ -48,6 +48,7 @@
                 @change="addOutputNodeToMenuEl"
                 type="text"
                 class="form-control"
+                id="inputSettings"
                 v-model="input.title"
               />
             </td>
@@ -355,13 +356,14 @@ export default {
       this.stringPrevious = this.outputs[index].value.split('-')[1]
       this.string = '0-none'
       this.outputs[index].value = "0-none";
-      console.log(this.stringPrevious,this.string)
+      // console.log(this.stringPrevious,this.string)
       this.menuOutputs();
     },
     onSelectSelect(index){
       this.string = this.outputs[index].value.split('-')[1];
-      console.log(this.string)
+      // console.log(this.string)
       this.menuOutputs();
+      document.getElementById('inputSettings').focus()
     },
     show(modal) {
       this.$modal.show(modal);
