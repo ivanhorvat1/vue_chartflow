@@ -693,7 +693,7 @@ export default {
                 html:
                   '<div><div class="title-box">' +
                   this.menuElementTitle +
-                  '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div><div style="margin-top:15px" class="menu-box"></div></div>',
+                  '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div><div style="margin-top:14px; text-align:right" class="menu-box"></div></div>',
                 typenode: false,
                 inputs: {
                   input_1: {
