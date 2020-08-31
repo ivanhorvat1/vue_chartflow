@@ -50,6 +50,7 @@
                 class="form-control"
                 :id="inputSettings+k"
                 v-model="input.title"
+                :disabled="input.disabled"
               />
             </td>
             <td>
@@ -190,6 +191,7 @@ export default {
         {
           title: "",
           value: "0-none",
+          disabled: false
         },
       ],
       input: { value: "" },
@@ -247,6 +249,7 @@ export default {
       string: "",
       stringPrevious: "",
       getIndexInput: null,
+      clickRemove : false,
       // counterAddedMenu: 0
     };
   },
@@ -288,37 +291,49 @@ export default {
       }
     },
     addOutputNodeToMenuEl() {
-      let NoOfNodes = {};
-      for (let i = 1; i <= this.outputs.length; i++) {
-        NoOfNodes["output_" + i] = {
-          connections: [],
-        };
-      }
+      // let NoOfNodes = {};
+      //for (let i = 1; i <= this.outputs.length; i++) {
+        // NoOfNodes["output_" + this.outputs.length] = {
+        //   connections: [],
+        // };
+      //}
+      // NoOfNodes = ["output_" + this.outputs.length] 
+      // console.log(NoOfNodes)
 
       let exportdata = this.editor.export();
+      // console.log(this.outputs)
+      // console.log('addoutput',exportdata.drawflow.Home.data)
       for (var element in exportdata.drawflow.Home.data) {
         if (exportdata.drawflow.Home.data[element].name == "menu") {
           var classs = $(exportdata.drawflow.Home.data[element].html).find(
             ".menu-box"
           );
           classs[0].innerHTML = "";
+          
           for (let output in this.outputs) {
             if (this.outputs[output].title != "") {
-              exportdata.drawflow.Home.data[element].outputs = NoOfNodes;
+              exportdata.drawflow.Home.data[element].outputs["output_" + this.outputs.length] = { connections: [] };
               classs[0].innerHTML += "<br><br><span style='border: 2px solid;'>"+this.outputs[output].title + "<span>";
-            }else{
+            }
+            else{
               let no = parseInt(output)+1;
+              // console.log("output_" + no)
+              // this.outputs.splice(0, 1);
               if(exportdata.drawflow.Home.data[element].outputs["output_" + no]){
                 delete exportdata.drawflow.Home.data[element].outputs["output_" + no]
               }
             }
           }
+
           exportdata.drawflow.Home.data[element].html =
             '<div><div class="title-box">Menu</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div>' +
             classs[0].outerHTML +
             "</div>";
         }
       }
+
+      // console.log(exportdata.drawflow.Home.data)
+
       this.editor.import(exportdata);
       this.giveElementClick();
     },
@@ -334,9 +349,11 @@ export default {
       this.outputs.push({
         title: "",
         value: "0-none",
+        disabled: false
       });
 
       this.menuElementOutputNoNodes = this.outputs.length;
+      // console.log(this.editor.export().drawflow.Home.data)
       // this.addOutputNodeToMenuEl();
 
       // let exportdata = this.editor.export();
@@ -345,24 +362,30 @@ export default {
       // console.log(this.outputs);
     },
     remove(index) {
-      this.string = this.outputs[index].value
-      this.outputs[index].value = "0-none";
-      this.menuOutputs();
+      // this.clickRemove = true;
+      // this.getIndexInput = index;
+      // this.stringPrevious = this.outputs[index].value.split('-')[1]
+      // this.string = '0-none'
+      // this.outputs[index].value = "0-none";
+      // this.outputs[index].title = "";
+      // this.menuOutputs();
       this.outputs.splice(index, 1);
       this.menuElementOutputNoNodes = this.outputs.length;
-      this.addOutputNodeToMenuEl();
+      // this.addOutputNodeToMenuEl();
     },
     onSelectFocus(index) {
       this.getIndexInput = index;
       this.stringPrevious = this.outputs[index].value.split('-')[1]
       this.string = '0-none'
       this.outputs[index].value = "0-none";
-      // console.log(this.stringPrevious,this.string)
+      this.outputs[index].disabled = false
       this.menuOutputs();
     },
     onSelectSelect(index){
+      if(this.outputs[index].value != '0-none'){
+        this.outputs[index].disabled = true
+      }
       this.string = this.outputs[index].value.split('-')[1];
-      // console.log(this.string)
       this.menuOutputs();
       document.getElementById('inputSettings0').focus()
     },
@@ -460,8 +483,7 @@ export default {
       });
 
       editor.on("connectionCreated", function (connection) {
-        // console.log("Connection created");
-        // console.log(connection);
+        console.log("Connection created");
         let index = connection.output_class.split('_')[1]
         index = parseInt(index)-1;
 
@@ -471,13 +493,15 @@ export default {
             vm.outputs[index].value = connection.input_id+'-'+exportdata.drawflow.Home.data[element].name
           }
         }
-        
+
+        vm.editor.import(vm.editor.export());
         vm.giveElementClick();
       });
 
       editor.on("connectionRemoved", function (connection) {
-        // console.log("Connection removed");
+        console.log("Connection removed");
         // console.log(connection);
+
         let index = connection.output_class.split('_')[1]
         index = parseInt(index)-1;
 
@@ -488,11 +512,15 @@ export default {
           }
         }
 
+        // console.log(vm.outputs)
+        
+        vm.editor.import(exportdata);
         vm.giveElementClick();
       });
     },
     menuOutputs() {
-      let exportdata = this.editor.export();
+      var exportdata = this.editor.export();
+      // console.log('menuoutstart',exportdata.drawflow.Home.data)
       // this.string = this.string.split('-')[1];
       // console.log(this.string)
       // let counter = 1;
@@ -516,7 +544,7 @@ export default {
       // }
         // console.log(this.getIndexInput)
         // var split = this.outputs[this.getIndexInput].value.split("-");
-        // console.log(split,this.string)
+        // console.log(this.string)
 
         switch (this.string) {
           case "message":
@@ -530,7 +558,7 @@ export default {
               for (let element in exportdata.drawflow.Home.data) {
                 if (exportdata.drawflow.Home.data[element].name == this.string) {
                   idInput = exportdata.drawflow.Home.data[element].id;
-                  // console.log(exportdata.drawflow.Home.data[element].inputs.input_1.connections)
+                  // console.log(exportdata.drawflow.Home.data[element].inputs.input_1.connections.length)
                   if(exportdata.drawflow.Home.data[element].inputs.input_1.connections.length <= 0){
                     this.editor.addConnection(idOutput,idInput,changeid,"input_1");
                   }
@@ -629,26 +657,30 @@ export default {
             break;
 
           default: 
+          // console.log(this.stringPrevious)
             for (let element in exportdata.drawflow.Home.data) {
               if (exportdata.drawflow.Home.data[element].name == "menu") {
                 idOutput = exportdata.drawflow.Home.data[element].id;
               }
 
               if (exportdata.drawflow.Home.data[element].name == this.stringPrevious) {
-                // console.log(exportdata.drawflow.Home.data[element])
+                
                 idInput = exportdata.drawflow.Home.data[element].id;
                 // this.editor.removeSingleConnection(idOutput,idInput,changeid,"input_1");
               }
             }
+            // console.log(idOutput,idInput,changeid)
+          
             this.editor.removeSingleConnection(idOutput,idInput,changeid,"input_1");
+              // console.log(exportdata.drawflow.Home.data)
         }
 
         // this.outputsMenu[changeid] = {
         //   connections: [{ node: split[0], output: "input_1" }],
         // };
         // console.log(this.editor.export())
-      this.editor.import(this.editor.export());
-      this.giveElementClick();
+      // this.editor.import(this.editor.export());
+      // this.giveElementClick();
     },
     getKeyByValue(object, value) {
       return Object.keys(object).find((key) => object[key] === value);
@@ -976,7 +1008,7 @@ export default {
       this.getMenuElementDropdown(exportdata.drawflow.Home.data);
       this.giveElementClick();
 
-      console.log(exportdata);
+      // console.log(exportdata);
     },
     changeModule(event) {
       var all = document.querySelectorAll(".menu ul li");
