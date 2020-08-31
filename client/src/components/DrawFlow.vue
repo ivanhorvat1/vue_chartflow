@@ -305,7 +305,7 @@ export default {
           for (let output in this.outputs) {
             if (this.outputs[output].title != "") {
               exportdata.drawflow.Home.data[element].outputs = NoOfNodes;
-              classs[0].innerHTML += this.outputs[output].title + "<br><br>";
+              classs[0].innerHTML += "<br><br><span style='border: 2px solid;'>"+this.outputs[output].title + "<span>";
             }else{
               let no = parseInt(output)+1;
               if(exportdata.drawflow.Home.data[element].outputs["output_" + no]){
@@ -694,7 +694,7 @@ export default {
                 html:
                   '<div><div class="title-box">' +
                   this.menuElementTitle +
-                  '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div><div style="margin-top:14px; text-align:right" class="menu-box"></div></div>',
+                  '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div><div style="margin-top:-24px; text-align:right;" class="menu-box"></div></div>',
                 typenode: false,
                 inputs: {
                   input_1: {
