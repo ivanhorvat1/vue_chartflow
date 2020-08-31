@@ -48,7 +48,7 @@
                 @change="addOutputNodeToMenuEl"
                 type="text"
                 class="form-control"
-                id="inputSettings"
+                :id="inputSettings+k"
                 v-model="input.title"
               />
             </td>
@@ -185,6 +185,7 @@ export default {
   name: "DrawFlow",
   data() {
     return {
+      inputSettings: 'inputSettings',
       outputs: [
         {
           title: "",
@@ -363,7 +364,7 @@ export default {
       this.string = this.outputs[index].value.split('-')[1];
       // console.log(this.string)
       this.menuOutputs();
-      document.getElementById('inputSettings').focus()
+      document.getElementById('inputSettings0').focus()
     },
     show(modal) {
       this.$modal.show(modal);
