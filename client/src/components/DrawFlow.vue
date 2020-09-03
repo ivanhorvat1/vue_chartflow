@@ -26,18 +26,21 @@
           style="cursor:pointer; width:5px; text-align:right; font-size:30px; margin-top: -27px; margin-left: 670px"
         >x</div>
       </div>
-      <div style="padding:20px">
+      <div style="padding:20px; max-height: 400px; overflow-y: auto;">
         <p>Message</p>
         <textarea style="width:100%; height:100px; resize: none;"></textarea>
-        <button style="background-color:green; margin-bottom: 10px" @click="add(outputs.length)">
+        <button id="addButton" style="background-color:green; margin-bottom: 10px" @click="add(outputs.length)">
           <vue-fontawesome icon="plus" color="white"></vue-fontawesome>
+        </button>
+        <button v-show="outputs.length > 1" style="margin-left:10px" @click="remove(outputs.length-1)">
+          <vue-fontawesome icon="minus" color="red"></vue-fontawesome>
         </button>
         <table>
           <tr>
             <th>No.</th>
             <th>key words</th>
             <th>connection</th>
-            <th v-show="outputs.length > 1">button</th>
+            <!-- <th v-show="outputs.length > 1">button</th> -->
           </tr>
           <tr v-for="(input, k) in outputs" :key="k">
             <td>
@@ -45,7 +48,7 @@
             </td>
             <td>
               <input
-                @change="addOutputNodeToMenuEl"
+                @keyup="addOutputNodeToMenuEl"
                 type="text"
                 class="form-control"
                 :id="inputSettings+k"
@@ -61,6 +64,7 @@
                   v-model="input.value"
                   @change="onSelectSelect(k)"
                   @focus="onSelectFocus(k)"
+                  :disabled="input.disabledSelect"
                 >
                   <option value="0-none">none</option>
                   <option
@@ -71,13 +75,13 @@
                 </select>
               </span>
             </td>
-            <td v-show="k || (!k && outputs.length > 1)">
+            <!-- <td v-show="k || (!k && outputs.length > 1)">
               <span>
                 <button style="margin-left:10px" @click="remove(k)">
                   <vue-fontawesome icon="minus" color="red"></vue-fontawesome>
                 </button>
               </span>
-            </td>
+            </td> -->
           </tr>
         </table>
       </div>
@@ -191,10 +195,11 @@ export default {
         {
           title: "",
           value: "0-none",
-          disabled: false
+          disabled: false,
+          disabledSelect: true
         },
       ],
-      input: { value: "" },
+      input: { value: "", title: '' },
       previousSelected: null,
       mobile_item_selec: "",
       mobile_last_move: null,
@@ -205,7 +210,7 @@ export default {
       menuElementTitle: null,
       changedMenuTextareaInput: "",
       menuElementInputNoNodes: 1,
-      menuElementOutputNoNodes: 1,
+      menuElementOutputNoNodes: 0,
       messageElementTitle: null,
       shareFileElementTitle: null,
       locationElementTitle: null,
@@ -249,7 +254,6 @@ export default {
       string: "",
       stringPrevious: "",
       getIndexInput: null,
-      clickRemove : false,
       // counterAddedMenu: 0
     };
   },
@@ -301,8 +305,6 @@ export default {
       // console.log(NoOfNodes)
 
       let exportdata = this.editor.export();
-      // console.log(this.outputs)
-      // console.log('addoutput',exportdata.drawflow.Home.data)
       for (var element in exportdata.drawflow.Home.data) {
         if (exportdata.drawflow.Home.data[element].name == "menu") {
           var classs = $(exportdata.drawflow.Home.data[element].html).find(
@@ -312,13 +314,13 @@ export default {
           
           for (let output in this.outputs) {
             if (this.outputs[output].title != "") {
+              this.outputs[output].disabledSelect = false;
               exportdata.drawflow.Home.data[element].outputs["output_" + this.outputs.length] = { connections: [] };
-              classs[0].innerHTML += "<br><br><span style='border: 2px solid;'>"+this.outputs[output].title + "<span>";
+              classs[0].innerHTML += "<br><br><span style='border: 2px solid; padding:3px'>"+this.outputs[output].title + "<span>";
             }
             else{
+              this.outputs[output].disabledSelect = true;
               let no = parseInt(output)+1;
-              // console.log("output_" + no)
-              // this.outputs.splice(0, 1);
               if(exportdata.drawflow.Home.data[element].outputs["output_" + no]){
                 delete exportdata.drawflow.Home.data[element].outputs["output_" + no]
               }
@@ -332,13 +334,10 @@ export default {
         }
       }
 
-      // console.log(exportdata.drawflow.Home.data)
-
       this.editor.import(exportdata);
       this.giveElementClick();
     },
     getMenuElementDropdown(data) {
-      // console.log(data);
       for (var element in data) {
         if (data[element].name != "menu" && data[element].name != "welcome") {
           this.menuElementDropdown[data[element].id] = data[element].name;
@@ -349,36 +348,31 @@ export default {
       this.outputs.push({
         title: "",
         value: "0-none",
-        disabled: false
+        disabled: false,
+        disabledSelect: true
       });
 
       this.menuElementOutputNoNodes = this.outputs.length;
-      // console.log(this.editor.export().drawflow.Home.data)
-      // this.addOutputNodeToMenuEl();
-
-      // let exportdata = this.editor.export();
-      // console.log(exportdata);
-      // this.menuOutputs();
-      // console.log(this.outputs);
     },
     remove(index) {
-      // this.clickRemove = true;
-      // this.getIndexInput = index;
-      // this.stringPrevious = this.outputs[index].value.split('-')[1]
-      // this.string = '0-none'
-      // this.outputs[index].value = "0-none";
-      // this.outputs[index].title = "";
-      // this.menuOutputs();
+      this.getIndexInput = index;
+      this.stringPrevious = this.outputs[index].value.split('-')[1]
+      this.string = '0-none'
+      this.outputs[index].value = "0-none";
+      this.menuOutputs();
+      this.outputs[index].title = "";
+      this.addOutputNodeToMenuEl();
       this.outputs.splice(index, 1);
       this.menuElementOutputNoNodes = this.outputs.length;
-      // this.addOutputNodeToMenuEl();
     },
     onSelectFocus(index) {
       this.getIndexInput = index;
       this.stringPrevious = this.outputs[index].value.split('-')[1]
       this.string = '0-none'
       this.outputs[index].value = "0-none";
-      this.outputs[index].disabled = false
+      if(this.outputs.length <= 1){
+        this.outputs[index].disabled = false
+      }
       this.menuOutputs();
     },
     onSelectSelect(index){
@@ -387,7 +381,7 @@ export default {
       }
       this.string = this.outputs[index].value.split('-')[1];
       this.menuOutputs();
-      document.getElementById('inputSettings0').focus()
+      document.getElementById('addButton').focus()
     },
     show(modal) {
       this.$modal.show(modal);
@@ -461,13 +455,18 @@ export default {
 
       editor.on("nodeSelected", function () {});
 
-      // console.log(exportdata);
-      editor.on("nodeCreated", function () {});
+      editor.on("nodeCreated", function () {
+        var exportdata = vm.editor.export();
+        
+        // console.log(exportdata)
+        vm.getMenuElementDropdown(exportdata.drawflow.Home.data);
+      });
 
-      editor.on("nodeRemoved", function () {});
+      editor.on("nodeRemoved", function (id) {
+        delete vm.menuElementDropdown[id]
+      });
 
       editor.on("nodeMoved", function () {
-        // vm.showModal()
         // axios
         // .get("api/action_drink_fetch_separate", {
         //   // timeout: 60 * 4 * 1000,
@@ -483,7 +482,7 @@ export default {
       });
 
       editor.on("connectionCreated", function (connection) {
-        console.log("Connection created");
+        // console.log("Connection created");
         let index = connection.output_class.split('_')[1]
         index = parseInt(index)-1;
 
@@ -499,8 +498,7 @@ export default {
       });
 
       editor.on("connectionRemoved", function (connection) {
-        console.log("Connection removed");
-        // console.log(connection);
+        // console.log("Connection removed");
 
         let index = connection.output_class.split('_')[1]
         index = parseInt(index)-1;
@@ -511,8 +509,6 @@ export default {
             vm.outputs[index].value = '0-none'
           }
         }
-
-        // console.log(vm.outputs)
         
         vm.editor.import(exportdata);
         vm.giveElementClick();
@@ -558,7 +554,6 @@ export default {
               for (let element in exportdata.drawflow.Home.data) {
                 if (exportdata.drawflow.Home.data[element].name == this.string) {
                   idInput = exportdata.drawflow.Home.data[element].id;
-                  // console.log(exportdata.drawflow.Home.data[element].inputs.input_1.connections.length)
                   if(exportdata.drawflow.Home.data[element].inputs.input_1.connections.length <= 0){
                     this.editor.addConnection(idOutput,idInput,changeid,"input_1");
                   }
@@ -576,7 +571,6 @@ export default {
               for (let element in exportdata.drawflow.Home.data) {
                 if (exportdata.drawflow.Home.data[element].name == this.string) {
                   idInput = exportdata.drawflow.Home.data[element].id;
-                  // console.log(exportdata.drawflow.Home.data[element].inputs.input_1.connections)
                   if(exportdata.drawflow.Home.data[element].inputs.input_1.connections.length <= 0){
                     this.editor.addConnection(idOutput,idInput,changeid,"input_1");
                   }
@@ -594,7 +588,6 @@ export default {
               for (let element in exportdata.drawflow.Home.data) {
                 if (exportdata.drawflow.Home.data[element].name == this.string) {
                   idInput = exportdata.drawflow.Home.data[element].id;
-                  // console.log(exportdata.drawflow.Home.data[element].inputs.input_1.connections)
                   if(exportdata.drawflow.Home.data[element].inputs.input_1.connections.length <= 0){
                     this.editor.addConnection(idOutput,idInput,changeid,"input_1");
                   }
@@ -612,7 +605,6 @@ export default {
               for (let element in exportdata.drawflow.Home.data) {
                 if (exportdata.drawflow.Home.data[element].name == this.string) {
                   idInput = exportdata.drawflow.Home.data[element].id;
-                  // console.log(exportdata.drawflow.Home.data[element].inputs.input_1.connections)
                   if(exportdata.drawflow.Home.data[element].inputs.input_1.connections.length <= 0){
                     this.editor.addConnection(idOutput,idInput,changeid,"input_1");
                   }
@@ -630,7 +622,6 @@ export default {
               for (let element in exportdata.drawflow.Home.data) {
                 if (exportdata.drawflow.Home.data[element].name == this.string) {
                   idInput = exportdata.drawflow.Home.data[element].id;
-                  // console.log(exportdata.drawflow.Home.data[element].inputs.input_1.connections)
                   if(exportdata.drawflow.Home.data[element].inputs.input_1.connections.length <= 0){
                     this.editor.addConnection(idOutput,idInput,changeid,"input_1");
                   }
@@ -648,7 +639,6 @@ export default {
               for (let element in exportdata.drawflow.Home.data) {
                 if (exportdata.drawflow.Home.data[element].name == this.string) {
                   idInput = exportdata.drawflow.Home.data[element].id;
-                  // console.log(exportdata.drawflow.Home.data[element].inputs.input_1.connections)
                   if(exportdata.drawflow.Home.data[element].inputs.input_1.connections.length <= 0){
                     this.editor.addConnection(idOutput,idInput,changeid,"input_1");
                   }
@@ -657,22 +647,17 @@ export default {
             break;
 
           default: 
-          // console.log(this.stringPrevious)
             for (let element in exportdata.drawflow.Home.data) {
               if (exportdata.drawflow.Home.data[element].name == "menu") {
                 idOutput = exportdata.drawflow.Home.data[element].id;
               }
 
               if (exportdata.drawflow.Home.data[element].name == this.stringPrevious) {
-                
                 idInput = exportdata.drawflow.Home.data[element].id;
-                // this.editor.removeSingleConnection(idOutput,idInput,changeid,"input_1");
               }
             }
-            // console.log(idOutput,idInput,changeid)
           
             this.editor.removeSingleConnection(idOutput,idInput,changeid,"input_1");
-              // console.log(exportdata.drawflow.Home.data)
         }
 
         // this.outputsMenu[changeid] = {
@@ -707,7 +692,7 @@ export default {
                 data: {},
                 class: "welcome",
                 html:
-                  '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br>\n💠 <b>Mouse Left Click</b> == Move<br>\n💠 <b>Mouse double Click on leftsidebar element</b> == change name<br>\n💠 <b>Mouse Click on red square in element</b> == change number of input and output nodes<br>\n❌ Mouse Right == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n...</p>\n</div>\n</div>\n',
+                  '\n<div>\n<div class="title-box">👏 Welcome!!</div>\n      <div class="box">\n<p><b><u>Shortkeys:</u></b></p>\n<p>🎹 <b>Delete</b> for remove selected<br>\n💠 <b>Mouse Left Click</b> == Move<br>❌ Mouse Right == Delete Option<br>\n🔍 Ctrl + Wheel == Zoom<br>\n...</p>\n</div>\n</div>\n',
                 typenode: false,
                 inputs: {},
                 outputs: {
@@ -743,9 +728,9 @@ export default {
                 data: { template: "Write your template" },
                 class: "message",
                 html:
-                  '\n<div>\n<div class="title-box">' +
+                  '<div><div class="title-box">' +
                   this.messageElementTitle +
-                  '</div><div class="box">\n</div>',
+                  '</div><div class="box"></div></div>',
                 typenode: false,
                 inputs: {
                   input_1: {
@@ -769,9 +754,9 @@ export default {
                 data: { template: "Write your template" },
                 class: "location",
                 html:
-                  '\n<div>\n<div class="title-box">' +
+                  '<div><div class="title-box">' +
                   this.locationElementTitle +
-                  '</div><div class="box">\n</div>',
+                  '</div><div class="box"></div></div>',
                 typenode: false,
                 inputs: {
                   input_1: {
@@ -795,9 +780,9 @@ export default {
                 data: {},
                 class: "sharefile",
                 html:
-                  '\n<div>\n<div class="title-box">' +
+                  '<div><div class="title-box">' +
                   this.shareFileElementTitle +
-                  '</div><div class="box">\n</div>',
+                  '</div><div class="box"></div></div>',
                 typenode: false,
                 inputs: {
                   input_1: {
@@ -894,7 +879,7 @@ export default {
           var menu =
             '<div><div class="title-box">' +
             this.menuElementTitle +
-            '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div><div class="menu-box">e<br><br>t<br><br>o</div></div>';
+            '</div><div class="menuElement" style="position:absolute;cursor:pointer;margin-top:-35px;margin-left:160px"><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div><div style="width: 25px;height: 3px;background-color: black;margin: 3px 0;"></div></div><div style="margin-top:-24px; text-align:right;" class="menu-box"></div></div>';
           this.editor.addNode(
             "menu",
             this.menuElementInputNoNodes,
@@ -910,7 +895,7 @@ export default {
           var message =
             `<div><div class="title-box">` +
             this.messageElementTitle +
-            `</div>`;
+            `</div><div class="box"></div></div>`;
           this.editor.addNode(
             "message",
             1,
@@ -926,7 +911,7 @@ export default {
           var sharefile =
             `<div><div class="title-box">` +
             this.shareFileElementTitle +
-            `</div>`;
+            `</div><div class="box"></div></div>`;
           this.editor.addNode(
             "sharefile",
             1,
@@ -942,7 +927,7 @@ export default {
           var location =
             `<div><div class="title-box">` +
             this.locationElementTitle +
-            `</div>`;
+            `</div><div class="box"></div></div>`;
           this.editor.addNode(
             "location",
             1,
@@ -956,7 +941,9 @@ export default {
           break;
         case "agent":
           var agent =
-            `<div><div class="title-box">` + this.agentElementTitle + `</div>`;
+            `<div><div class="title-box">` + 
+            this.agentElementTitle + 
+            `</div><div class="box"></div></div>`;
           this.editor.addNode(
             "agent",
             1,
@@ -972,7 +959,7 @@ export default {
           var clientstore =
             `<div><div class="title-box">` +
             this.clientStoreElementTitle +
-            `</div>`;
+            `</div><div class="box"></div></div>`;
           this.editor.addNode(
             "clientstore",
             1,
@@ -988,7 +975,7 @@ export default {
           var clientbranch =
             `<div><div class="title-box">` +
             this.clientBranchElementTitle +
-            `</div>`;
+            `</div><div class="box"></div></div>`;
           this.editor.addNode(
             "clientbranch",
             1,
@@ -1004,11 +991,9 @@ export default {
         default:
       }
 
-      var exportdata = this.editor.export();
-      this.getMenuElementDropdown(exportdata.drawflow.Home.data);
+      // var exportdata = this.editor.export();
+      // this.getMenuElementDropdown(exportdata.drawflow.Home.data);
       this.giveElementClick();
-
-      // console.log(exportdata);
     },
     changeModule(event) {
       var all = document.querySelectorAll(".menu ul li");
