@@ -32,7 +32,7 @@
         <button id="addButton" style="background-color:green; margin-bottom: 10px" @click="add(outputs.length)">
           <vue-fontawesome icon="plus" color="white"></vue-fontawesome>
         </button>
-        <button v-show="outputs.length > 1" style="margin-left:10px" @click="remove(outputs.length-1)">
+        <button v-show="outputs.length > 0" style="margin-left:10px" @click="remove(outputs.length-1)">
           <vue-fontawesome icon="minus" color="red"></vue-fontawesome>
         </button>
         <table>
@@ -191,14 +191,15 @@ export default {
   data() {
     return {
       inputSettings: 'inputSettings',
-      outputs: [
-        {
-          title: "",
-          value: "0-none",
-          disabled: false,
-          disabledSelect: true
-        },
-      ],
+      // outputs: [
+      //   {
+      //     title: "",
+      //     value: "0-none",
+      //     disabled: false,
+      //     disabledSelect: true
+      //   },
+      // ],
+      outputs: [],
       input: { value: "", title: '' },
       previousSelected: null,
       mobile_item_selec: "",
